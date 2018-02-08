@@ -30,6 +30,8 @@ import yal.exceptions.AnalyseLexicaleException;
 
 commentaireSlashSlash = [/][/].*
 
+idf = [a-zA-Z][a-zA-Z0-9]*
+
 csteE = [0-9]+
 csteB = "vrai" | "faux"
 
@@ -57,6 +59,13 @@ espace = {finDeLigne}  | [ \t\f]
 
 {csteE}      	            { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
 {csteB}      	            { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }
+
+"programme"                 { return symbol(CodesLexicaux.PROGRAMME); }
+
+"debut"                     { return symbol(CodesLexicaux.DEBUT); }
+"fin"                       { return symbol(CodesLexicaux.FIN); }
+
+{idf}                       { return symbol(CodesLexicaux.IDF, yytext()); }
 
 {espace}                    { }
 

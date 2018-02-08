@@ -68,7 +68,7 @@ parser code {:
 
 terminal Symbol    PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
 terminal Symbol    SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
-terminal String    CONSTANTEINT, CONSTANTEBOOL ;
+terminal String    CONSTANTEINT, CONSTANTEBOOL, PROGRAMME, DEBUT, FIN, IDF;
 
 /* Non terminals used in the grammar section.  */
 
@@ -87,12 +87,12 @@ precedence left NON ;
  
 start with PROG ;
 
-PROG    ::=     EXPR:e 
+PROG    ::=     PROGRAMME IDF DEBUT EXPR:e FIN
                 {: BlocDInstructions arbre = new BlocDInstructions(eleft+1) ;
                    arbre.ajouter(e) ;
                    RESULT = arbre ; :}
                 ;
-    
+
 EXPR    ::=     EXPR:g  PLUS  EXPR:d
                 {: RESULT = new Plus(g, d) ; :}
         | 
