@@ -1,0 +1,143 @@
+package yal.analyse ;
+
+import java.util.*;
+import yal.arbre.* ;
+import yal.arbre.expression.* ;
+import yal.exceptions.AnalyseSyntaxiqueException;
+
+import java_cup.runtime.*;
+
+action code {: 
+             :} ;
+
+parser code {:
+
+    public void report_error(String message, Object info) {
+
+        HashMap<Integer, String> lesTerminaux = new HashMap<>() ;
+    
+        lesTerminaux.put(new Integer(CodesLexicaux.PLUS), "+") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.MOINS), "-") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.MULT), "*") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.DIV), "/") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.PAROUV), "(") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.PARFER), ")") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.SUP), ">") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.INF), "<") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.EGALEGAL), "==") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.DIFF), "!=") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.ET), "et") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.OU), "ou") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.NON), "non") ;
+
+        StringBuffer m = new StringBuffer() ;
+
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+
+            if (s.left >= 0) {
+                m.append("\tligne : " + (s.left + 1)) ;
+                if (s.right >= 0)
+                    m.append(" colonne : " + (s.right+1)) ;
+            }
+
+            if (s.value != null) {
+                lesTerminaux.put(CodesLexicaux.CONSTANTEINT, "" + s.value) ;
+                lesTerminaux.put(CodesLexicaux.CONSTANTEBOOL, "" + s.value) ;
+            }
+
+            if (lesTerminaux.containsKey(new Integer(s.sym))) {
+                m.append(" dernier token lu : " + lesTerminaux.get(new Integer(s.sym))) ;
+            }
+            else {
+                m.append(" expression non terminée") ;
+            }
+
+        }
+        throw new AnalyseSyntaxiqueException("" + m) ;
+    }
+
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+    }
+:};
+
+/* ------------Declaration of Terminals and Non Terminals Section----------- */
+
+/* Terminals (tokens returned by the scanner).  */
+
+terminal Symbol    PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
+terminal Symbol    SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
+terminal String    CONSTANTEINT, CONSTANTEBOOL ;
+
+/* Non terminals used in the grammar section.  */
+
+non terminal ArbreAbstrait PROG ;
+non terminal Expression EXPR, CSTE ;
+
+precedence left OU ;
+precedence left ET ;
+precedence left EGALEGAL, DIFF;
+precedence left INF, SUP ;
+precedence left PLUS, MOINS;
+precedence left MULT, DIV ;
+precedence left NON ;
+
+/* ----------------------------Grammar Section-------------------- */
+ 
+start with PROG ;
+
+PROG    ::=     EXPR:e 
+                {: BlocDInstructions arbre = new BlocDInstructions(eleft+1) ;
+                   arbre.ajouter(e) ;
+                   RESULT = arbre ; :}
+                ;
+    
+EXPR    ::=     EXPR:g  PLUS  EXPR:d
+                {: RESULT = new Plus(g, d) ; :}
+        | 
+                EXPR:g  MOINS  EXPR:d
+                {: RESULT = new Moins(g, d); :}
+        |                
+                EXPR:g  MULT  EXPR:d
+                {: RESULT = new Mult(g, d); :}
+        |                
+                EXPR:g  DIV  EXPR:d
+                {: RESULT = new Div(g, d); :}
+        |       
+                EXPR:g  INF  EXPR:d
+                {: RESULT = new Inferieur(g, d); :}
+        |       
+                EXPR:g  SUP  EXPR:d
+                {: RESULT = new Superieur(g, d); :}
+        |              
+                EXPR:g  EGALEGAL  EXPR:d
+                {: RESULT = new Egal(g, d); :}
+        |       
+                EXPR:g  DIFF  EXPR:d
+                {: RESULT = new Different(g, d); :}
+        |                      
+                MOINS  EXPR:e  
+                {: RESULT = new MoinsUnaire(e); :}
+        |      
+                EXPR:g  ET  EXPR:d
+                {: RESULT = new EtLogique(g, d); :}
+        |      
+                EXPR:g  OU  EXPR:d
+                {: RESULT = new OuLogique(g, d); :}
+        |      
+                NON EXPR:e
+                {: RESULT = new NonLogique(e); :}
+        |
+                CSTE:c
+                {: RESULT = c ; :}
+        |
+                PAROUV  EXPR:e  PARFER
+                {: RESULT = e ; :}
+                ;
+
+CSTE    ::=     CONSTANTEINT:e 
+                {: RESULT = new ConstanteEntiere(e, eleft+1) ; :}
+        |       CONSTANTEBOOL:e 
+                {: RESULT = new ConstanteBool(e, eleft+1) ; :}
+                ;
