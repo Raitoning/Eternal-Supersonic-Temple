@@ -1,10 +1,10 @@
 package yal.tds;
 
-public class Symboles {
+public class Symbole {
 
     private TypeTDS typeTDS;
 
-    public Symboles(TypeTDS typeTDS) {
+    public Symbole(TypeTDS typeTDS) {
 
         this.typeTDS = typeTDS;
     }

@@ -2,15 +2,15 @@ package yal.tds;
 
 public class Entree {
 
-    private TypeTDS typeTDS;
+    private String nom;
 
-    public Entree(TypeTDS typeTDS) {
+    public Entree (String nom) {
 
-        this.typeTDS = typeTDS;
+        this.nom = nom;
     }
 
-    public TypeTDS getTypeTDS() {
+    public String getNom() {
 
-        return typeTDS;
+        return this.nom;
     }
 }

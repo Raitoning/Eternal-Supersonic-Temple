@@ -9,14 +9,14 @@ public class TableDesSymboles {
 
     public static TableDesSymboles Instance;
 
-    private HashMap<Entree, Symboles> tds;
+    private HashMap<Entree, Symbole> tds;
 
     private TableDesSymboles() {
 
         tds = new HashMap<>();
     }
 
-    public void ajouter(Entree e, Symboles s) {
+    public void ajouter(Entree e, Symbole s) {
 
         if(tds.containsKey(e)) {
 
@@ -27,7 +27,7 @@ public class TableDesSymboles {
         }
     }
 
-    public Symboles identifier(Entree e) {
+    public Symbole identifier(Entree e) {
 
         if(!tds.containsKey(e)) {
 
@@ -46,7 +46,7 @@ public class TableDesSymboles {
 
         for(Entree e: tds.keySet()) {
 
-            if(e.getTypeTDS() == TypeTDS.Variable) {
+            if(tds.get(e).getTypeTDS() == TypeTDS.Variable) {
 
                 res++;
             }
