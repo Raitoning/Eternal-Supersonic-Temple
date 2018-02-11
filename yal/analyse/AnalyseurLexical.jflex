@@ -51,6 +51,7 @@ espace = {finDeLigne}  | [ \t\f]
 "et"                	    { return symbol(CodesLexicaux.ET); }
 "ou"                	    { return symbol(CodesLexicaux.OU); }
 "non"                	    { return symbol(CodesLexicaux.NON); }
+"ecrire"                    { return symbol(CodesLexicaux.ECRIRE); }
 
 "("                	        { return symbol(CodesLexicaux.PAROUV); }
 ")"                	        { return symbol(CodesLexicaux.PARFER); }

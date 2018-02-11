@@ -10,7 +10,7 @@ public class TestYal {
 
 
         TestYal test = new TestYal();
-        test.testFiles("res/Valide");
+        test.testFiles("test");
     }
 
     public void testFiles(String path) {

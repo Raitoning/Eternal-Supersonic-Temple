@@ -22,6 +22,6 @@ public abstract class Expression extends ArbreAbstrait {
     @Override
     public abstract String toMIPS();
 
-    protected abstract Type getType();
+    public abstract Type getType();
 
 }
