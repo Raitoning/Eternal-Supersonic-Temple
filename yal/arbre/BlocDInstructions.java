@@ -1,5 +1,7 @@
 package yal.arbre;
 
+import yal.arbre.instructions.functions.ListeChaines;
+
 /**
  * 3 déc. 2015
  *
@@ -29,6 +31,7 @@ public class BlocDInstructions extends ArbreAbstrait {
                 "zero\"\n\n");
         stringBuilder.append("\tmsgTrue:\t.asciiz \"vrai\"\n\n");
         stringBuilder.append("\tmsgFalse:\t.asciiz \"faux\"\n\n");
+        addStringData(stringBuilder);
         stringBuilder.append(".text\n");
         stringBuilder.append("main:\n\n");
 
@@ -49,6 +52,7 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\tj end\n");
         stringBuilder.append("\n");
         stringBuilder.append("\n");
+
         stringBuilder.append("printEntier:\n");
         stringBuilder.append("\tmove $a0, $v0\t# copie de v0 dans a1 pour " +
                 "permettre l'affichage\n");
@@ -58,10 +62,11 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\taddi $a0, $0, 0xA\t#pour sauter une ligne\n");
         stringBuilder.append("\tli $v0, 11\n");
         stringBuilder.append("\tsyscall\n");
+        stringBuilder.append("\tmove $v0, $t8\n");
         stringBuilder.append("\tjr $ra\n");
-        //stringBuilder.append("\tla $a0, msgDivZero\n");
         stringBuilder.append("\n");
         stringBuilder.append("\n");
+
         stringBuilder.append("printBool:\n");
         stringBuilder.append("\t beq $v0, $0, printFalse\n");
         stringBuilder.append("\tla $a0, msgTrue\t#Ici on affiche vrai\n");
@@ -75,6 +80,18 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\tli $v0, 11\n");
         stringBuilder.append("\tsyscall\n");
         stringBuilder.append("\tjr $ra\n");
+        stringBuilder.append("\n");
+
+        stringBuilder.append("printString:\t#Assumant qu'on ait défini la string a afficher avant ce jump\n");
+        stringBuilder.append("\n");
+        stringBuilder.append("\tmove $t8, $v0\n");
+        stringBuilder.append("\tli $v0, 4\n");
+        stringBuilder.append("\tsyscall\n");
+        stringBuilder.append("\tmove $v0, $t8\n");
+        stringBuilder.append("\tjr $ra\n");
+        stringBuilder.append("\n");
+        stringBuilder.append("\n");
+
 
         return stringBuilder.toString();
     }
@@ -89,4 +106,12 @@ public class BlocDInstructions extends ArbreAbstrait {
 
         expr.verifier();
     }
+
+    private void addStringData(StringBuilder sb){
+        ListeChaines lc = ListeChaines.getInstance();
+        for (int i=0; i<lc.size() ; i++){
+            sb.append("\tmsgString"+i+":\t.asciiz "+lc.at(i)+"\n");
+        }
+    }
+
 }

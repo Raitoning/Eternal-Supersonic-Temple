@@ -32,6 +32,7 @@ commentaireSlashSlash = [/][/].*
 
 csteE = [0-9]+
 csteB = "vrai" | "faux"
+chain = [\"].*[\"]
 
 finDeLigne = \r|\n
 espace = {finDeLigne}  | [ \t\f]
@@ -58,6 +59,7 @@ espace = {finDeLigne}  | [ \t\f]
 
 {csteE}      	            { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
 {csteB}      	            { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }
+{chain}                     { return symbol(CodesLexicaux.CHAINE, yytext()); }
 
 {espace}                    { }
 

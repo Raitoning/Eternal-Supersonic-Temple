@@ -71,12 +71,13 @@ parser code {:
 
 terminal Symbol    ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
 terminal Symbol    SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
-terminal String    CONSTANTEINT, CONSTANTEBOOL ;
+terminal String    CONSTANTEINT, CONSTANTEBOOL, CHAINE;
 
 /* Non terminals used in the grammar section.  */
 
 non terminal ArbreAbstrait PROG ;
 non terminal Expression EXPR, CSTE ;
+non terminal String TCHAINE;
 
 precedence left OU ;
 precedence left ET ;
@@ -93,7 +94,11 @@ start with PROG ;
 PROG    ::=     ECRIRE EXPR:e
                 {: BlocDInstructions arbre = new BlocDInstructions(eleft+1);
                  arbre.ajouter(new Ecrire(eleft+1, e));
-                   RESULT = arbre ; :}
+                 RESULT = arbre ; :}
+         |      ECRIRE TCHAINE:e
+                {: BlocDInstructions arbre = new BlocDInstructions(eleft+1);
+                arbre.ajouter(new Ecrire(eleft+1, e));
+                RESULT = arbre ; :}
                 ;
     
 EXPR    ::=     EXPR:g  PLUS  EXPR:d
@@ -143,4 +148,8 @@ CSTE    ::=     CONSTANTEINT:e
                 {: RESULT = new ConstanteEntiere(e, eleft+1) ; :}
         |       CONSTANTEBOOL:e 
                 {: RESULT = new ConstanteBool(e, eleft+1) ; :}
+                ;
+TCHAINE ::=   CHAINE:e
+                {: ListeChaines.getInstance().add(e);
+                RESULT = e ; :}
                 ;
