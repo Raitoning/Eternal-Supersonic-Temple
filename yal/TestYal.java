@@ -2,7 +2,6 @@ package yal;
 
 import yal.arbre.instruction.fonction.ListeChaines;
 import yal.tds.TableDesSymboles;
-
 import java.io.File;
 
 public class TestYal {
@@ -21,7 +20,7 @@ public class TestYal {
 
         TableDesSymboles.getInstance().reset();
         ListeChaines.getInstance().reset();
-
+      
         String[] arg = new String[1];
 
         File folder = new File(path);

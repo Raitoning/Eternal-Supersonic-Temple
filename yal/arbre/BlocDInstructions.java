@@ -3,7 +3,6 @@ package yal.arbre;
 import yal.arbre.instruction.fonction.ListeChaines;
 import yal.tds.TableDesSymboles;
 import java.util.ArrayList;
-
 /**
  * 3 déc. 2015
  *
@@ -11,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public class BlocDInstructions extends ArbreAbstrait {
-
+  
     protected ArrayList<ArbreAbstrait> expr ;
     private boolean first = false;
     public BlocDInstructions(int n) {
@@ -30,7 +29,7 @@ public class BlocDInstructions extends ArbreAbstrait {
     }
 
     public String toMIPS() {
-
+      
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -71,6 +70,7 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\n");
         stringBuilder.append("divZero:\n");
         stringBuilder.append("\n");
+
         stringBuilder.append("\tli $v0, 4\n");
         stringBuilder.append("\tla $a0, msgDivZero\n");
         stringBuilder.append("\tsyscall\n");
@@ -111,6 +111,7 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\n");
         stringBuilder.append("\n");
         }
+      
         return stringBuilder.toString();
     }
 
