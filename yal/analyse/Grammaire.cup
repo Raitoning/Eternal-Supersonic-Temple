@@ -1,9 +1,10 @@
 package yal.analyse;
 
 import java.util.*;
-import yal.arbre.*;
-import yal.arbre.expression.*;
+import yal.arbre.* ;
+import yal.arbre.expression.* ;
 import yal.arbre.instruction.*;
+import yal.arbre.instruction.fonctions.*;
 import yal.exceptions.AnalyseSyntaxiqueException;
 import yal.tds.*;
 
@@ -16,23 +17,24 @@ parser code {:
 
     public void report_error(String message, Object info) {
 
-        HashMap<Integer, String> lesTerminaux = new HashMap<>();
+        HashMap<Integer, String> lesTerminaux = new HashMap<>() ;
 
-        lesTerminaux.put(new Integer(CodesLexicaux.PLUS), "+");
-        lesTerminaux.put(new Integer(CodesLexicaux.MOINS), "-");
-        lesTerminaux.put(new Integer(CodesLexicaux.MULT), "*");
-        lesTerminaux.put(new Integer(CodesLexicaux.DIV), "/");
-        lesTerminaux.put(new Integer(CodesLexicaux.PAROUV), "(");
-        lesTerminaux.put(new Integer(CodesLexicaux.PARFER), ")");
-        lesTerminaux.put(new Integer(CodesLexicaux.SUP), ">");
-        lesTerminaux.put(new Integer(CodesLexicaux.INF), "<");
-        lesTerminaux.put(new Integer(CodesLexicaux.EGALEGAL), "==");
-        lesTerminaux.put(new Integer(CodesLexicaux.DIFF), "!=");
-        lesTerminaux.put(new Integer(CodesLexicaux.ET), "et");
-        lesTerminaux.put(new Integer(CodesLexicaux.OU), "ou");
-        lesTerminaux.put(new Integer(CodesLexicaux.NON), "non");
+        lesTerminaux.put(new Integer(CodesLexicaux.ECRIRE), "ecrire") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.PLUS), "+") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.MOINS), "-") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.MULT), "*") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.DIV), "/") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.PAROUV), "(") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.PARFER), ")") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.SUP), ">") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.INF), "<") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.EGALEGAL), "==") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.DIFF), "!=") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.ET), "et") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.OU), "ou") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.NON), "non") ;
 
-        StringBuffer m = new StringBuffer();
+        StringBuffer m = new StringBuffer() ;
 
         if (info instanceof java_cup.runtime.Symbol) {
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
@@ -68,15 +70,16 @@ parser code {:
 
 /* Terminals (tokens returned by the scanner).  */
 
-terminal Symbol     PLUS, MOINS, MULT, DIV, PAROUV, PARFER;
-terminal Symbol     SUP, INF, EGALEGAL, DIFF, ET, OU, NON;
+terminal Symbol     ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
+terminal Symbol     SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
 terminal Symbol     POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
-terminal String     CONSTANTEINT, CONSTANTEBOOL, IDF;
+terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
 
 /* Non terminals used in the grammar section.  */
 
 non terminal ArbreAbstrait PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF;
-non terminal Expression EXPR, CSTE;
+non terminal Expression EXPR, CSTE ;
+non terminal String TCHAINE;
 
 precedence left OU;
 precedence left ET;
@@ -112,7 +115,6 @@ PROG    ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
                     RESULT = arbre; :}
                 ;
 
-/* TODO: Trouver comment récupérer toute la liste des instructions. */
 LINSTR  ::=     LINSTR:li INSTR:i
                 {: BlocDInstructions b = new BlocDInstructions(ileft + 1);
                     b.ajouter(li);
@@ -127,6 +129,13 @@ LINSTR  ::=     LINSTR:li INSTR:i
 
 INSTR   ::=     AFF:a
                 {: RESULT = a; :}
+        |
+                ECRIRE EXPR:e
+                {: RESULT = new Ecrire(eleft + 1, e); :}
+                
+        |       
+                ECRIRE TCHAINE:e
+                {: RESULT = new Ecrire(eleft + 1, e); :}
                 ;
 
 AFF     ::=     IDF:i EGAL EXPR:e POINTVIRGULE
@@ -197,4 +206,9 @@ CSTE    ::=     CONSTANTEINT:e
                 {: RESULT = new ConstanteEntiere(e, eleft+1); :}
         |       CONSTANTEBOOL:e
                 {: RESULT = new ConstanteBool(e, eleft+1); :}
+                ;
+                
+TCHAINE ::=   CHAINE:e
+                {: ListeChaines.getInstance().add(e);
+                RESULT = e ; :}
                 ;
