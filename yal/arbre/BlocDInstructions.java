@@ -30,7 +30,7 @@ public class BlocDInstructions extends ArbreAbstrait {
     }
 
     public String toMIPS() {
-        //System.out.println(noLigne );
+
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -84,9 +84,6 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\tmove $t8, $v0\n");
         stringBuilder.append("\tli $v0, 1\n");
         stringBuilder.append("\tsyscall\n");
-        stringBuilder.append("\taddi $a0, $0, 0xA\t#pour sauter une ligne\n");
-        stringBuilder.append("\tli $v0, 11\n");
-        stringBuilder.append("\tsyscall\n");
         stringBuilder.append("\tmove $v0, $t8\n");
         stringBuilder.append("\tjr $ra\n");
         stringBuilder.append("\n");
@@ -100,9 +97,6 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\tla $a0, msgFalse\t#Ici on affiche faux\n");
         stringBuilder.append("printBool2:\n");
         stringBuilder.append("\tli $v0, 4\n");
-        stringBuilder.append("\tsyscall\n");
-        stringBuilder.append("\taddi $a0, $0, 0xA\t#pour sauter une ligne\n");
-        stringBuilder.append("\tli $v0, 11\n");
         stringBuilder.append("\tsyscall\n");
         stringBuilder.append("\tjr $ra\n");
         stringBuilder.append("\n");
