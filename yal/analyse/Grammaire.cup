@@ -1,21 +1,25 @@
-package yal.analyse ;
+package yal.analyse;
 
 import java.util.*;
 import yal.arbre.* ;
 import yal.arbre.expression.* ;
+import yal.arbre.instruction.*;
+import yal.arbre.instruction.fonction.*;
 import yal.exceptions.AnalyseSyntaxiqueException;
+import yal.tds.*;
 
 import java_cup.runtime.*;
 
-action code {: 
-             :} ;
+action code {:
+             :};
 
 parser code {:
 
     public void report_error(String message, Object info) {
 
         HashMap<Integer, String> lesTerminaux = new HashMap<>() ;
-    
+
+        lesTerminaux.put(new Integer(CodesLexicaux.ECRIRE), "ecrire") ;
         lesTerminaux.put(new Integer(CodesLexicaux.PLUS), "+") ;
         lesTerminaux.put(new Integer(CodesLexicaux.MOINS), "-") ;
         lesTerminaux.put(new Integer(CodesLexicaux.MULT), "*") ;
@@ -35,109 +39,178 @@ parser code {:
         if (info instanceof java_cup.runtime.Symbol) {
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
 
-            if (s.left >= 0) {                
-                m.append("\tligne : " + (s.left + 1)) ;
-                if (s.right >= 0)                    
-                    m.append(" colonne : " + (s.right+1)) ;
+            if (s.left >= 0) {
+                m.append("\tligne : " + (s.left + 1));
+                if (s.right >= 0)
+                    m.append(" colonne : " + (s.right+1));
             }
-            
+
             if (s.value != null) {
-                lesTerminaux.put(CodesLexicaux.CONSTANTEINT, "" + s.value) ;
-                lesTerminaux.put(CodesLexicaux.CONSTANTEBOOL, "" + s.value) ;
+                lesTerminaux.put(CodesLexicaux.CONSTANTEINT, "" + s.value);
+                lesTerminaux.put(CodesLexicaux.CONSTANTEBOOL, "" + s.value);
             }
 
             if (lesTerminaux.containsKey(new Integer(s.sym))) {
-                m.append(" dernier token lu : " + lesTerminaux.get(new Integer(s.sym))) ;
+                m.append(" dernier token lu : " + lesTerminaux.get(new Integer(s.sym)));
             }
             else {
-                m.append(" expression non terminée") ;
+                m.append(" expression non terminée");
             }
 
         }
-        throw new AnalyseSyntaxiqueException("" + m) ;
+        throw new AnalyseSyntaxiqueException("" + m);
     }
 
     public void report_fatal_error(String message, Object info) {
         report_error(message, info);
     }
 :};
-   
+
 /* ------------Declaration of Terminals and Non Terminals Section----------- */
-   
+
 /* Terminals (tokens returned by the scanner).  */
 
-terminal Symbol    PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
-terminal Symbol    SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
-terminal String    CONSTANTEINT, CONSTANTEBOOL ;
-   
+terminal Symbol     ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
+terminal Symbol     SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
+terminal Symbol     POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
+terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
+
 /* Non terminals used in the grammar section.  */
 
-non terminal ArbreAbstrait PROG ;
+non terminal ArbreAbstrait PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF;
 non terminal Expression EXPR, CSTE ;
+non terminal String TCHAINE;
 
-precedence left OU ;
-precedence left ET ;
+precedence left OU;
+precedence left ET;
 precedence left EGALEGAL, DIFF;
-precedence left INF, SUP ;
+precedence left INF, SUP;
 precedence left PLUS, MOINS;
-precedence left MULT, DIV ;
-precedence left NON ;
+precedence left MULT, DIV;
+precedence left NON;
+precedence left EGAL;
 
 /* ----------------------------Grammar Section-------------------- */
- 
-start with PROG ;
 
-PROG    ::=     EXPR:e 
-                {: BlocDInstructions arbre = new BlocDInstructions(eleft+1) ;
-                   arbre.ajouter(e) ;
-                   RESULT = arbre ; :}
+start with PROG;
+
+PROG    ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
+                    arbre.ajouter(d);
+                    arbre.ajouter(e);
+                    RESULT = arbre; :}
+        |
+                PROGRAMME IDF DEBUT LISDECL:d FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
+                    arbre.ajouter(d);
+                    RESULT = arbre; :}
+        |
+                PROGRAMME IDF DEBUT LINSTR:e FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(eleft, true);
+                    arbre.ajouter(e);
+                    RESULT = arbre; :}
+        |
+                PROGRAMME IDF DEBUT FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(0, true);
+                    RESULT = arbre; :}
                 ;
-    
+
+LINSTR  ::=     LINSTR:li INSTR:i
+                {: BlocDInstructions b = new BlocDInstructions(ileft + 1);
+                    b.ajouter(li);
+                     b.ajouter(i);
+                    RESULT =  b; :}
+        |
+                INSTR:i
+                {: BlocDInstructions b = new BlocDInstructions(ileft + 1);
+                    b.ajouter(i);
+                    RESULT = b; :}
+                ;
+
+INSTR   ::=     AFF:a
+                {: RESULT = a; :}
+        |
+                ECRIRE EXPR:e POINTVIRGULE
+                {: RESULT = new Ecrire(eleft + 1, e); :}
+                
+        |       
+                ECRIRE TCHAINE:e POINTVIRGULE
+                {: RESULT = new Ecrire(eleft + 1, e); :}
+                ;
+
+AFF     ::=     IDF:i EGAL EXPR:e POINTVIRGULE
+                {: RESULT = new Affectation(new Entree(i), e, ileft + 1); :}
+                ;
+
+DECL    ::=     ENTIER IDF:i POINTVIRGULE
+                {: RESULT = new Declaration(new Entree(i), ileft + 1); :}
+                ;
+
+LISDECL ::=     LISDECL:l DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(l);
+                    b.ajouter(d);
+                    RESULT =  b; :}
+        |
+                DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(d);
+                    RESULT = b;
+                :}
+                ;
+
 EXPR    ::=     EXPR:g  PLUS  EXPR:d
-                {: RESULT = new Plus(g, d) ; :}
-        | 
+                {: RESULT = new Plus(g, d); :}
+        |
                 EXPR:g  MOINS  EXPR:d
                 {: RESULT = new Moins(g, d); :}
-        |                
+        |
                 EXPR:g  MULT  EXPR:d
                 {: RESULT = new Mult(g, d); :}
-        |                
+        |
                 EXPR:g  DIV  EXPR:d
                 {: RESULT = new Div(g, d); :}
-        |       
+        |
                 EXPR:g  INF  EXPR:d
                 {: RESULT = new Inferieur(g, d); :}
-        |       
+        |
                 EXPR:g  SUP  EXPR:d
                 {: RESULT = new Superieur(g, d); :}
-        |              
+        |
                 EXPR:g  EGALEGAL  EXPR:d
                 {: RESULT = new Egal(g, d); :}
-        |       
+        |
                 EXPR:g  DIFF  EXPR:d
                 {: RESULT = new Different(g, d); :}
-        |                      
-                MOINS  EXPR:e  
+        |
+                MOINS  EXPR:e
                 {: RESULT = new MoinsUnaire(e); :}
-        |      
+        |
                 EXPR:g  ET  EXPR:d
                 {: RESULT = new EtLogique(g, d); :}
-        |      
+        |
                 EXPR:g  OU  EXPR:d
                 {: RESULT = new OuLogique(g, d); :}
-        |      
+        |
                 NON EXPR:e
                 {: RESULT = new NonLogique(e); :}
         |
                 CSTE:c
-                {: RESULT = c ; :}
+                {: RESULT = c; :}
         |
                 PAROUV  EXPR:e  PARFER
-                {: RESULT = e ; :}
+                {: RESULT = e; :}
+        |       IDF:e
+                {: RESULT = new Variable(new Entree(e), eleft+1); :}
                 ;
 
-CSTE    ::=     CONSTANTEINT:e 
-                {: RESULT = new ConstanteEntiere(e, eleft+1) ; :}
-        |       CONSTANTEBOOL:e 
-                {: RESULT = new ConstanteBool(e, eleft+1) ; :}
+CSTE    ::=     CONSTANTEINT:e
+                {: RESULT = new ConstanteEntiere(e, eleft+1); :}
+        |       CONSTANTEBOOL:e
+                {: RESULT = new ConstanteBool(e, eleft+1); :}
+                ;
+                
+TCHAINE ::=   CHAINE:e
+                {: ListeChaines.getInstance().add(e);
+                RESULT = e ; :}
                 ;

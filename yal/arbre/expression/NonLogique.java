@@ -53,7 +53,7 @@ public class NonLogique extends Unaire {
 
 
     @Override
-    protected Type getType() {
+    public Type getType() {
 
         return Type.booleen;
     }

@@ -37,7 +37,7 @@ public abstract class BinaireLogique extends Binaire {
     }
 
     @Override
-    protected Type getType() {
+    public Type getType() {
 
         return Type.booleen;
     }
