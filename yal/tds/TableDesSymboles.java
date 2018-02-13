@@ -73,4 +73,10 @@ public class TableDesSymboles {
 
         return Instance;
     }
+
+    // DEBUG
+    public void reset() {
+
+        tds.clear();
+    }
 }

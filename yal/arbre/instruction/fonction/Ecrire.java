@@ -1,8 +1,8 @@
-package yal.arbre.instructions.functions;
+package yal.arbre.instruction.fonction;
 
 import yal.arbre.Type;
 import yal.arbre.expression.Expression;
-import yal.arbre.instructions.Instruction;
+import yal.arbre.instruction.Instruction;
 
 public class Ecrire extends Instruction {
 

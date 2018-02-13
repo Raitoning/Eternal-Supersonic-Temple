@@ -4,7 +4,7 @@ import java.util.*;
 import yal.arbre.* ;
 import yal.arbre.expression.* ;
 import yal.arbre.instruction.*;
-import yal.arbre.instruction.fonctions.*;
+import yal.arbre.instruction.fonction.*;
 import yal.exceptions.AnalyseSyntaxiqueException;
 import yal.tds.*;
 
@@ -130,11 +130,11 @@ LINSTR  ::=     LINSTR:li INSTR:i
 INSTR   ::=     AFF:a
                 {: RESULT = a; :}
         |
-                ECRIRE EXPR:e
+                ECRIRE EXPR:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
                 
         |       
-                ECRIRE TCHAINE:e
+                ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
                 ;
 

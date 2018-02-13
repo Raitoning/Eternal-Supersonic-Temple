@@ -1,6 +1,6 @@
 package yal.arbre;
 
-import yal.arbre.instructions.functions.ListeChaines;
+import yal.arbre.instruction.fonction.ListeChaines;
 import yal.tds.TableDesSymboles;
 import java.util.ArrayList;
 

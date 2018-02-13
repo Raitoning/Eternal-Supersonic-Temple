@@ -1,4 +1,4 @@
-package yal.arbre.instructions.functions;
+package yal.arbre.instruction.fonction;
 
 import java.util.ArrayList;
 
