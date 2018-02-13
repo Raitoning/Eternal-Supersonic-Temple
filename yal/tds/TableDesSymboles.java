@@ -39,6 +39,15 @@ public class TableDesSymboles {
         }
     }
 
+    public Symbole existe(Entree e){
+
+        if(!tds.containsKey(e)) {
+
+            return null;
+        }
+        else return tds.get(e);
+    }
+
     // TODO: Détecter le type d'entrée.
     public int getTailleZoneVariable() {
 

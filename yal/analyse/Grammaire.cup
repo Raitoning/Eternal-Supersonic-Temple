@@ -75,7 +75,7 @@ terminal String     CONSTANTEINT, CONSTANTEBOOL, IDF;
 
 /* Non terminals used in the grammar section.  */
 
-non terminal ArbreAbstrait PROG, LINSTR, INSTR, DECL, AFF;
+non terminal ArbreAbstrait PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF;
 non terminal Expression EXPR, CSTE;
 
 precedence left OU;
@@ -91,35 +91,63 @@ precedence left EGAL;
 
 start with PROG;
 
-PROG    ::=     PROGRAMME IDF DEBUT LINSTR:e FIN
-                {: BlocDInstructions arbre = new BlocDInstructions(eleft+1);
-                    System.out.println(e);
-                   arbre.ajouter(e);
-                   RESULT = arbre; :}
-                ;
-/* TODO: Trouver comment récupérer toute la liste des instructions. */
-LINSTR  ::=     LINSTR:li INSTR:i
-                {: RESULT = i; :}
+PROG    ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(eleft);
+                    arbre.ajouter(d);
+                    arbre.ajouter(e);
+                    RESULT = arbre; :}
         |
-                INSTR:i
-                {: RESULT = i; :}
+                PROGRAMME IDF DEBUT LINSTR:e FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(eleft);
+                    arbre.ajouter(e);
+                    RESULT = arbre; :}
+        |
+                PROGRAMME IDF DEBUT LISDECL:d FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(dleft);
+                    arbre.ajouter(d);
+                    RESULT = arbre; :}
+        |
+                PROGRAMME IDF DEBUT FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(0);
+                    RESULT = arbre; :}
                 ;
 
-INSTR   ::=     DECL:d POINTVIRGULE
-                {: RESULT = d; :}
+/* TODO: Trouver comment récupérer toute la liste des instructions. */
+LINSTR  ::=     LINSTR:li INSTR:i
+                {: BlocDInstructions b = new BlocDInstructions(ileft + 1);
+                    b.ajouter(li);
+                     b.ajouter(i);
+                    RESULT =  b; :}
         |
-                AFF:a POINTVIRGULE
+                INSTR:i
+                {: BlocDInstructions b = new BlocDInstructions(ileft + 1);
+                    b.ajouter(i);
+                    RESULT = b; :}
+                ;
+
+INSTR   ::=     AFF:a
                 {: RESULT = a; :}
                 ;
 
-DECL    ::=     ENTIER IDF:i
-                {: TableDesSymboles.getInstance().ajouter(new Entree(i),
-                new Symbole(TypeTDS.Variable));
-                RESULT = new Declaration(i, ileft+1); :}
+AFF     ::=     IDF:i EGAL EXPR:e POINTVIRGULE
+                {: RESULT = new Affectation(new Entree(i), e, ileft + 1); :}
                 ;
 
-AFF     ::=     IDF:i EGAL EXPR:e
-                {: RESULT = new Affectation(i, e, ileft+1); :}
+DECL    ::=     ENTIER IDF:i POINTVIRGULE
+                {: RESULT = new Declaration(new Entree(i), ileft + 1); :}
+                ;
+
+LISDECL ::=     LISDECL:l DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(l);
+                    b.ajouter(d);
+                    RESULT =  b; :}
+        |
+                DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(d);
+                    RESULT = b;
+                :}
                 ;
 
 EXPR    ::=     EXPR:g  PLUS  EXPR:d

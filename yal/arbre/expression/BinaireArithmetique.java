@@ -37,7 +37,7 @@ public abstract class BinaireArithmetique extends Binaire {
     }
 
     @Override
-    protected Type getType() {
+    public Type getType() {
 
         return Type.entier;
     }

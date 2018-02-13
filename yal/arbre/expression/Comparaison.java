@@ -36,7 +36,7 @@ public abstract class Comparaison extends Binaire {
     }
 
     @Override
-    protected Type getType() {
+    public Type getType() {
 
         return Type.booleen;
     }

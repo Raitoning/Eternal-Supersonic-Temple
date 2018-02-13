@@ -1,5 +1,7 @@
 package yal;
 
+import yal.tds.TableDesSymboles;
+
 import java.io.File;
 
 public class TestYal {
@@ -8,12 +10,14 @@ public class TestYal {
 
     public static void main(String[] args) {
 
-
+        // TableDesSymboles.getInstance().reset();
         TestYal test = new TestYal();
-        test.testFiles("res/Valide/Programme");
+        test.testFiles("res");
     }
 
     public void testFiles(String path) {
+
+        // TableDesSymboles.getInstance().reset();
 
         String[] arg = new String[1];
 
@@ -27,6 +31,7 @@ public class TestYal {
 
                 arg[0] = folder.getPath() + "/" + listOfFiles[i].getName();
 
+                System.out.println(arg[0]);
                 Yal.main(arg);
 
                 try {

@@ -13,4 +13,18 @@ public class Entree {
 
         return this.nom;
     }
+
+    @Override
+    public boolean equals(Object obj){
+
+        Entree toTest = (Entree) obj;
+
+        return nom.equals(toTest.getNom());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return nom.hashCode();
+    }
 }

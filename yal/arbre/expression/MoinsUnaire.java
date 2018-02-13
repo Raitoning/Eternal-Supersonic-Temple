@@ -53,7 +53,7 @@ public class MoinsUnaire extends Unaire {
     }
 
     @Override
-    protected Type getType() {
+    public Type getType() {
 
         return Type.entier;
     }

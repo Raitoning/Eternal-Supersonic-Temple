@@ -16,7 +16,7 @@ public class ConstanteBool extends Constante {
     }
 
     @Override
-    protected Type getType() {
+    public Type getType() {
 
         return Type.booleen;
     }
