@@ -1,5 +1,6 @@
 package yal;
 
+import yal.arbre.instruction.fonction.ListeChaines;
 import yal.tds.TableDesSymboles;
 
 import java.io.File;
@@ -11,6 +12,7 @@ public class TestYal {
     public static void main(String[] args) {
 
         TableDesSymboles.getInstance().reset();
+        ListeChaines.getInstance().reset();
         TestYal test = new TestYal();
         test.testFiles("res");
     }
@@ -18,6 +20,7 @@ public class TestYal {
     public void testFiles(String path) {
 
         TableDesSymboles.getInstance().reset();
+        ListeChaines.getInstance().reset();
 
         String[] arg = new String[1];
 
@@ -33,6 +36,7 @@ public class TestYal {
 
                 System.out.println(arg[0]);
                 TableDesSymboles.getInstance().reset();
+                ListeChaines.getInstance().reset();
                 Yal.main(arg);
 
                 try {

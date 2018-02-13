@@ -13,10 +13,14 @@ import java.util.ArrayList;
 public class BlocDInstructions extends ArbreAbstrait {
 
     protected ArrayList<ArbreAbstrait> expr ;
-
+    private boolean first = false;
     public BlocDInstructions(int n) {
-
         super(n) ;
+        expr = new ArrayList<ArbreAbstrait>();
+    }
+    public BlocDInstructions(int n, boolean b) {
+        super(n) ;
+        first = b;
         expr = new ArrayList<ArbreAbstrait>();
     }
 
@@ -26,12 +30,12 @@ public class BlocDInstructions extends ArbreAbstrait {
     }
 
     public String toMIPS() {
-
+        //System.out.println(noLigne );
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         StringBuilder stringBuilder = new StringBuilder();
       
-        if(noLigne == 1) {
+        if(first) {
 
             stringBuilder.append(".data\n");
             stringBuilder.append("\tmsgDivZero:\t.asciiz \"Erreur division " +
@@ -57,7 +61,7 @@ public class BlocDInstructions extends ArbreAbstrait {
         }
 
 
-        if(noLigne == 1) {
+        if(first) {
         stringBuilder.append("\nend:\n\n");
         stringBuilder.append("\tmove $v1, $v0\t# copie de v0 dans v1 pour " +
                 "permettre les tests\n");

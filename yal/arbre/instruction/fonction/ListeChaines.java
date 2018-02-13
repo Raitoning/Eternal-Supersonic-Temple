@@ -35,4 +35,9 @@ public class ListeChaines {
     public int position(String s){
         return stringList.indexOf(s);
     }
+
+    // DEBUG
+    public void reset() {
+        stringList.clear();
+    }
 }

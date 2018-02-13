@@ -19,7 +19,8 @@ public class Ecrire extends Instruction {
 
     @Override
     public void verifier() {
-
+        if (!containsString)
+            expression.verifier();
     }
 
     public Ecrire(int no, Expression expr){
@@ -55,12 +56,14 @@ public class Ecrire extends Instruction {
 
         } else {
             stringBuilder.append(expression.toMIPS());
+            stringBuilder.append("\taddi $sp, $sp, 4\n");
+            stringBuilder.append("\tlw $v0, ($sp)\n");
             stringBuilder.append("\n");
             if (expression.getType() == Type.entier)
                 stringBuilder.append("\tjal printEntier\t# Affichage\n");
             if (expression.getType() == Type.booleen)
                 stringBuilder.append("\tjal printBool\t# Affichage\n");
-            stringBuilder.append("s\n\n");
+            stringBuilder.append("\n\n");
         }
         return stringBuilder.toString();
     }

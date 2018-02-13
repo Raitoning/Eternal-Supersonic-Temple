@@ -95,23 +95,23 @@ precedence left EGAL;
 start with PROG;
 
 PROG    ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
-                {: BlocDInstructions arbre = new BlocDInstructions(eleft);
+                {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
                     arbre.ajouter(d);
-                    arbre.ajouter(e);
-                    RESULT = arbre; :}
-        |
-                PROGRAMME IDF DEBUT LINSTR:e FIN
-                {: BlocDInstructions arbre = new BlocDInstructions(eleft);
                     arbre.ajouter(e);
                     RESULT = arbre; :}
         |
                 PROGRAMME IDF DEBUT LISDECL:d FIN
-                {: BlocDInstructions arbre = new BlocDInstructions(dleft);
+                {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
                     arbre.ajouter(d);
                     RESULT = arbre; :}
         |
+                PROGRAMME IDF DEBUT LINSTR:e FIN
+                {: BlocDInstructions arbre = new BlocDInstructions(eleft, true);
+                    arbre.ajouter(e);
+                    RESULT = arbre; :}
+        |
                 PROGRAMME IDF DEBUT FIN
-                {: BlocDInstructions arbre = new BlocDInstructions(0);
+                {: BlocDInstructions arbre = new BlocDInstructions(0, true);
                     RESULT = arbre; :}
                 ;
 
@@ -200,6 +200,8 @@ EXPR    ::=     EXPR:g  PLUS  EXPR:d
         |
                 PAROUV  EXPR:e  PARFER
                 {: RESULT = e; :}
+        |       IDF:e
+                {: RESULT = new Variable(new Entree(e), eleft+1); :}
                 ;
 
 CSTE    ::=     CONSTANTEINT:e

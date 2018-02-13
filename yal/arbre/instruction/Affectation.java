@@ -43,7 +43,7 @@ public class Affectation extends Instruction {
         sb.append(valeur.toMIPS());
         sb.append("\n");
         sb.append("#Affectation\n");
-        sb.append("\taddi $sp, $sp 4\t# Mult\n");
+        sb.append("\taddi $sp, $sp 4\n");
         sb.append("\tlw $v0, ($sp)\n");
         sb.append("\tsw $v0, " + tds.identifier(nom).getAdr() * 4 + "($s7)\n");
         sb.append("\taddi $sp, $sp, -4\n");
