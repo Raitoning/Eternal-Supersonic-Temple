@@ -73,6 +73,7 @@ espace = {finDeLigne}  | [ \t\f]
 "ou"                	    { return symbol(CodesLexicaux.OU); }
 "non"                	    { return symbol(CodesLexicaux.NON); }
 "ecrire"                    { return symbol(CodesLexicaux.ECRIRE); }
+"lire"                      { return symbol(CodesLexicaux.LIRE); }
 "debut"                     { return symbol(CodesLexicaux.DEBUT); }
 "fin"                       { return symbol(CodesLexicaux.FIN); }
 
