@@ -71,13 +71,13 @@ parser code {:
 /* Terminals (tokens returned by the scanner).  */
 
 terminal Symbol     ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
-terminal Symbol     SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
+terminal Symbol     SI, FSI, ALORS, SINON, SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
 terminal Symbol     POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
 terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
 
 /* Non terminals used in the grammar section.  */
 
-non terminal ArbreAbstrait PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF;
+non terminal ArbreAbstrait CONDITION, PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF;
 non terminal Expression EXPR, CSTE ;
 non terminal String TCHAINE;
 
@@ -118,7 +118,7 @@ PROG    ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
 LINSTR  ::=     LINSTR:li INSTR:i
                 {: BlocDInstructions b = new BlocDInstructions(ileft + 1);
                     b.ajouter(li);
-                     b.ajouter(i);
+                    b.ajouter(i);
                     RESULT =  b; :}
         |
                 INSTR:i
@@ -137,10 +137,23 @@ INSTR   ::=     AFF:a
                 ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
                 ;
+        |       CONDITION:c
+                {:
+                RESULT = c;
+                :}
 
 AFF     ::=     IDF:i EGAL EXPR:e POINTVIRGULE
                 {: RESULT = new Affectation(new Entree(i), e, ileft + 1); :}
                 ;
+
+CONDITION ::=   SI EXP:e ALORS LINSTR:li SINON LINSTR:le FSI
+                {:
+                RESULT = new Conditionnel(lileft+1,e,li,le);
+                :}
+                | SI EXP:e ALORS LINSTR:li FSI
+                {:
+                RESULT = new Conditionel(lileft+1,e,li);
+                :}
 
 DECL    ::=     ENTIER IDF:i POINTVIRGULE
                 {: RESULT = new Declaration(new Entree(i), ileft + 1); :}
