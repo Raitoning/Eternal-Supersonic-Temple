@@ -78,6 +78,10 @@ espace = {finDeLigne}  | [ \t\f]
 
 "entier"                    { return symbol(CodesLexicaux.ENTIER); }
 
+"tantque"                   { return symbol(CodesLexicaux.TANTQUE); }
+"repeter"                   { return symbol(CodesLexicaux.REPETER); }
+"fintantque"                { return symbol(CodesLexicaux.FINTANTQUE); }
+
 {csteE}      	            { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
 {csteB}      	            { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }
 {chain}                     { return symbol(CodesLexicaux.CHAINE, yytext()); }
