@@ -58,6 +58,9 @@ espace = {finDeLigne}  | [ \t\f]
 "et"                        { return symbol(CodesLexicaux.ET); }
 "ou"                        { return symbol(CodesLexicaux.OU); }
 "non"                       { return symbol(CodesLexicaux.NON); }
+"si"                        { return symbol(CodesLexicaux.SI); }
+"alors"                     { return symbol(CodesLexicaux.ALORS);}
+"sinon"                     { return symbol(CodesLexicaux.SINON);}
 
 "("                         { return symbol(CodesLexicaux.PAROUV); }
 ")"                         { return symbol(CodesLexicaux.PARFER); }
@@ -69,9 +72,6 @@ espace = {finDeLigne}  | [ \t\f]
 
 "programme"                 { return symbol(CodesLexicaux.PROGRAMME); }
 
-"et"                	    { return symbol(CodesLexicaux.ET); }
-"ou"                	    { return symbol(CodesLexicaux.OU); }
-"non"                	    { return symbol(CodesLexicaux.NON); }
 "ecrire"                    { return symbol(CodesLexicaux.ECRIRE); }
 "debut"                     { return symbol(CodesLexicaux.DEBUT); }
 "fin"                       { return symbol(CodesLexicaux.FIN); }

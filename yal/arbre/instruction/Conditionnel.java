@@ -32,7 +32,23 @@ public class Conditionnel extends Instruction{
     @Override
     public String toMIPS() {
 
-        //TODO
-        return null;
+        StringBuilder sb = new StringBuilder();
+        nbSi++;
+        sb.append("\t#debut condition");
+        sb.append(cond.toMIPS());
+        sb.append("\taddi $sp, $sp 4\n");
+        sb.append("\tlw $v0, ($sp)\n");
+        sb.append("\t#test condition");
+        sb.append("\tbeq $v0,$zero,condition"+nbSi+"Else\n");
+        sb.append(si.toMIPS());
+        sb.append("\t j condition"+nbSi+"\n");
+        sb.append("\t#else");
+        sb.append("condition"+nbSi+"Else:\n");
+        if(non != null) {
+            sb.append(non.toMIPS());
+        }
+        sb.append("condition"+nbSi+"\n");
+        sb.append("\t#fin condition");
+        return sb.toString();
     }
 }

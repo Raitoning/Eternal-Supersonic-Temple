@@ -136,24 +136,25 @@ INSTR   ::=     AFF:a
         |       
                 ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
-                ;
         |       CONDITION:c
                 {:
                 RESULT = c;
                 :}
+                ;
 
 AFF     ::=     IDF:i EGAL EXPR:e POINTVIRGULE
                 {: RESULT = new Affectation(new Entree(i), e, ileft + 1); :}
                 ;
 
-CONDITION ::=   SI EXP:e ALORS LINSTR:li SINON LINSTR:le FSI
+CONDITION ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
                 {:
                 RESULT = new Conditionnel(lileft+1,e,li,le);
                 :}
-                | SI EXP:e ALORS LINSTR:li FSI
+                | SI EXPR:e ALORS LINSTR:li FSI
                 {:
                 RESULT = new Conditionel(lileft+1,e,li);
                 :}
+                ;
 
 DECL    ::=     ENTIER IDF:i POINTVIRGULE
                 {: RESULT = new Declaration(new Entree(i), ileft + 1); :}
