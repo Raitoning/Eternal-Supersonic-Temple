@@ -141,7 +141,7 @@ INSTR   ::=     AFF:a
                 ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
         |
-                BOUCLE:b POINTVIRGULE
+                BOUCLE:b
                 {: RESULT = b; :}
                 ;
 
@@ -214,7 +214,8 @@ EXPR    ::=     EXPR:g  PLUS  EXPR:d
         |
                 PAROUV  EXPR:e  PARFER
                 {: RESULT = e; :}
-        |       IDF:e
+        |
+                IDF:e
                 {: RESULT = new Variable(new Entree(e), eleft+1); :}
                 ;
 

@@ -6,6 +6,7 @@ public abstract class ArbreAbstrait {
     protected int noLigne ;
     /* Nombre de comparaison pour les nom d'étiquettes */
     static protected int nbComp = 0;
+    static protected int nbBoucle = 0;
 
     protected ArbreAbstrait(int no) {
 

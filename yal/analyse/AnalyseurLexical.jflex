@@ -69,9 +69,6 @@ espace = {finDeLigne}  | [ \t\f]
 
 "programme"                 { return symbol(CodesLexicaux.PROGRAMME); }
 
-"et"                	    { return symbol(CodesLexicaux.ET); }
-"ou"                	    { return symbol(CodesLexicaux.OU); }
-"non"                	    { return symbol(CodesLexicaux.NON); }
 "ecrire"                    { return symbol(CodesLexicaux.ECRIRE); }
 "debut"                     { return symbol(CodesLexicaux.DEBUT); }
 "fin"                       { return symbol(CodesLexicaux.FIN); }
