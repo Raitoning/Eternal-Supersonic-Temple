@@ -12,6 +12,7 @@ public class Conditionnel extends Instruction{
     Expression cond;
 
     public Conditionnel(int no, Expression pcondition, ArbreAbstrait psi, ArbreAbstrait pnon){
+
         super(no);
         si = psi;
         non = pnon;
@@ -20,12 +21,19 @@ public class Conditionnel extends Instruction{
 
     @Override
     public void verifier() {
+
         if(cond.getType() != Type.booleen){
+
             throw new AnalyseSemantiqueException(noLigne,"Le type de l'expression d'une condition doit etre : Boolean");
         }
         cond.verifier();
         si.verifier();
-        non.verifier();
+
+        if(non != null) {
+
+            non.verifier();
+        }
+
 
     }
 
@@ -33,22 +41,27 @@ public class Conditionnel extends Instruction{
     public String toMIPS() {
 
         StringBuilder sb = new StringBuilder();
+
+        int numSi = nbSi;
         nbSi++;
-        sb.append("\t#debut condition");
+
+        sb.append("\t#debut condition\n");
         sb.append(cond.toMIPS());
         sb.append("\taddi $sp, $sp 4\n");
         sb.append("\tlw $v0, ($sp)\n");
-        sb.append("\t#test condition");
-        sb.append("\tbeq $v0,$zero,condition"+nbSi+"Else\n");
+        sb.append("\t#test condition\n");
+        sb.append("\tbeq $v0,$zero,condition" + numSi + "Else\n");
         sb.append(si.toMIPS());
-        sb.append("\t j condition"+nbSi+"\n");
-        sb.append("\t#else");
-        sb.append("condition"+nbSi+"Else:\n");
+        sb.append("\t j condition" + numSi + "\n");
+        sb.append("\t#else\n");
+        sb.append("condition" + numSi + "Else:\n");
+
         if(non != null) {
+
             sb.append(non.toMIPS());
         }
-        sb.append("condition"+nbSi+"\n");
-        sb.append("\t#fin condition");
+        sb.append("condition" + numSi + ":\n");
+        sb.append("\t#fin condition\n");
         return sb.toString();
     }
 }

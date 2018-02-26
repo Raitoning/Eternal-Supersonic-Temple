@@ -61,6 +61,7 @@ espace = {finDeLigne}  | [ \t\f]
 "si"                        { return symbol(CodesLexicaux.SI); }
 "alors"                     { return symbol(CodesLexicaux.ALORS);}
 "sinon"                     { return symbol(CodesLexicaux.SINON);}
+"fsi"                       { return symbol(CodesLexicaux.FSI); }
 
 "("                         { return symbol(CodesLexicaux.PAROUV); }
 ")"                         { return symbol(CodesLexicaux.PARFER); }
