@@ -50,7 +50,6 @@ public class TableDesSymboles {
         else return tds.get(e);
     }
 
-    // TODO: Détecter le type d'entrée.
     public int getTailleZoneVariable() {
 
         int res = 0;
