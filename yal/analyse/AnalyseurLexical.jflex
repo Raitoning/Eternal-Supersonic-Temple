@@ -69,15 +69,16 @@ espace = {finDeLigne}  | [ \t\f]
 
 "programme"                 { return symbol(CodesLexicaux.PROGRAMME); }
 
-"et"                	    { return symbol(CodesLexicaux.ET); }
-"ou"                	    { return symbol(CodesLexicaux.OU); }
-"non"                	    { return symbol(CodesLexicaux.NON); }
 "ecrire"                    { return symbol(CodesLexicaux.ECRIRE); }
 "lire"                      { return symbol(CodesLexicaux.LIRE); }
 "debut"                     { return symbol(CodesLexicaux.DEBUT); }
 "fin"                       { return symbol(CodesLexicaux.FIN); }
 
 "entier"                    { return symbol(CodesLexicaux.ENTIER); }
+
+"tantque"                   { return symbol(CodesLexicaux.TANTQUE); }
+"repeter"                   { return symbol(CodesLexicaux.REPETER); }
+"fintantque"                { return symbol(CodesLexicaux.FINTANTQUE); }
 
 {csteE}      	            { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
 {csteB}      	            { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }
