@@ -70,6 +70,7 @@ espace = {finDeLigne}  | [ \t\f]
 "programme"                 { return symbol(CodesLexicaux.PROGRAMME); }
 
 "ecrire"                    { return symbol(CodesLexicaux.ECRIRE); }
+"lire"                      { return symbol(CodesLexicaux.LIRE); }
 "debut"                     { return symbol(CodesLexicaux.DEBUT); }
 "fin"                       { return symbol(CodesLexicaux.FIN); }
 

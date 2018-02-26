@@ -73,7 +73,7 @@ parser code {:
 
 /* Terminals (tokens returned by the scanner).  */
 
-terminal Symbol     ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
+terminal Symbol     LIRE, ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
 terminal Symbol     SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
 terminal Symbol     POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
 terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
@@ -140,6 +140,9 @@ INSTR   ::=     AFF:a
         |       
                 ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
+        |
+                LIRE IDF:i POINTVIRGULE
+                {: RESULT = new Lire(new Entree(i), ileft+1); :}
         |
                 BOUCLE:b
                 {: RESULT = b; :}
