@@ -58,6 +58,10 @@ espace = {finDeLigne}  | [ \t\f]
 "et"                        { return symbol(CodesLexicaux.ET); }
 "ou"                        { return symbol(CodesLexicaux.OU); }
 "non"                       { return symbol(CodesLexicaux.NON); }
+"si"                        { return symbol(CodesLexicaux.SI); }
+"alors"                     { return symbol(CodesLexicaux.ALORS);}
+"sinon"                     { return symbol(CodesLexicaux.SINON);}
+"fsi"                       { return symbol(CodesLexicaux.FSI); }
 
 "("                         { return symbol(CodesLexicaux.PAROUV); }
 ")"                         { return symbol(CodesLexicaux.PARFER); }
