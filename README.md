@@ -2,6 +2,9 @@
 
 Yal est un langage de programmation fonctionnel simple écrit par des étudiants.  
 Il permet de faire des opérations arithmétiques et booléennes simples tels que des additions ou de vérifier le résultat d'une opération.  
+Il peux également effectuer des conditions Si, des boucles TantQue, lire et écrire des valeurs depuis et vers la sortie standard, ainsi que déclarer des variables de type entière.  
+
+Le langage supporte également les commentaires qui sont précédés d'un double slash _//_.  
 
 La syntaxe du langage variera et s'enrichira en fonction de l'avancement du projet.  
 
@@ -22,7 +25,13 @@ Pour coder en Yal, presque aucune connaissance en informatique n'est néccéssai
 En effet, il suffit simplement d'écrire une opération mathématique ou booléenne et le langage l'effectue pour vous.  
 
 # Structure du code
-Pour le moment, il n'y à aucune structure. Ecrivez simplement votre opération comme si vous l'écriviez sur une feuille de papier.  
+La structure du code es très simple et facile à apprendre. Il suffit d'entourer votre programme des balises suivantes: 
+
+programme _NomDuProgramme_ debut
+
+// Programme
+
+fin
 
 _Exemples:_
 * 1 + 1
