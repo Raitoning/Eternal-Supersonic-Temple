@@ -23,11 +23,17 @@ public class DeclarationFonction extends Instruction{
     @Override
     public void verifier() {
 
-
+        instructions.verifier();
     }
 
+    // TODO: Ajouter création pile fonction.
     @Override
     public String toMIPS() {
-        return null;
+
+        ArbreAbstrait.functionBuilder.append(nom.getNom() + ":\n\n");
+        ArbreAbstrait.functionBuilder.append(instructions.toMIPS());
+        ArbreAbstrait.functionBuilder.append("\n");
+
+        return "";
     }
 }
