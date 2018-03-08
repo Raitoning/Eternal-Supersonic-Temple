@@ -85,6 +85,7 @@ espace = {finDeLigne}  | [ \t\f]
 "fintantque"                { return symbol(CodesLexicaux.FINTANTQUE); }
 
 "fonction"                  { return symbol(CodesLexicaux.FONCTION); }
+"retourne"                  { return symbol(CodesLexicaux.RETOURNE); }
 
 {csteE}                     { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
 {csteB}                     { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }

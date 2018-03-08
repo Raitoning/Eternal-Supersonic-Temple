@@ -76,14 +76,14 @@ parser code {:
 terminal Symbol     LIRE, ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
 terminal Symbol     SI, FSI, ALORS, SINON, SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
 terminal Symbol     POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
-terminal Symbol     TANTQUE, REPETER, FINTANTQUE, FONCTION;
+terminal Symbol     TANTQUE, REPETER, FINTANTQUE, FONCTION, RETOURNE;
 
 terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
 
 /* Non terminals used in the grammar section.  */
 
-non terminal ArbreAbstrait CONDITION, PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF, BOUCLE, DECL_FONCTION, PARAMETRES;
-non terminal Expression EXPR, CSTE ;
+non terminal ArbreAbstrait CONDITION, PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF, BOUCLE, DECL_FONCTION, PARAMETRES, TRETOURNE;
+non terminal Expression EXPR, CSTE;
 non terminal String TCHAINE;
 
 precedence left OU;
@@ -192,8 +192,12 @@ LISDECL         ::=     LISDECL:l DECL:d
                 :}
                 ;
 // TODO: Trouver le numéro de bloc.
-DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l FIN
+DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l TRETOURNE FIN
                 {: RESULT = new DeclarationFonction(ileft + 1, new Entree(i), 0, l); :}
+                ;
+
+TRETOURNE        ::= RETOURNE EXPR:e
+                {: RESULT = e; :}
                 ;
 
 PARAMETRES      ::=   PAROUV PARFER;
