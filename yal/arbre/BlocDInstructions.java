@@ -37,7 +37,7 @@ public class BlocDInstructions extends ArbreAbstrait {
         if(first) {
 
             stringBuilder.append(".data\n");
-            stringBuilder.append("\tmsgDivZero:\t.asciiz \"Erreur division " +
+            stringBuilder.append("\tmsgDivZero:\t.asciiz \"ERREUR EXECUTION : division " +
                     "par zero\"\n\n");
             stringBuilder.append("\tmsgTrue:\t.asciiz \"vrai\"\n\n");
             stringBuilder.append("\tmsgFalse:\t.asciiz \"faux\"\n\n");
