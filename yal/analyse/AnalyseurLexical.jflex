@@ -36,7 +36,7 @@ idf = [a-zA-Z][a-zA-Z0-9]*
 
 csteE = [0-9]+
 csteB = "vrai" | "faux"
-chain = [\"].*[\"]
+chain = [\"][^\"]*[\"]
 
 finDeLigne = \r|\n
 espace = {finDeLigne}  | [ \t\f]
