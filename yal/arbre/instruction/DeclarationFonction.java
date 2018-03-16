@@ -40,28 +40,21 @@ public class DeclarationFonction extends Instruction{
     public String toMIPS() {
 
         ArbreAbstrait.functionBuilder.append(nom.getNom() + ":\n\n");
+        ArbreAbstrait.functionBuilder.append("\tsw $ra, ($sp)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4 \n");
-        ArbreAbstrait.functionBuilder.append("\t");
-        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4 \n");
-        ArbreAbstrait.functionBuilder.append("\t");
+        ArbreAbstrait.functionBuilder.append("\tsw $s7, $sp\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
+        ArbreAbstrait.functionBuilder.append("\tli $v0,"+numBloc+"\n");
+        ArbreAbstrait.functionBuilder.append("\tsw $v0, $sp\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
+
+        //TODO : compléter entrée
+
         ArbreAbstrait.functionBuilder.append(instructions.toMIPS()+"\n");
-        ArbreAbstrait.functionBuilder.append(+"\n");
-
-
-/*
-        stringBuilder.append("\taddi $sp, $sp 4\t# Plus\n");
-        stringBuilder.append("\tlw $v0, ($sp)\n");
-        stringBuilder.append("\taddi $sp, $sp 4\n");
-        stringBuilder.append("\tlw $t8, ($sp)\n");
-        stringBuilder.append("\tadd $v0, $v0, $t8\n");
-        stringBuilder.append("\tsw $v0, ($sp)\n");
-        stringBuilder.append("\taddi $sp, $sp, -4\n");*/
-
-
-
+        ArbreAbstrait.functionBuilder.append("\n");
 
         //chainage
-        ArbreAbstrait.functionBuilder.append();//adr retour
+        //ArbreAbstrait.functionBuilder.append();//adr retour
         ArbreAbstrait.functionBuilder.append(exp.toMIPS()+"\n");
         //jump retour
         ArbreAbstrait.functionBuilder.append("\n");
