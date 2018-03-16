@@ -191,13 +191,14 @@ LISDECL         ::=     LISDECL:l DECL:d
                     RESULT = b;
                 :}
                 ;
+                
 // TODO: Trouver le numéro de bloc.
 DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l TRETOURNE FIN
                 {: RESULT = new DeclarationFonction(ileft + 1, new EntreeVariable(i), 0, l); :}
                 ;
 
-TRETOURNE        ::= RETOURNE EXPR:e
-                {: RESULT = e; :}
+DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e FIN
+                {: RESULT = new DeclarationFonction(ileft + 1, new Entree(i), l, e); :}
                 ;
 
 PARAMETRES      ::=   PAROUV PARFER;

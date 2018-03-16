@@ -9,6 +9,7 @@ public abstract class ArbreAbstrait {
     static protected int nbSi = 0;
     static protected int nbBoucle = 0;
     static protected StringBuilder functionBuilder = new StringBuilder();
+    static protected int compteurBloc = 0;
 
     protected ArbreAbstrait(int no) {
 
