@@ -1,8 +1,8 @@
 package yal.tds;
 
-public class Entree {
+public abstract class Entree {
 
-    private String nom;
+    protected String nom;
 
     public Entree (String nom) {
 
@@ -15,12 +15,7 @@ public class Entree {
     }
 
     @Override
-    public boolean equals(Object obj){
-
-        Entree toTest = (Entree) obj;
-
-        return nom.equals(toTest.getNom());
-    }
+    public abstract boolean equals(Object obj);
 
     @Override
     public int hashCode() {
