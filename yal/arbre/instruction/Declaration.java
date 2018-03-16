@@ -21,13 +21,14 @@ public class Declaration extends Instruction{
 
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
-        if(tds.existe(nom) != null){
+        if(tds.existe(nom)){
+
             throw new AnalyseSemantiqueException(noLigne,"Erreur: double " +
                     "déclaration");
+        } else {
+
+            tds.ajouter(nom,new Symbole(TypeTDS.Variable,tds.getTailleZoneVariable()+1));
         }
-
-        tds.ajouter(nom,new Symbole(TypeTDS.Variable,tds.getTailleZoneVariable()+1));
-
     }
 
     @Override
