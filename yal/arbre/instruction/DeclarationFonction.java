@@ -35,7 +35,6 @@ public class DeclarationFonction extends Instruction{
 
     }
 
-    // TODO: Ajouter création pile fonction.
     @Override
     public String toMIPS() {
 
@@ -47,16 +46,22 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\tli $v0,"+numBloc+"\n");
         ArbreAbstrait.functionBuilder.append("\tsw $v0, $sp\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
-
-        //TODO : compléter entrée
+        ArbreAbstrait.functionBuilder.append("\tmove $s7,$sp\n");
+        ArbreAbstrait.functionBuilder.append("\tmove $s7, -4($sp)\n\n");
 
         ArbreAbstrait.functionBuilder.append(instructions.toMIPS()+"\n");
+        ArbreAbstrait.functionBuilder.append(exp.toMIPS()+"\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp 4\n");
+        ArbreAbstrait.functionBuilder.append("\tlw $v0, ($sp)\n");
+        ArbreAbstrait.functionBuilder.append("\tsw $v0, $s7 -4\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp -4\n");
         ArbreAbstrait.functionBuilder.append("\n");
 
-        //chainage
-        //ArbreAbstrait.functionBuilder.append();//adr retour
-        ArbreAbstrait.functionBuilder.append(exp.toMIPS()+"\n");
-        //jump retour
+        ArbreAbstrait.functionBuilder.append("\tlw $sp, 12($s7)\n");
+        ArbreAbstrait.functionBuilder.append("\tlw $s7, 8($s7)\n");
+        ArbreAbstrait.functionBuilder.append("\tlw $ra, ($sp)\n");
+        ArbreAbstrait.functionBuilder.append("\tjr $ra\n");
+
         ArbreAbstrait.functionBuilder.append("\n");
 
         return "";
