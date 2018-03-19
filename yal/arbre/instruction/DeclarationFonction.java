@@ -3,7 +3,8 @@ package yal.arbre.instruction;
 import yal.arbre.ArbreAbstrait;
 import yal.arbre.BlocDInstructions;
 import yal.arbre.expression.Expression;
-import yal.tds.Entree;
+import yal.exceptions.DoubleDeclarationException;
+import yal.tds.*;
 
 public class DeclarationFonction extends Instruction{
 
@@ -25,10 +26,16 @@ public class DeclarationFonction extends Instruction{
     @Override
     public void verifier() {
 
+        if(TableDesSymboles.getInstance().existe(nom)) {
+
+            throw new DoubleDeclarationException(nom.getNom());
+        } else {
+
+            TableDesSymboles.getInstance().ajouter(new EntreeFonction(nom
+                    .getNom()), new Symbole(TypeTDS.Fonction, 0));
+        }
         instructions.verifier();
         exp.verifier();
-
-
 
         //TODO stocker dans TDS
         //TODO verifier nom fonction
@@ -45,8 +52,7 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4 \n");
         ArbreAbstrait.functionBuilder.append("\t");
         ArbreAbstrait.functionBuilder.append(instructions.toMIPS()+"\n");
-        ArbreAbstrait.functionBuilder.append(+"\n");
-
+        ArbreAbstrait.functionBuilder.append("\n");
 
 /*
         stringBuilder.append("\taddi $sp, $sp 4\t# Plus\n");
@@ -61,7 +67,7 @@ public class DeclarationFonction extends Instruction{
 
 
         //chainage
-        ArbreAbstrait.functionBuilder.append();//adr retour
+        ArbreAbstrait.functionBuilder.append("");//adr retour
         ArbreAbstrait.functionBuilder.append(exp.toMIPS()+"\n");
         //jump retour
         ArbreAbstrait.functionBuilder.append("\n");

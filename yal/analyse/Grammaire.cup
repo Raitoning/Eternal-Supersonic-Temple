@@ -137,8 +137,8 @@ INSTR           ::=     AFF:a
         |
                 ECRIRE EXPR:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
-                
-        |       
+
+        |
                 ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
         |
@@ -191,14 +191,13 @@ LISDECL         ::=     LISDECL:l DECL:d
                     RESULT = b;
                 :}
                 ;
-                
-// TODO: Trouver le numéro de bloc.
-DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l TRETOURNE FIN
-                {: RESULT = new DeclarationFonction(ileft + 1, new EntreeVariable(i), 0, l); :}
-                ;
 
-DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e FIN
-                {: RESULT = new DeclarationFonction(ileft + 1, new Entree(i), l, e); :}
+// TODO: Trouver le numéro de bloc.
+
+DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e
+                    POINTVIRGULE FIN
+                {: RESULT = new DeclarationFonction(ileft + 1,
+                new EntreeFonction(i), l, e); :}
                 ;
 
 PARAMETRES      ::=   PAROUV PARFER;
@@ -254,7 +253,7 @@ CSTE        ::=     CONSTANTEINT:e
         |       CONSTANTEBOOL:e
                 {: RESULT = new ConstanteBool(e, eleft+1); :}
                 ;
-                
+
 TCHAINE     ::=   CHAINE:e
                 {: ListeChaines.getInstance().add(e);
                 RESULT = e ; :}
