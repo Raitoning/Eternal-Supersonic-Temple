@@ -82,7 +82,7 @@ terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
 
 /* Non terminals used in the grammar section.  */
 
-non terminal ArbreAbstrait CONDITION, PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF, BOUCLE, DECL_FONCTION, PARAMETRES, TRETOURNE;
+non terminal ArbreAbstrait CONDITION, PROG, LINSTR, INSTR, LISDECL, LISDECLF, DECL, LAFF, AFF, BOUCLE, DECL_FONCTION, PARAMETRES, TRETOURNE;
 non terminal Expression EXPR, CSTE;
 non terminal String TCHAINE;
 
@@ -99,13 +99,13 @@ precedence left EGAL;
 
 start with PROG;
 
-PROG            ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
+PROG            ::=     PROGRAMME IDF DEBUT LISDECLF:d LINSTR:e FIN
                 {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
                     arbre.ajouter(d);
                     arbre.ajouter(e);
                     RESULT = arbre; :}
         |
-                PROGRAMME IDF DEBUT LISDECL:d FIN
+                PROGRAMME IDF DEBUT LISDECLF:d FIN
                 {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
                     arbre.ajouter(d);
                     RESULT = arbre; :}
@@ -179,6 +179,32 @@ DECL            ::=     ENTIER IDF:i POINTVIRGULE
                 {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1); :}
                 ;
 
+
+LISDECLF        ::= LISDECLF:l DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(l);
+                    b.ajouter(d);
+                    RESULT =  b;
+                :}
+        |       LISDECLF:l DECL_FONCTION:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(l);
+                    b.ajouter(d);
+                    RESULT =  b;
+                :}
+        |       DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                   b.ajouter(d);
+                   RESULT = b;
+                :}
+        |       DECL_FONCTION:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                   b.ajouter(d);
+                   RESULT = b;
+                :}
+                ;
+
+
 LISDECL         ::=     LISDECL:l DECL:d
                 {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
                     b.ajouter(l);
@@ -192,12 +218,8 @@ LISDECL         ::=     LISDECL:l DECL:d
                 :}
                 ;
 
-// TODO: Trouver le numéro de bloc.
-
-DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e
-                    POINTVIRGULE FIN
-                {: RESULT = new DeclarationFonction(ileft + 1,
-                new EntreeFonction(i), l, e); :}
+DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e POINTVIRGULE FIN
+                {: RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i), l, e); :}
                 ;
 
 PARAMETRES      ::=   PAROUV PARFER;

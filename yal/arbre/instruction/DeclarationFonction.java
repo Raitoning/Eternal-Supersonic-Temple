@@ -8,12 +8,13 @@ import yal.tds.*;
 
 public class DeclarationFonction extends Instruction{
 
-    private Entree nom;
+    private EntreeFonction nom;
     private ArbreAbstrait exp;
     private ArbreAbstrait instructions;
     private int numBloc;
 
-    public DeclarationFonction(int no, Entree n, ArbreAbstrait instr, ArbreAbstrait retour) {
+    public DeclarationFonction(int no, EntreeFonction n, ArbreAbstrait instr,
+                               ArbreAbstrait retour) {
 
         super(no);
         exp = retour;
