@@ -35,8 +35,11 @@ public class DeclarationFonction extends Instruction{
             TableDesSymboles.getInstance().ajouter(new EntreeFonction(nom
                     .getNom()), new Symbole(TypeTDS.Fonction, 0));
         }
-        if(instructions != null)
-            instructions.verifier();
+
+        if(instructions != null) {
+
+            instructionsFonctions.add(instructions);
+        }
         exp.verifier();
     }
 

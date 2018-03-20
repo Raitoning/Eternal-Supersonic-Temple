@@ -1,5 +1,9 @@
 package yal.arbre;
 
+import yal.arbre.instruction.Instruction;
+
+import java.util.ArrayList;
+
 public abstract class ArbreAbstrait {
 
     /* numéro de ligne du début de l'instruction */
@@ -10,6 +14,8 @@ public abstract class ArbreAbstrait {
     static protected int nbBoucle = 0;
     static protected StringBuilder functionBuilder = new StringBuilder();
     static protected int compteurBloc = 0;
+    static protected ArrayList<ArbreAbstrait> instructionsFonctions = new
+            ArrayList<ArbreAbstrait>();
 
     protected ArbreAbstrait(int no) {
 

@@ -16,12 +16,14 @@ public class TableDesSymboles {
         tds = new HashMap<>();
     }
 
+    // TODO: Fixer les exceptions
+
     public void ajouter(Entree e, Symbole s) {
 
         if(tds.containsKey(e)) {
 
-            throw new DoubleDeclarationException("ERREUR SEMANTIQUE:\n" +
-                    "\tDouble déclaration de " + e);
+//            throw new DoubleDeclarationException("ERREUR SEMANTIQUE:\n" +
+//                    "\tDouble déclaration de " + e);
         } else {
 
             tds.put(e, s);
@@ -32,13 +34,12 @@ public class TableDesSymboles {
 
         if(!tds.containsKey(e)) {
 
-            throw new VariableNonDefinieException("ERREUR SEMANTIQUE:\n" +
-                    "\tVariable non déclarée: " +
-                    e.getNom());
-        } else {
-
-            return tds.get(e);
+//            throw new VariableNonDefinieException("ERREUR SEMANTIQUE:\n" +
+//                    "\tVariable non déclarée: " +
+//                    e.getNom());
         }
+
+        return tds.get(e);
     }
 
     public boolean existe(Entree e){

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public class BlocDInstructions extends ArbreAbstrait {
-  
+
     protected ArrayList<ArbreAbstrait> expr ;
     private boolean first = false;
     public BlocDInstructions(int n) {
@@ -29,11 +29,11 @@ public class BlocDInstructions extends ArbreAbstrait {
     }
 
     public String toMIPS() {
-      
+
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         StringBuilder stringBuilder = new StringBuilder();
-      
+
         if(first) {
 
             stringBuilder.append(".data\n");
@@ -50,7 +50,7 @@ public class BlocDInstructions extends ArbreAbstrait {
 
             stringBuilder.append("\n");
         }
-      
+
         if(!expr.isEmpty()) {
 
             for (ArbreAbstrait abstrait: expr) {
@@ -114,7 +114,7 @@ public class BlocDInstructions extends ArbreAbstrait {
         }
 
 
-      
+
         return stringBuilder.toString();
     }
 
@@ -136,6 +136,11 @@ public class BlocDInstructions extends ArbreAbstrait {
             for (ArbreAbstrait abstrait: expr) {
 
                 abstrait.verifier();
+            }
+
+            for(ArbreAbstrait arbreAbstrait: instructionsFonctions) {
+
+                arbreAbstrait.verifier();
             }
         }
     }
