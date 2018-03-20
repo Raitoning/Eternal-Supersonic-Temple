@@ -1,9 +1,9 @@
 package yal.exceptions;
 
-public class VariableNonDefinieException extends AnalyseException {
+public class VariableNonDefinieException extends AnalyseSemantiqueException {
 
-    public VariableNonDefinieException(String m) {
+    public VariableNonDefinieException(int ligne, String m) {
 
-        super(m);
+        super(ligne, "Variable non définie: " + m);
     }
 }

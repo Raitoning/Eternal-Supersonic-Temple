@@ -36,7 +36,7 @@ idf = [a-zA-Z][a-zA-Z0-9]*
 
 csteE = [0-9]+
 csteB = "vrai" | "faux"
-chain = [\"].*[\"]
+chain = [\"][^\"]*[\"]
 
 finDeLigne = \r|\n
 espace = {finDeLigne}  | [ \t\f]
@@ -84,8 +84,11 @@ espace = {finDeLigne}  | [ \t\f]
 "repeter"                   { return symbol(CodesLexicaux.REPETER); }
 "fintantque"                { return symbol(CodesLexicaux.FINTANTQUE); }
 
-{csteE}      	            { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
-{csteB}      	            { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }
+"fonction"                  { return symbol(CodesLexicaux.FONCTION); }
+"retourne"                  { return symbol(CodesLexicaux.RETOURNE); }
+
+{csteE}                     { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
+{csteB}                     { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }
 {chain}                     { return symbol(CodesLexicaux.CHAINE, yytext()); }
 {idf}                       { return symbol(CodesLexicaux.IDF, yytext()); }
 

@@ -18,7 +18,7 @@ public class Variable extends Expression{
     @Override
     public void verifier() {
         TableDesSymboles tds = TableDesSymboles.getInstance();
-        Symbole s = tds.identifier(nom);
+        Symbole s = tds.identifier(nom, noLigne);
     }
 
     @Override
@@ -26,9 +26,24 @@ public class Variable extends Expression{
         TableDesSymboles tds = TableDesSymboles.getInstance();
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
-        sb.append("\tlw $v0, "+tds.identifier(nom).getAdr()*4+"($s7)\n");
+        rec++;
+        int numRecup = rec;
+        sb.append("\t#recuperation variable\n");
+        sb.append("\tmove $t8, $s7\n");
+        sb.append("\tloop"+nom.getNom()+ numRecup +":\n");
+        sb.append("\tlw $v0, 4($s7)\n");
+        sb.append("\tbeq $v0, $zero, recupVar"+nom.getNom()+ numRecup+"\n");
+        sb.append("\tlw $s7, 8($s7)\n");
+        sb.append("\tj loop"+nom.getNom()+ numRecup +"\n");
+        sb.append("\trecupVar"+nom.getNom()+ numRecup +":\n");
+
+        sb.append("\t#stockage\n");
+        sb.append("\t\n");
+        sb.append("\tlw $v0, "+tds.identifier(nom, noLigne).getAdr()*4+"($s7)\n");
         sb.append("\tsw $v0, ($sp)\n");
         sb.append("\taddi $sp, $sp, -4\n");
+
+        sb.append("\tmove $s7, $t8\n");
 
 
         return sb.toString();

@@ -16,43 +16,37 @@ public class TableDesSymboles {
         tds = new HashMap<>();
     }
 
-    public void ajouter(Entree e, Symbole s) {
+    // TODO: Fixer les exceptions
+
+    public void ajouter(Entree e, Symbole s, int noLigne) {
 
         if(tds.containsKey(e)) {
 
-            throw new DoubleDeclarationException("ERREUR SEMANTIQUE:\n" +
-                    "\tDouble déclaration de " + e);
+            throw new DoubleDeclarationException(noLigne, e.getNom());
         } else {
 
             tds.put(e, s);
         }
     }
 
-    public Symbole identifier(Entree e) {
+    public Symbole identifier(Entree e, int noLigne) {
 
         if(!tds.containsKey(e)) {
 
-            throw new VariableNonDefinieException("ERREUR SEMANTIQUE:\n" +
-                    "\tVariable non déclarée: " +
-                    e.getNom());
-        } else {
-
-            return tds.get(e);
+            throw new VariableNonDefinieException(noLigne, e.getNom());
         }
+
+        return tds.get(e);
     }
 
-    public Symbole existe(Entree e){
+    public boolean existe(Entree e){
 
-        if(!tds.containsKey(e)) {
-
-            return null;
-        }
-        else return tds.get(e);
+        return tds.containsKey(e);
     }
 
     public int getTailleZoneVariable() {
 
-        int res = 0;
+        int res = 1;
 
         for(Entree e: tds.keySet()) {
 

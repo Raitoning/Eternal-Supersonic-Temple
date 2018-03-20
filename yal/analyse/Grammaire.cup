@@ -76,13 +76,14 @@ parser code {:
 terminal Symbol     LIRE, ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
 terminal Symbol     SI, FSI, ALORS, SINON, SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
 terminal Symbol     POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
+terminal Symbol     TANTQUE, REPETER, FINTANTQUE, FONCTION, RETOURNE;
+
 terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
-terminal String     TANTQUE, REPETER, FINTANTQUE;
 
 /* Non terminals used in the grammar section.  */
 
-non terminal ArbreAbstrait CONDITION, PROG, LINSTR, INSTR, LISDECL, DECL, LAFF, AFF, BOUCLE;
-non terminal Expression EXPR, CSTE ;
+non terminal ArbreAbstrait CONDITION, PROG, LINSTR, LINSTRF, INSTR, INSTRF, LISDECL, LISDECLF, DECL, AFF, BOUCLE, DECL_FONCTION, PARAMETRES;
+non terminal Expression EXPR, CSTE;
 non terminal String TCHAINE;
 
 precedence left OU;
@@ -98,13 +99,13 @@ precedence left EGAL;
 
 start with PROG;
 
-PROG    ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
+PROG            ::=     PROGRAMME IDF DEBUT LISDECLF:d LINSTR:e FIN
                 {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
                     arbre.ajouter(d);
                     arbre.ajouter(e);
                     RESULT = arbre; :}
         |
-                PROGRAMME IDF DEBUT LISDECL:d FIN
+                PROGRAMME IDF DEBUT LISDECLF:d FIN
                 {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
                     arbre.ajouter(d);
                     RESULT = arbre; :}
@@ -119,7 +120,7 @@ PROG    ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
                     RESULT = arbre; :}
                 ;
 
-LINSTR  ::=     LINSTR:li INSTR:i
+LINSTR          ::=     LINSTR:li INSTR:i
                 {: BlocDInstructions b = new BlocDInstructions(ileft + 1);
                     b.ajouter(li);
                     b.ajouter(i);
@@ -131,13 +132,13 @@ LINSTR  ::=     LINSTR:li INSTR:i
                     RESULT = b; :}
                 ;
 
-INSTR   ::=     AFF:a
+INSTR           ::=     AFF:a
                 {: RESULT = a; :}
         |
                 ECRIRE EXPR:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
-                
-        |       
+
+        |
                 ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
         |
@@ -147,24 +148,25 @@ INSTR   ::=     AFF:a
                 :}
         |
                 LIRE IDF:i POINTVIRGULE
-                {: RESULT = new Lire(new Entree(i), ileft+1); :}
+                {: RESULT = new Lire(new EntreeVariable(i), ileft+1); :}
         |
                 BOUCLE:b
                 {: RESULT = b; :}
                 ;
 
-BOUCLE  ::=     TANTQUE EXPR:e REPETER LINSTR:li FINTANTQUE
+
+BOUCLE          ::=     TANTQUE EXPR:e REPETER LINSTR:li FINTANTQUE
                 {: BlocDInstructions b = new BlocDInstructions(lileft + 1);
                     b.ajouter(li);
                     Iteration ite = new Iteration(eleft + 1, e, b);
                     RESULT = ite; :}
                 ;
 
-AFF     ::=     IDF:i EGAL EXPR:e POINTVIRGULE
-                {: RESULT = new Affectation(new Entree(i), e, ileft + 1); :}
+AFF             ::=     IDF:i EGAL EXPR:e POINTVIRGULE
+                {: RESULT = new Affectation(new EntreeVariable(i), e, ileft + 1); :}
                 ;
 
-CONDITION ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
+CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
                 {:
                 RESULT = new Conditionnel(lileft + 1, e, li, le);
                 :}
@@ -174,11 +176,37 @@ CONDITION ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
                 :}
                 ;
 
-DECL    ::=     ENTIER IDF:i POINTVIRGULE
-                {: RESULT = new Declaration(new Entree(i), ileft + 1); :}
+DECL            ::=     ENTIER IDF:i POINTVIRGULE
+                {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1); :}
                 ;
 
-LISDECL ::=     LISDECL:l DECL:d
+
+LISDECLF        ::= LISDECLF:l DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(l);
+                    b.ajouter(d);
+                    RESULT =  b;
+                :}
+        |       LISDECLF:l DECL_FONCTION:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(l);
+                    b.ajouter(d);
+                    RESULT =  b;
+                :}
+        |       DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                   b.ajouter(d);
+                   RESULT = b;
+                :}
+        |       DECL_FONCTION:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                   b.ajouter(d);
+                   RESULT = b;
+                :}
+                ;
+
+
+LISDECL         ::=     LISDECL:l DECL:d
                 {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
                     b.ajouter(l);
                     b.ajouter(d);
@@ -191,7 +219,57 @@ LISDECL ::=     LISDECL:l DECL:d
                 :}
                 ;
 
-EXPR    ::=     EXPR:g  PLUS  EXPR:d
+DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTRF:l FIN
+                {:  if (l instanceof BlocDInstructionsFonction){
+                        ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i));
+                    }
+                    RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i), l); :}
+                ;
+
+LINSTRF         ::= LINSTRF:li INSTRF:i
+                {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
+                   b.ajouter(li);
+                   b.ajouter(i);
+                   RESULT =  b; :}
+        |
+               INSTRF:i
+                {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
+                    b.ajouter(i);
+                    RESULT = b ; :}
+        ;
+
+INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
+                {: RESULT = new Retourne(eleft+1, e); :}
+        |       SI EXPR:e ALORS LINSTRF:li SINON LINSTRF:le FSI
+                {:
+                    RESULT = new Conditionnel(lileft + 1, e, li, le);
+                :}
+        |       SI EXPR:e ALORS LINSTRF:li FSI
+                {:
+                    RESULT = new Conditionnel(lileft + 1, e, li, null);
+                :}
+        |       TANTQUE EXPR:e REPETER LINSTRF:li FINTANTQUE
+                {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(lileft + 1);
+                    b.ajouter(li);
+                    Iteration ite = new Iteration(eleft + 1, e, b);
+                    RESULT = ite;
+                :}
+        |        AFF:a
+                 {: RESULT = a; :}
+        |
+                ECRIRE EXPR:e POINTVIRGULE
+                {: RESULT = new Ecrire(eleft + 1, e); :}
+        |
+                ECRIRE TCHAINE:e POINTVIRGULE
+                {: RESULT = new Ecrire(eleft + 1, e); :}
+        |
+                LIRE IDF:i POINTVIRGULE
+                {: RESULT = new Lire(new EntreeVariable(i), ileft+1); :}
+                ;
+
+PARAMETRES      ::=   PAROUV PARFER;
+
+EXPR            ::=     EXPR:g  PLUS  EXPR:d
                 {: RESULT = new Plus(g, d); :}
         |
                 EXPR:g  MOINS  EXPR:d
@@ -234,16 +312,18 @@ EXPR    ::=     EXPR:g  PLUS  EXPR:d
                 {: RESULT = e; :}
         |
                 IDF:e
-                {: RESULT = new Variable(new Entree(e), eleft+1); :}
+                {: RESULT = new Variable(new EntreeVariable(e), eleft+1); :}
+        |       IDF:e PAROUV PARFER
+                {: RESULT = new Fonction(new EntreeFonction(e),eleft+1); :}
                 ;
 
-CSTE    ::=     CONSTANTEINT:e
+CSTE        ::=     CONSTANTEINT:e
                 {: RESULT = new ConstanteEntiere(e, eleft+1); :}
         |       CONSTANTEBOOL:e
                 {: RESULT = new ConstanteBool(e, eleft+1); :}
                 ;
-                
-TCHAINE ::=   CHAINE:e
+
+TCHAINE     ::=   CHAINE:e
                 {: ListeChaines.getInstance().add(e);
                 RESULT = e ; :}
                 ;
