@@ -267,8 +267,6 @@ INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
                 {: RESULT = new Lire(new EntreeVariable(i), ileft+1); :}
                 ;
 
-
-
 PARAMETRES      ::=   PAROUV PARFER;
 
 EXPR            ::=     EXPR:g  PLUS  EXPR:d
