@@ -13,10 +13,10 @@ public class DeclarationFonction extends Instruction{
     private ArbreAbstrait instructions;
     private int numBloc;
 
-    public DeclarationFonction(int no, EntreeFonction n, ArbreAbstrait instr,
+    public DeclarationFonction(int ligne, EntreeFonction n, ArbreAbstrait instr,
                                ArbreAbstrait retour) {
 
-        super(no);
+        super(ligne);
         exp = retour;
         nom = n;
         instructions = instr;
@@ -29,7 +29,7 @@ public class DeclarationFonction extends Instruction{
 
         if(TableDesSymboles.getInstance().existe(nom)) {
 
-            throw new DoubleDeclarationException(nom.getNom());
+            throw new DoubleDeclarationException(noLigne, nom.getNom() + "()");
         } else {
 
             TableDesSymboles.getInstance().ajouter(new EntreeFonction(nom
@@ -72,7 +72,7 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\tsw $v0, 4($sp)\n");
         ArbreAbstrait.functionBuilder.append("\tjr $ra\n");
         ArbreAbstrait.functionBuilder.append("\t#fin fonction\n");
-      
+
         ArbreAbstrait.functionBuilder.append("\n");
 
         return "";

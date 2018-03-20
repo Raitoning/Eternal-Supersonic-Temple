@@ -1,9 +1,9 @@
 package yal.exceptions;
 
-public class DoubleDeclarationException extends AnalyseException {
+public class DoubleDeclarationException extends AnalyseSemantiqueException {
 
-    public DoubleDeclarationException(String m) {
-//TODO: fix message
-        super(m);
+    public DoubleDeclarationException(int ligne, String m) {
+
+        super(ligne, "Double déclaration de " + m);
     }
 }
