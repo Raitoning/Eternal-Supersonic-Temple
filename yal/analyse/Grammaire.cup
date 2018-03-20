@@ -137,8 +137,8 @@ INSTR           ::=     AFF:a
         |
                 ECRIRE EXPR:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
-                
-        |       
+
+        |
                 ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
         |
@@ -148,7 +148,7 @@ INSTR           ::=     AFF:a
                 :}
         |
                 LIRE IDF:i POINTVIRGULE
-                {: RESULT = new Lire(new Entree(i), ileft+1); :}
+                {: RESULT = new Lire(new EntreeVariable(i), ileft+1); :}
         |
                 BOUCLE:b
                 {: RESULT = b; :}
@@ -162,7 +162,7 @@ BOUCLE          ::=     TANTQUE EXPR:e REPETER LINSTR:li FINTANTQUE
                 ;
 
 AFF             ::=     IDF:i EGAL EXPR:e POINTVIRGULE
-                {: RESULT = new Affectation(new Entree(i), e, ileft + 1); :}
+                {: RESULT = new Affectation(new EntreeVariable(i), e, ileft + 1); :}
                 ;
 
 CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
@@ -176,7 +176,7 @@ CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
                 ;
 
 DECL            ::=     ENTIER IDF:i POINTVIRGULE
-                {: RESULT = new Declaration(new Entree(i), ileft + 1); :}
+                {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1); :}
                 ;
 
 LISDECL         ::=     LISDECL:l DECL:d
@@ -192,8 +192,12 @@ LISDECL         ::=     LISDECL:l DECL:d
                 :}
                 ;
 
-DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e FIN
-                {: RESULT = new DeclarationFonction(ileft + 1, new Entree(i), l, e); :}
+// TODO: Trouver le numéro de bloc.
+
+DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e
+                    POINTVIRGULE FIN
+                {: RESULT = new DeclarationFonction(ileft + 1,
+                new EntreeFonction(i), l, e); :}
                 ;
 
 PARAMETRES      ::=   PAROUV PARFER;
@@ -241,7 +245,7 @@ EXPR            ::=     EXPR:g  PLUS  EXPR:d
                 {: RESULT = e; :}
         |
                 IDF:e
-                {: RESULT = new Variable(new Entree(e), eleft+1); :}
+                {: RESULT = new Variable(new EntreeVariable(e), eleft+1); :}
                 ;
 
 CSTE        ::=     CONSTANTEINT:e
@@ -249,7 +253,7 @@ CSTE        ::=     CONSTANTEINT:e
         |       CONSTANTEBOOL:e
                 {: RESULT = new ConstanteBool(e, eleft+1); :}
                 ;
-                
+
 TCHAINE     ::=   CHAINE:e
                 {: ListeChaines.getInstance().add(e);
                 RESULT = e ; :}

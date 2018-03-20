@@ -41,13 +41,9 @@ public class TableDesSymboles {
         }
     }
 
-    public Symbole existe(Entree e){
+    public boolean existe(Entree e){
 
-        if(!tds.containsKey(e)) {
-
-            return null;
-        }
-        else return tds.get(e);
+        return tds.containsKey(e);
     }
 
     public int getTailleZoneVariable() {
