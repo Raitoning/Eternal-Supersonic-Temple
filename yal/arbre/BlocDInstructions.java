@@ -29,16 +29,18 @@ public class BlocDInstructions extends ArbreAbstrait {
     }
 
     public String toMIPS() {
-
+      
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         StringBuilder stringBuilder = new StringBuilder();
-
+      
         if(first) {
 
             stringBuilder.append(".data\n");
             stringBuilder.append("\tmsgDivZero:\t.asciiz \"ERREUR EXECUTION : division " +
                     "par zero\"\n\n");
+            stringBuilder.append("\tmsgNoReturn:\t.asciiz \"ERREUR EXECUTION : Aucune " +
+                    "valeur de retour détecté\"\n\n");
             stringBuilder.append("\tmsgTrue:\t.asciiz \"vrai\"\n\n");
             stringBuilder.append("\tmsgFalse:\t.asciiz \"faux\"\n\n");
             addStringData(stringBuilder);
@@ -52,7 +54,7 @@ public class BlocDInstructions extends ArbreAbstrait {
             stringBuilder.append("\taddi $sp, $sp, -4\n");
             stringBuilder.append("\n");
         }
-
+      
         if(!expr.isEmpty()) {
 
             for (ArbreAbstrait abstrait: expr) {

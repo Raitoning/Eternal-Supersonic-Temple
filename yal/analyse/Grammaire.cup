@@ -82,7 +82,7 @@ terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
 
 /* Non terminals used in the grammar section.  */
 
-non terminal ArbreAbstrait CONDITION, PROG, LINSTR, INSTR, LISDECL, LISDECLF, DECL, LAFF, AFF, BOUCLE, DECL_FONCTION, PARAMETRES, TRETOURNE;
+non terminal ArbreAbstrait CONDITION, PROG, LINSTR, LINSTRF, INSTR, INSTRF, LISDECL, LISDECLF, DECL, AFF, BOUCLE, DECL_FONCTION, PARAMETRES;
 non terminal Expression EXPR, CSTE;
 non terminal String TCHAINE;
 
@@ -154,6 +154,7 @@ INSTR           ::=     AFF:a
                 {: RESULT = b; :}
                 ;
 
+
 BOUCLE          ::=     TANTQUE EXPR:e REPETER LINSTR:li FINTANTQUE
                 {: BlocDInstructions b = new BlocDInstructions(lileft + 1);
                     b.ajouter(li);
@@ -218,13 +219,44 @@ LISDECL         ::=     LISDECL:l DECL:d
                 :}
                 ;
 
-DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e POINTVIRGULE FIN
-                {: RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i), l, e); :}
-        |
-                FONCTION IDF:i PARAMETRES DEBUT RETOURNE EXPR:e POINTVIRGULE FIN
-                {: RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i), null, e); :}
-
+DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTRF:l FIN
+                {:  if (l instanceof BlocDInstructionsFonction){
+                        ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i));
+                    }
+                    RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i), l); :}
                 ;
+
+LINSTRF         ::= LINSTRF:li INSTRF:i
+                {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
+                   b.ajouter(li);
+                   b.ajouter(i);
+                   RESULT =  b; :}
+        |
+                INSTRF:i
+                {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
+                    b.ajouter(i);
+                    RESULT = b ; :}
+                ;
+
+INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
+                {: RESULT = new Retourne(eleft+1, e); :}
+        |       SI EXPR:e ALORS LINSTRF:li SINON LINSTRF:le FSI
+                {:
+                    RESULT = new Conditionnel(lileft + 1, e, li, le);
+                :}
+        |       SI EXPR:e ALORS LINSTRF:li FSI
+                {:
+                    RESULT = new Conditionnel(lileft + 1, e, li, null);
+                :}
+        |       TANTQUE EXPR:e REPETER LINSTRF:li FINTANTQUE
+                {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(lileft + 1);
+                    b.ajouter(li);
+                    Iteration ite = new Iteration(eleft + 1, e, b);
+                    RESULT = ite;
+                :}
+                ;
+
+
 
 PARAMETRES      ::=   PAROUV PARFER;
 

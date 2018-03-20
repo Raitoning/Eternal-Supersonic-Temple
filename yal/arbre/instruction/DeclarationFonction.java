@@ -9,15 +9,14 @@ import yal.tds.*;
 public class DeclarationFonction extends Instruction{
 
     private EntreeFonction nom;
-    private ArbreAbstrait exp;
     private ArbreAbstrait instructions;
     private int numBloc;
 
-    public DeclarationFonction(int ligne, EntreeFonction n, ArbreAbstrait instr,
-                               ArbreAbstrait retour) {
+    public DeclarationFonction(int ligne, EntreeFonction n, ArbreAbstrait instr)
+                                {
 
         super(ligne);
-        exp = retour;
+
         nom = n;
         instructions = instr;
         compteurBloc++;
@@ -40,7 +39,8 @@ public class DeclarationFonction extends Instruction{
 
             instructionsFonctions.add(instructions);
         }
-        exp.verifier();
+        if(instructions != null)
+            instructions.verifier();
     }
 
     @Override
@@ -58,7 +58,9 @@ public class DeclarationFonction extends Instruction{
 
         if(instructions != null)
             ArbreAbstrait.functionBuilder.append(instructions.toMIPS()+"\n");
-        ArbreAbstrait.functionBuilder.append(exp.toMIPS()+"\n");
+
+        ArbreAbstrait.functionBuilder.append("finF"+nom.getNom() + ":\n\n");
+
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, 4\n");
         ArbreAbstrait.functionBuilder.append("\tlw $v0, ($sp)\n");
         ArbreAbstrait.functionBuilder.append("\tsw $v0, -4($s7)\n");

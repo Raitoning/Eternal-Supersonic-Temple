@@ -64,4 +64,12 @@ public class Conditionnel extends Instruction{
         sb.append("\t#fin condition\n");
         return sb.toString();
     }
+
+    public ArbreAbstrait getSi() {
+        return si;
+    }
+
+    public ArbreAbstrait getNon() {
+        return non;
+    }
 }

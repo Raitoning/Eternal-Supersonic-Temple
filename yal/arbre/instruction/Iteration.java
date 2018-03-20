@@ -49,4 +49,8 @@ public class Iteration extends Instruction {
 
         return stringBuilder.toString();
     }
+
+    public ArbreAbstrait getInstructions() {
+        return instructions;
+    }
 }
