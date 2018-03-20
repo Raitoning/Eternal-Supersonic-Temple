@@ -220,6 +220,10 @@ LISDECL         ::=     LISDECL:l DECL:d
 
 DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTR:l RETOURNE EXPR:e POINTVIRGULE FIN
                 {: RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i), l, e); :}
+        |
+                FONCTION IDF:i PARAMETRES DEBUT RETOURNE EXPR:e POINTVIRGULE FIN
+                {: RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i), null, e); :}
+
                 ;
 
 PARAMETRES      ::=   PAROUV PARFER;
@@ -268,6 +272,8 @@ EXPR            ::=     EXPR:g  PLUS  EXPR:d
         |
                 IDF:e
                 {: RESULT = new Variable(new EntreeVariable(e), eleft+1); :}
+        |       IDF:e PAROUV PARFER
+                {: RESULT = new Fonction(new EntreeFonction(e),eleft+1); :}
                 ;
 
 CSTE        ::=     CONSTANTEINT:e

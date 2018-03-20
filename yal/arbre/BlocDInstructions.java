@@ -110,9 +110,10 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\tjr $ra\n");
         stringBuilder.append("\n");
         stringBuilder.append("\n");
+        stringBuilder.append(ArbreAbstrait.functionBuilder.toString());
         }
 
-        stringBuilder.append(ArbreAbstrait.functionBuilder.toString());
+
       
         return stringBuilder.toString();
     }
