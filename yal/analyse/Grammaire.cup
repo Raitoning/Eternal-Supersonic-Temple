@@ -137,8 +137,8 @@ INSTR           ::=     AFF:a
         |
                 ECRIRE EXPR:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
-                
-        |       
+
+        |
                 ECRIRE TCHAINE:e POINTVIRGULE
                 {: RESULT = new Ecrire(eleft + 1, e); :}
         |
@@ -275,7 +275,7 @@ CSTE        ::=     CONSTANTEINT:e
         |       CONSTANTEBOOL:e
                 {: RESULT = new ConstanteBool(e, eleft+1); :}
                 ;
-                
+
 TCHAINE     ::=   CHAINE:e
                 {: ListeChaines.getInstance().add(e);
                 RESULT = e ; :}
