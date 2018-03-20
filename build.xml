@@ -30,7 +30,7 @@
         <java classname="jflex.Main" fork="yes" failonerror="yes" >
             <arg line="${src}/AnalyseurLexical.jflex" />
             <classpath>
-                <pathelement path="${java.class.path}:/opt/depot/projetToucan/jflex-1.6.1.jar" />
+                <pathelement path="C:/Users/Yann/Desktop/cupflex/jflex-1.6.1.jar" />
             </classpath>
         </java>
     </target>
@@ -57,7 +57,7 @@
         <java classname="java_cup.Main" fork="yes" failonerror="yes" >
             <arg line="-symbols CodesLexicaux -parser AnalyseurSyntaxique ${src}/Grammaire.cup" />
             <classpath>
-                <pathelement path="${java.class.path}:/opt/depot/projetToucan/java-cup-11a.jar" />
+                <pathelement path="C:/Users/Yann/Desktop/cupflex//java-cup-11a.jar" />
             </classpath>
         </java>
         <move file="AnalyseurSyntaxique.java" tofile="${src}/AnalyseurSyntaxique.java" />

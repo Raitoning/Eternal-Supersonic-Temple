@@ -47,7 +47,9 @@ public class BlocDInstructions extends ArbreAbstrait {
             stringBuilder.append("\tmove $s7, $sp\n");
             stringBuilder.append("\taddi $sp, $sp, -" + (4 * tds
                     .getTailleZoneVariable()) + "\n");
-
+            stringBuilder.append("\t#numero bloc 0\n");
+            stringBuilder.append("\tsw $zero, ($sp)\n");
+            stringBuilder.append("\taddi $sp, $sp, -4\n");
             stringBuilder.append("\n");
         }
 

@@ -55,7 +55,7 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\tsw $v0, ($sp)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
         ArbreAbstrait.functionBuilder.append("\tmove $s7,$sp\n");
-        //ArbreAbstrait.functionBuilder.append("\tmove $s7, -4($sp)\n\n");
+
         if(instructions != null)
             ArbreAbstrait.functionBuilder.append(instructions.toMIPS()+"\n");
         ArbreAbstrait.functionBuilder.append(exp.toMIPS()+"\n");
@@ -65,10 +65,6 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp -4\n");
         ArbreAbstrait.functionBuilder.append("\n");
 
-        /*ArbreAbstrait.functionBuilder.append("\tlw $sp, 12($s7)\n");
-        ArbreAbstrait.functionBuilder.append("\tlw $s7, 8($s7)\n");
-        ArbreAbstrait.functionBuilder.append("\tmove $ra, $sp\n");
-        ArbreAbstrait.functionBuilder.append("\tjr $ra\n");*/
         ArbreAbstrait.functionBuilder.append("\tlw $ra, 12($s7)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $s7, +12\n");
         ArbreAbstrait.functionBuilder.append("\tlw $s7, 8($s7)\n");

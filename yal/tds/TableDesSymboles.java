@@ -49,7 +49,7 @@ public class TableDesSymboles {
 
     public int getTailleZoneVariable() {
 
-        int res = 0;
+        int res = 1;
 
         for(Entree e: tds.keySet()) {
 
