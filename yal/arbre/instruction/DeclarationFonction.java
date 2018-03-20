@@ -36,40 +36,35 @@ public class DeclarationFonction extends Instruction{
         }
         instructions.verifier();
         exp.verifier();
-
-        //TODO stocker dans TDS
-        //TODO verifier nom fonction
-
     }
 
-    // TODO: Ajouter création pile fonction.
     @Override
     public String toMIPS() {
 
         ArbreAbstrait.functionBuilder.append(nom.getNom() + ":\n\n");
+        ArbreAbstrait.functionBuilder.append("\tsw $ra, ($sp)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4 \n");
-        ArbreAbstrait.functionBuilder.append("\t");
-        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4 \n");
-        ArbreAbstrait.functionBuilder.append("\t");
+        ArbreAbstrait.functionBuilder.append("\tsw $s7, $sp\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
+        ArbreAbstrait.functionBuilder.append("\tli $v0,"+numBloc+"\n");
+        ArbreAbstrait.functionBuilder.append("\tsw $v0, $sp\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
+        ArbreAbstrait.functionBuilder.append("\tmove $s7,$sp\n");
+        ArbreAbstrait.functionBuilder.append("\tmove $s7, -4($sp)\n\n");
+
         ArbreAbstrait.functionBuilder.append(instructions.toMIPS()+"\n");
+        ArbreAbstrait.functionBuilder.append(exp.toMIPS()+"\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp 4\n");
+        ArbreAbstrait.functionBuilder.append("\tlw $v0, ($sp)\n");
+        ArbreAbstrait.functionBuilder.append("\tsw $v0, $s7 -4\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp -4\n");
         ArbreAbstrait.functionBuilder.append("\n");
 
-/*
-        stringBuilder.append("\taddi $sp, $sp 4\t# Plus\n");
-        stringBuilder.append("\tlw $v0, ($sp)\n");
-        stringBuilder.append("\taddi $sp, $sp 4\n");
-        stringBuilder.append("\tlw $t8, ($sp)\n");
-        stringBuilder.append("\tadd $v0, $v0, $t8\n");
-        stringBuilder.append("\tsw $v0, ($sp)\n");
-        stringBuilder.append("\taddi $sp, $sp, -4\n");*/
-
-
-
-
-        //chainage
-        ArbreAbstrait.functionBuilder.append("");//adr retour
-        ArbreAbstrait.functionBuilder.append(exp.toMIPS()+"\n");
-        //jump retour
+        ArbreAbstrait.functionBuilder.append("\tlw $sp, 12($s7)\n");
+        ArbreAbstrait.functionBuilder.append("\tlw $s7, 8($s7)\n");
+        ArbreAbstrait.functionBuilder.append("\tlw $ra, ($sp)\n");
+        ArbreAbstrait.functionBuilder.append("\tjr $ra\n");
+      
         ArbreAbstrait.functionBuilder.append("\n");
 
         return "";
