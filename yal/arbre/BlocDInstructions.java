@@ -40,7 +40,7 @@ public class BlocDInstructions extends ArbreAbstrait {
             stringBuilder.append("\tmsgDivZero:\t.asciiz \"ERREUR EXECUTION : division " +
                     "par zero\"\n\n");
             stringBuilder.append("\tmsgNoReturn:\t.asciiz \"ERREUR EXECUTION : Aucune " +
-                    "valeur de retour détecté\"\n\n");
+                    "valeur de retour\"\n\n");
             stringBuilder.append("\tmsgTrue:\t.asciiz \"vrai\"\n\n");
             stringBuilder.append("\tmsgFalse:\t.asciiz \"faux\"\n\n");
             addStringData(stringBuilder);
@@ -72,11 +72,20 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\tsyscall\n");
         stringBuilder.append("\n");
         stringBuilder.append("\n");
+
         stringBuilder.append("divZero:\n");
         stringBuilder.append("\n");
-
         stringBuilder.append("\tli $v0, 4\n");
         stringBuilder.append("\tla $a0, msgDivZero\n");
+        stringBuilder.append("\tsyscall\n");
+        stringBuilder.append("\tj end\n");
+        stringBuilder.append("\n");
+        stringBuilder.append("\n");
+
+        stringBuilder.append("noReturn:\n");
+        stringBuilder.append("\n");
+        stringBuilder.append("\tli $v0, 4\n");
+        stringBuilder.append("\tla $a0, msgNoReturn\n");
         stringBuilder.append("\tsyscall\n");
         stringBuilder.append("\tj end\n");
         stringBuilder.append("\n");

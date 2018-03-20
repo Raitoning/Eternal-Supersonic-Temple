@@ -58,7 +58,7 @@ public class DeclarationFonction extends Instruction{
 
             ArbreAbstrait.functionBuilder.append(instructions.toMIPS()+"\n");
         }
-
+        ArbreAbstrait.functionBuilder.append("\tj noReturn\n");
         ArbreAbstrait.functionBuilder.append("finF"+nom.getNom() + ":\n\n");
 
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, 4\n");
