@@ -232,11 +232,11 @@ LINSTRF         ::= LINSTRF:li INSTRF:i
                    b.ajouter(i);
                    RESULT =  b; :}
         |
-                INSTRF:i
+               INSTRF:i
                 {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
                     b.ajouter(i);
                     RESULT = b ; :}
-                ;
+        ;
 
 INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
                 {: RESULT = new Retourne(eleft+1, e); :}
@@ -254,6 +254,17 @@ INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
                     Iteration ite = new Iteration(eleft + 1, e, b);
                     RESULT = ite;
                 :}
+        |        AFF:a
+                 {: RESULT = a; :}
+        |
+                ECRIRE EXPR:e POINTVIRGULE
+                {: RESULT = new Ecrire(eleft + 1, e); :}
+        |
+                ECRIRE TCHAINE:e POINTVIRGULE
+                {: RESULT = new Ecrire(eleft + 1, e); :}
+        |
+                LIRE IDF:i POINTVIRGULE
+                {: RESULT = new Lire(new EntreeVariable(i), ileft+1); :}
                 ;
 
 
