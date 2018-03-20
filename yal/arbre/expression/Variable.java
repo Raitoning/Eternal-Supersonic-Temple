@@ -26,14 +26,16 @@ public class Variable extends Expression{
         TableDesSymboles tds = TableDesSymboles.getInstance();
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
+        rec++;
+        int numRecup = rec;
         sb.append("\t#recuperation variable\n");
         sb.append("\tmove $t8, $s7\n");
-        sb.append("\tloop"+nom.getNom()+":\n");
+        sb.append("\tloop"+nom.getNom()+ numRecup +":\n");
         sb.append("\tlw $v0, 4($s7)\n");
-        sb.append("\tbeq $v0, $zero, recupVar"+nom.getNom()+"\n");
+        sb.append("\tbeq $v0, $zero, recupVar"+nom.getNom()+ numRecup+"\n");
         sb.append("\tlw $s7, 8($s7)\n");
-        sb.append("\tj loop"+nom.getNom()+"\n");
-        sb.append("\trecupVar"+nom.getNom()+":\n");
+        sb.append("\tj loop"+nom.getNom()+ numRecup +"\n");
+        sb.append("\trecupVar"+nom.getNom()+ numRecup +":\n");
 
         sb.append("\t#stockage\n");
         sb.append("\t\n");

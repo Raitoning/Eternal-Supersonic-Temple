@@ -11,6 +11,7 @@ public abstract class ArbreAbstrait {
     /* Nombre de comparaison pour les nom d'étiquettes */
     static protected int nbComp = 0;
     static protected int nbSi = 0;
+    protected static int rec = 0;
     static protected int nbBoucle = 0;
     static protected StringBuilder functionBuilder = new StringBuilder();
     static protected int compteurBloc = 0;
