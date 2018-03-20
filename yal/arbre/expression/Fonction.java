@@ -1,7 +1,7 @@
 package yal.arbre.expression;
 
 import yal.arbre.Type;
-import yal.tds.Entree;
+import yal.tds.EntreeFonction;
 import yal.tds.Symbole;
 import yal.tds.TableDesSymboles;
 
@@ -9,7 +9,8 @@ public class Fonction extends Expression{
 
     protected EntreeFonction nom;
 
-    public Fonction(Entree e, int n){
+    public Fonction(EntreeFonction e, int n){
+
         super(n);
         nom = e;
     }
