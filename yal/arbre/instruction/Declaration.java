@@ -27,7 +27,8 @@ public class Declaration extends Instruction{
                     "déclaration");
         } else {
 
-            tds.ajouter(nom,new Symbole(TypeTDS.Variable,tds.getTailleZoneVariable()+1));
+            tds.ajouter(nom,new Symbole(TypeTDS.Variable,
+                    tds.getTailleZoneVariable()+1), noLigne);
         }
     }
 

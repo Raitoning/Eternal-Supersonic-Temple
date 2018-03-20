@@ -32,15 +32,13 @@ public class DeclarationFonction extends Instruction{
         } else {
 
             TableDesSymboles.getInstance().ajouter(new EntreeFonction(nom
-                    .getNom()), new Symbole(TypeTDS.Fonction, 0));
+                    .getNom()), new Symbole(TypeTDS.Fonction, 0), noLigne);
         }
 
         if(instructions != null) {
 
             instructionsFonctions.add(instructions);
         }
-        if(instructions != null)
-            instructions.verifier();
     }
 
     @Override
@@ -56,8 +54,10 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
         ArbreAbstrait.functionBuilder.append("\tmove $s7,$sp\n");
 
-        if(instructions != null)
+        if(instructions != null) {
+
             ArbreAbstrait.functionBuilder.append(instructions.toMIPS()+"\n");
+        }
 
         ArbreAbstrait.functionBuilder.append("finF"+nom.getNom() + ":\n\n");
 

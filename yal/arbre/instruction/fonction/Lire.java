@@ -17,7 +17,7 @@ public class Lire extends Instruction{
     @Override
     public void verifier() {
         TableDesSymboles tds = TableDesSymboles.getInstance();
-        Symbole s = tds.identifier(nom);
+        Symbole s = tds.identifier(nom, noLigne);
     }
 
     @Override
@@ -31,7 +31,8 @@ public class Lire extends Instruction{
         sb.append("\tsyscall\n");
         sb.append("\n");
         sb.append("#Affectation qui suit la lecture\n");
-        sb.append("\tsw $v0, " + tds.identifier(nom).getAdr() * 4 + "($s7)\n");
+        sb.append("\tsw $v0, " + tds.identifier(nom, noLigne).getAdr() * 4 + "" +
+                "($s7)\n");
         sb.append("\taddi $sp, $sp, -4\n");
 
         return sb.toString();

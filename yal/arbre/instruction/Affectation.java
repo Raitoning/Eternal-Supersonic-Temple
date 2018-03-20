@@ -24,11 +24,12 @@ public class Affectation extends Instruction {
     public void verifier() {
 
         if(valeur.getType() == Type.booleen){
-            throw new AnalyseSemantiqueException(noLigne,"Affectation impossible, mauvais type d'expression.");
+            throw new AnalyseSemantiqueException(noLigne,
+                    "Affectation impossible, mauvais type d'expression.");
         }
 
         TableDesSymboles tds = TableDesSymboles.getInstance();
-        Symbole s = tds.identifier(nom);
+        Symbole s = tds.identifier(nom, noLigne);
         valeur.verifier();
 
     }
@@ -45,7 +46,8 @@ public class Affectation extends Instruction {
         sb.append("#Affectation\n");
         sb.append("\taddi $sp, $sp 4\n");
         sb.append("\tlw $v0, ($sp)\n");
-        sb.append("\tsw $v0, " + tds.identifier(nom).getAdr() * 4 + "($s7)\n");
+        sb.append("\tsw $v0, " + tds.identifier(nom, noLigne).getAdr() * 4 + "" +
+                "($s7)\n");
         sb.append("\taddi $sp, $sp, -4\n");
 
         return sb.toString();

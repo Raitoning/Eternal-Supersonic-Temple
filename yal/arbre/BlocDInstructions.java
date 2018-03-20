@@ -144,7 +144,10 @@ public class BlocDInstructions extends ArbreAbstrait {
 
             for(ArbreAbstrait arbreAbstrait: instructionsFonctions) {
 
-                arbreAbstrait.verifier();
+                if(first) {
+
+                    arbreAbstrait.verifier();
+                }
             }
         }
     }

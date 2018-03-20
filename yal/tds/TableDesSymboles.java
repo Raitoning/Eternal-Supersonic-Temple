@@ -18,25 +18,22 @@ public class TableDesSymboles {
 
     // TODO: Fixer les exceptions
 
-    public void ajouter(Entree e, Symbole s) {
+    public void ajouter(Entree e, Symbole s, int noLigne) {
 
         if(tds.containsKey(e)) {
 
-//            throw new DoubleDeclarationException("ERREUR SEMANTIQUE:\n" +
-//                    "\tDouble déclaration de " + e);
+            throw new DoubleDeclarationException(noLigne, e.getNom());
         } else {
 
             tds.put(e, s);
         }
     }
 
-    public Symbole identifier(Entree e) {
+    public Symbole identifier(Entree e, int noLigne) {
 
         if(!tds.containsKey(e)) {
 
-//            throw new VariableNonDefinieException("ERREUR SEMANTIQUE:\n" +
-//                    "\tVariable non déclarée: " +
-//                    e.getNom());
+            throw new VariableNonDefinieException(noLigne, e.getNom());
         }
 
         return tds.get(e);

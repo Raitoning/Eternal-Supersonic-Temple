@@ -19,7 +19,7 @@ public class Fonction extends Expression{
     @Override
     public void verifier() {
 
-        Symbole s = TableDesSymboles.getInstance().identifier(nom);
+        Symbole s = TableDesSymboles.getInstance().identifier(nom, noLigne);
 
     }
 
