@@ -2,7 +2,8 @@ package yal.arbre.expression;
 
 import yal.arbre.Type;
 import yal.tds.EntreeFonction;
-import yal.tds.Symbole;
+import yal.tds.SymboleFonction;
+import yal.tds.SymboleVariable;
 import yal.tds.TableDesSymboles;
 
 public class Fonction extends Expression{
@@ -19,7 +20,7 @@ public class Fonction extends Expression{
     @Override
     public void verifier() {
 
-        Symbole s = TableDesSymboles.getInstance().identifier(nom, noLigne);
+        SymboleFonction s = (SymboleFonction) TableDesSymboles.getInstance().identifier(nom, noLigne);
 
     }
 

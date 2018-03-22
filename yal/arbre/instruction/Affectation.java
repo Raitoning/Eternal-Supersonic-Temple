@@ -1,11 +1,10 @@
 package yal.arbre.instruction;
 
-import yal.arbre.ArbreAbstrait;
 import yal.arbre.Type;
 import yal.arbre.expression.Expression;
 import yal.exceptions.AnalyseSemantiqueException;
 import yal.tds.Entree;
-import yal.tds.Symbole;
+import yal.tds.SymboleVariable;
 import yal.tds.TableDesSymboles;
 
 public class Affectation extends Instruction {
@@ -29,7 +28,7 @@ public class Affectation extends Instruction {
         }
 
         TableDesSymboles tds = TableDesSymboles.getInstance();
-        Symbole s = tds.identifier(nom, noLigne);
+        SymboleVariable s = (SymboleVariable) tds.identifier(nom, noLigne);
         valeur.verifier();
 
     }
@@ -63,7 +62,7 @@ public class Affectation extends Instruction {
 
 
         sb.append("\tlw $v0, ($sp)\n");
-        sb.append("\tsw $v0, " + tds.identifier(nom, noLigne).getAdr() * 4 + "" +
+        sb.append("\tsw $v0, " + ((SymboleVariable)tds.identifier(nom, noLigne)).getAdr() * 4 + "" +
                 "($s7)\n");
         sb.append("\taddi $sp, $sp, -4\n");
 

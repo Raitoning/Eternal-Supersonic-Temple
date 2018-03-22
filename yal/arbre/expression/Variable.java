@@ -2,7 +2,7 @@ package yal.arbre.expression;
 
 import yal.arbre.Type;
 import yal.tds.Entree;
-import yal.tds.Symbole;
+import yal.tds.SymboleVariable;
 import yal.tds.TableDesSymboles;
 
 public class Variable extends Expression{
@@ -18,7 +18,7 @@ public class Variable extends Expression{
     @Override
     public void verifier() {
         TableDesSymboles tds = TableDesSymboles.getInstance();
-        Symbole s = tds.identifier(nom, noLigne);
+        SymboleVariable s = ((SymboleVariable)tds.identifier(nom, noLigne));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Variable extends Expression{
 
         sb.append("\t#stockage\n");
         sb.append("\t\n");
-        sb.append("\tlw $v0, "+tds.identifier(nom, noLigne).getAdr()*4+"($s7)\n");
+        sb.append("\tlw $v0, "+((SymboleVariable)tds.identifier(nom, noLigne)).getAdr()*4+"($s7)\n");
         sb.append("\tsw $v0, ($sp)\n");
         sb.append("\taddi $sp, $sp, -4\n");
 

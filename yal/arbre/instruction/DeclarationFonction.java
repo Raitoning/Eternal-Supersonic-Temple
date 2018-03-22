@@ -1,8 +1,6 @@
 package yal.arbre.instruction;
 
 import yal.arbre.ArbreAbstrait;
-import yal.arbre.BlocDInstructions;
-import yal.arbre.expression.Expression;
 import yal.exceptions.DoubleDeclarationException;
 import yal.tds.*;
 
@@ -32,7 +30,7 @@ public class DeclarationFonction extends Instruction{
         } else {
 
             TableDesSymboles.getInstance().ajouter(new EntreeFonction(nom
-                    .getNom()), new Symbole(TypeTDS.Fonction, 0), noLigne);
+                    .getNom()), new SymboleFonction(0), noLigne);
         }
 
         if(instructions != null) {

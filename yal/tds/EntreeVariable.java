@@ -5,8 +5,13 @@ public class EntreeVariable extends Entree {
     public EntreeVariable(String nom) {
 
         super(nom);
+        this.bloc = 0;
     }
 
+    public EntreeVariable(String nom, int bloc){
+        super(nom);
+        this.bloc = bloc;
+    }
     @Override
     public String getNom() {
 
@@ -26,7 +31,7 @@ public class EntreeVariable extends Entree {
     @Override
     public int hashCode() {
 
-        String hash = "variable" + nom;
+        String hash = "variable" +nom;
 
         return hash.hashCode();
     }

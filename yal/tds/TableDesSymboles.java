@@ -59,6 +59,11 @@ public class TableDesSymboles {
         return res;
     }
 
+    public int getNumBloc(EntreeFonction e){
+
+        return ((SymboleFonction)tds.get(e)).getNumBloc();
+    }
+
     public static TableDesSymboles getInstance() {
 
         if (Instance == null ){

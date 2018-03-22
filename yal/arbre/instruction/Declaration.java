@@ -1,9 +1,8 @@
 package yal.arbre.instruction;
 
-import yal.arbre.ArbreAbstrait;
 import yal.exceptions.AnalyseSemantiqueException;
 import yal.tds.Entree;
-import yal.tds.Symbole;
+import yal.tds.SymboleVariable;
 import yal.tds.TableDesSymboles;
 import yal.tds.TypeTDS;
 
@@ -27,7 +26,7 @@ public class Declaration extends Instruction{
                     "déclaration");
         } else {
 
-            tds.ajouter(nom,new Symbole(TypeTDS.Variable,
+            tds.ajouter(nom,new SymboleVariable(
                     tds.getTailleZoneVariable()+1), noLigne);
         }
     }

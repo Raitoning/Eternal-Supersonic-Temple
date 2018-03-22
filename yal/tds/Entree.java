@@ -4,6 +4,8 @@ public abstract class Entree {
 
     protected String nom;
 
+    protected int bloc;
+
     public Entree (String nom) {
 
         this.nom = nom;
