@@ -1,6 +1,7 @@
 package yal.arbre.expression;
 
 import yal.arbre.Type;
+import yal.exceptions.AnalyseSemantiqueException;
 import yal.tds.EntreeFonction;
 import yal.tds.SymboleFonction;
 import yal.tds.SymboleVariable;
@@ -33,10 +34,14 @@ public class Fonction extends Expression{
 
         SymboleFonction s = (SymboleFonction) TableDesSymboles.getInstance().identifier(nom, noLigne);
         for(int i =0;i < p.size();i++){
+
             p.get(i).verifier();
-            //TODO exception semantique : mauvais type de parametre : entier attendu
-            /*if(p.get(i).getType() == Type.booleen)
-                throw new */
+
+            if(p.get(i).getType() == Type.booleen) {
+
+                throw new AnalyseSemantiqueException(noLigne, "Mauvais type " +
+                        "de paramètre: entier attendu");
+            }
         }
 
     }

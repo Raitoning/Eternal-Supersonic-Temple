@@ -264,7 +264,7 @@ LINSTRF         ::= LINSTRF:li INSTRF:i
                 {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
                     b.ajouter(i);
                     RESULT = b ; :}
-        ;
+                ;
 
 INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
                 {: RESULT = new Retourne(eleft+1, e); :}
