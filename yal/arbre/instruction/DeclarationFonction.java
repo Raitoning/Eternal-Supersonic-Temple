@@ -1,14 +1,18 @@
 package yal.arbre.instruction;
 
 import yal.arbre.ArbreAbstrait;
+import yal.exceptions.AnalyseSemantiqueException;
 import yal.exceptions.DoubleDeclarationException;
 import yal.tds.*;
+
+import java.util.ArrayList;
 
 public class DeclarationFonction extends Instruction{
 
     private EntreeFonction nom;
     private ArbreAbstrait instructions;
     private int numBloc;
+    private ArrayList<String> parametres;
 
     public DeclarationFonction(int ligne, EntreeFonction n, ArbreAbstrait instr)
                                 {
@@ -19,6 +23,20 @@ public class DeclarationFonction extends Instruction{
         instructions = instr;
         compteurBloc++;
         numBloc = compteurBloc;
+        parametres = new ArrayList<String>();
+    }
+
+    public DeclarationFonction(int ligne, EntreeFonction n, ArbreAbstrait instr, ArrayList<String> p)
+    {
+
+        super(ligne);
+
+        nom = n;
+        instructions = instr;
+        compteurBloc++;
+        numBloc = compteurBloc;
+
+        parametres = p;
     }
 
     @Override
@@ -30,7 +48,23 @@ public class DeclarationFonction extends Instruction{
         } else {
 
             TableDesSymboles.getInstance().ajouter(new EntreeFonction(nom
-                    .getNom()), new SymboleFonction(0), noLigne);
+                    .getNom()), new SymboleFonction(0, parametres.size()), noLigne);
+
+            //ajouter les parametres
+
+            TableDesSymboles tds = TableDesSymboles.getInstance();
+            EntreeVariable v;
+            for(int k = 0; k < parametres.size();k++) {
+                v = new EntreeVariable(parametres.get(k), numBloc);
+
+                if(tds.existe(v)){
+                    throw new AnalyseSemantiqueException(noLigne,"Erreur: double " +
+                            "déclaration d'un parametre");
+                } else {
+                    tds.ajouter(v,new SymboleVariable(
+                            tds.getTailleZoneVariable()+1), noLigne);
+                }
+            }
         }
 
         if(instructions != null) {

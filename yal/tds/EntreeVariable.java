@@ -25,13 +25,12 @@ public class EntreeVariable extends Entree {
 
         int hash = hashCode();
 
-        return ("variable" + nom).equals(("variable") + toTest.getNom());
+        return (this.bloc+"variable" + nom).equals(toTest.getBloc()+"variable" + toTest.getNom());
     }
 
     @Override
     public int hashCode() {
-
-        String hash = "variable" +nom;
+        String hash = this.bloc+"variable" +nom;
 
         return hash.hashCode();
     }

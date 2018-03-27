@@ -231,7 +231,7 @@ DECL_FONCTION   ::= FONCTION IDF:i PAROUV PARFER DEBUT LINSTRF:l FIN
                         {:  if (l instanceof BlocDInstructionsFonction){
                                 ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
                             }
-                            RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), l); :}
+                            RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), l,p); :}
                 ;
 
 LINSTRF         ::= LINSTRF:li INSTRF:i
