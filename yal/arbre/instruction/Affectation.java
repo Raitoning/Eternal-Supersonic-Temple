@@ -32,10 +32,15 @@ public class Affectation extends Instruction {
         }
 
         TableDesSymboles tds = TableDesSymboles.getInstance();
-        //SymboleVariable s = (SymboleVariable) tds.identifier(nom, noLigne);
 
         tds.testVariable(nom,bloc,noLigne);
+
+
         valeur.verifier();
+
+        if (tds.testParam(nom,bloc))
+            throw new AnalyseSemantiqueException(noLigne,
+                    "Affectation impossible, impossible d'affecter une valeur à un parametre.");
 
     }
 
