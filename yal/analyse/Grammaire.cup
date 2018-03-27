@@ -356,7 +356,7 @@ EXPR            ::=     EXPR:g  PLUS  EXPR:d
                 {: RESULT = new Fonction(new EntreeFonction(e,0),eleft+1); :}
         |
                 IDF:e PAROUV PARAMETRES:p PARFER
-                {: RESULT = new Fonction(new EntreeFonction(e,p.size()),eleft+1); :}
+                {: RESULT = new Fonction(new EntreeFonction(e,p.size()),eleft+1,p); :}
                 ;
 
 CSTE        ::=     CONSTANTEINT:e

@@ -54,6 +54,7 @@ public class DeclarationFonction extends Instruction{
 
             TableDesSymboles tds = TableDesSymboles.getInstance();
             EntreeVariable v;
+            int tailleBloc = 1;
             for(int k = 0; k < parametres.size();k++) {
                 v = new EntreeVariable(parametres.get(k), numBloc);
 
@@ -62,7 +63,8 @@ public class DeclarationFonction extends Instruction{
                             "déclaration d'un parametre");
                 } else {
                     tds.ajouter(v,new SymboleVariable(
-                            tds.getTailleZoneVariable()+1), noLigne);
+                            tailleBloc,true), noLigne);
+                    tailleBloc++;
                 }
             }
         }
@@ -75,8 +77,14 @@ public class DeclarationFonction extends Instruction{
 
     @Override
     public String toMIPS() {
-
         ArbreAbstrait.functionBuilder.append(nom.getNom() + ":\n\n");
+        for(int h = 0;h < parametres.size();h++){
+
+            ArbreAbstrait.functionBuilder.append("\tlw $v0, "+4*(parametres.size()-h+1)+"($sp)\n");
+            ArbreAbstrait.functionBuilder.append("\tsw $v0, "+ (-4*(h+3))+"($sp)\n");
+        }
+
+
         ArbreAbstrait.functionBuilder.append("\tsw $ra, ($sp)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4 \n");
         ArbreAbstrait.functionBuilder.append("\tsw $s7, ($sp)\n");
@@ -85,6 +93,9 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\tsw $v0, ($sp)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
         ArbreAbstrait.functionBuilder.append("\tmove $s7,$sp\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, "+(-4*parametres.size())+"\n");
+
+
 
         if(instructions != null) {
 
@@ -95,14 +106,14 @@ public class DeclarationFonction extends Instruction{
 
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, 4\n");
         ArbreAbstrait.functionBuilder.append("\tlw $v0, ($sp)\n");
-        ArbreAbstrait.functionBuilder.append("\tsw $v0, -4($s7)\n");
+        ArbreAbstrait.functionBuilder.append("\tsw $v0, 16($s7)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp -4\n");
         ArbreAbstrait.functionBuilder.append("\n");
 
         ArbreAbstrait.functionBuilder.append("\tlw $ra, 12($s7)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $s7, +12\n");
         ArbreAbstrait.functionBuilder.append("\tlw $s7, 8($s7)\n");
-        ArbreAbstrait.functionBuilder.append("\tsw $v0, 4($sp)\n");
+        //ArbreAbstrait.functionBuilder.append("\tsw $v0, 4($sp)\n");
         ArbreAbstrait.functionBuilder.append("\tjr $ra\n");
         ArbreAbstrait.functionBuilder.append("\t#fin fonction\n");
 
