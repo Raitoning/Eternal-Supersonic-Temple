@@ -75,16 +75,18 @@ parser code {:
 
 terminal Symbol     LIRE, ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
 terminal Symbol     SI, FSI, ALORS, SINON, SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
-terminal Symbol     POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
+terminal Symbol     VIRGULE, POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
 terminal Symbol     TANTQUE, REPETER, FINTANTQUE, FONCTION, RETOURNE;
 
 terminal String     CONSTANTEINT, CONSTANTEBOOL, CHAINE, IDF;
 
 /* Non terminals used in the grammar section.  */
 
-non terminal ArbreAbstrait CONDITION, PROG, LINSTR, LINSTRF, INSTR, INSTRF, LISDECL, LISDECLF, DECL, AFF, BOUCLE, DECL_FONCTION, PARAMETRES;
+non terminal ArbreAbstrait CONDITION, PROG, LINSTR, LINSTRF, INSTR, INSTRF, LISDECL, LISDECLF, DECL, AFF, BOUCLE, DECL_FONCTION;
 non terminal Expression EXPR, CSTE;
 non terminal String TCHAINE;
+non terminal ArrayList<Expression> PARAMETRES;
+non terminal ArrayList<String> PARAMETRESDECL;
 
 precedence left OU;
 precedence left ET;
@@ -219,11 +221,17 @@ LISDECL         ::=     LISDECL:l DECL:d
                 :}
                 ;
 
-DECL_FONCTION   ::= FONCTION IDF:i PARAMETRES DEBUT LINSTRF:l FIN
+DECL_FONCTION   ::= FONCTION IDF:i PAROUV PARFER DEBUT LINSTRF:l FIN
                 {:  if (l instanceof BlocDInstructionsFonction){
-                        ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i));
+                        ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,0));
                     }
-                    RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i), l); :}
+                    RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,0), l); :}
+        |
+                    FONCTION IDF:i PAROUV PARAMETRESDECL:p PARFER DEBUT LINSTRF:l FIN
+                        {:  if (l instanceof BlocDInstructionsFonction){
+                                ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
+                            }
+                            RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), l); :}
                 ;
 
 LINSTRF         ::= LINSTRF:li INSTRF:i
@@ -267,7 +275,38 @@ INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
                 {: RESULT = new Lire(new EntreeVariable(i), ileft+1); :}
                 ;
 
-PARAMETRES      ::=   PAROUV PARFER;
+PARAMETRESDECL ::= ENTIER IDF:i
+                {:
+                ArrayList<String> res = new ArrayList<String>();
+                res.add(i);
+                RESULT = res;
+                :}
+        |
+                PARAMETRESDECL:p VIRGULE ENTIER IDF:i
+                {:
+                ArrayList<String> res = new ArrayList<String>();
+                for(int j = 0; j < p.size();j++)
+                    res.add(p.get(j));
+                res.add(i);
+                RESULT = res;
+                :}
+        ;
+
+PARAMETRES      ::=   EXPR:i
+                {:
+                ArrayList<Expression> res = new ArrayList<Expression>();
+                res.add(i);
+                RESULT = res; :}
+        |
+                PARAMETRES:p VIRGULE EXPR:i
+                {:
+                ArrayList<Expression> res = new ArrayList<Expression>();
+                for(int j = 0;j < p.size();j++)
+                    res.add(p.get(j));
+                res.add(i);
+                RESULT = res;
+                :}
+        ;
 
 EXPR            ::=     EXPR:g  PLUS  EXPR:d
                 {: RESULT = new Plus(g, d); :}
@@ -314,7 +353,10 @@ EXPR            ::=     EXPR:g  PLUS  EXPR:d
                 IDF:e
                 {: RESULT = new Variable(new EntreeVariable(e), eleft+1); :}
         |       IDF:e PAROUV PARFER
-                {: RESULT = new Fonction(new EntreeFonction(e),eleft+1); :}
+                {: RESULT = new Fonction(new EntreeFonction(e,0),eleft+1); :}
+        |
+                IDF:e PAROUV PARAMETRES:p PARFER
+                {: RESULT = new Fonction(new EntreeFonction(e,p.size()),eleft+1); :}
                 ;
 
 CSTE        ::=     CONSTANTEINT:e
