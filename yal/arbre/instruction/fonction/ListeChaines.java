@@ -38,6 +38,7 @@ public class ListeChaines {
 
     // DEBUG
     public void reset() {
+        
         stringList.clear();
     }
 }

@@ -228,11 +228,33 @@ DECL_FONCTION   ::= FONCTION IDF:i PAROUV PARFER DEBUT LINSTRF:l FIN
                     RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,0), l); :}
         |
                     FONCTION IDF:i PAROUV PARAMETRESDECL:p PARFER DEBUT LINSTRF:l FIN
-                        {:  if (l instanceof BlocDInstructionsFonction){
-                                ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
-                            }
-                            RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), l,p); :}
-                ;
+                    {:  if (l instanceof BlocDInstructionsFonction) {
+
+                            ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
+                        }
+                        RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), l,p);
+                    :}
+
+        |        FONCTION IDF:i PAROUV PARAMETRESDECL:p PARFER DEBUT LISDECL:ld LINSTRF:l FIN
+                 {:  if (l instanceof BlocDInstructionsFonction) {
+                         ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
+                     }
+                     BlocDInstructions b = new BlocDInstructions(ileft + 1);
+                     b.ajouter(ld); b.ajouter(l);
+                     RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), b,p);
+                 :}
+
+        |        FONCTION IDF:i PAROUV PARFER DEBUT LISDECL:ld LINSTRF:l FIN
+                 {:  if (l instanceof BlocDInstructionsFonction) {
+                         ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,0));
+                     }
+                     BlocDInstructions b = new BlocDInstructions(ileft + 1);
+                     b.ajouter(ld); b.ajouter(l);
+                     RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,0), l);
+                 :}
+                 ;
+
+
 
 LINSTRF         ::= LINSTRF:li INSTRF:i
                 {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
@@ -244,7 +266,7 @@ LINSTRF         ::= LINSTRF:li INSTRF:i
                 {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
                     b.ajouter(i);
                     RESULT = b ; :}
-        ;
+                ;
 
 INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
                 {: RESULT = new Retourne(eleft+1, e); :}

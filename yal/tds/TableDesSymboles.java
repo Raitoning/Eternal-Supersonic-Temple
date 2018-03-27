@@ -30,11 +30,16 @@ public class TableDesSymboles {
     }
 
     public boolean testParam(Entree e, int num){
+
         EntreeVariable ev = new EntreeVariable(e.getNom(),num);
         SymboleVariable s;
+
         if(num != 0){
+
             if(tds.containsKey(ev)) {
+
                 s = (SymboleVariable) tds.get(ev);
+
                 return s.getParam();
             }
             else return false;
@@ -43,6 +48,7 @@ public class TableDesSymboles {
     }
 
     public Symbole identifier(Entree e, int noLigne) {
+
         if(!tds.containsKey(e)) {
 
             throw new VariableNonDefinieException(noLigne, e.getNom());
@@ -52,14 +58,16 @@ public class TableDesSymboles {
     }
 
     public void testVariable(Entree e, int num, int noLigne){
+
         EntreeVariable ev = new EntreeVariable(e.getNom(),num);
 
-
         if(!tds.containsKey(e)) {
-            if(!tds.containsKey(ev))
-                throw new VariableNonDefinieException(noLigne, e.getNom());
-        }
 
+            if(!tds.containsKey(ev)) {
+
+                throw new VariableNonDefinieException(noLigne, e.getNom());
+            }
+        }
     }
 
     public boolean existe(Entree e){

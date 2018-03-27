@@ -5,9 +5,12 @@ import yal.exceptions.AnalyseSemantiqueException;
 import yal.tds.EntreeFonction;
 
 public class Retourne extends Expression{
+
     private EntreeFonction nom;
     private Expression expr;
+
     public Retourne(int n, Expression e) {
+
         super(n);
         expr = e ;
     }
@@ -16,29 +19,36 @@ public class Retourne extends Expression{
 
     @Override
     public void verifier() {
+
         expr.verifier();
-        if(expr.getType() == Type.booleen)
+
+        if(expr.getType() == Type.booleen) {
+
             throw new AnalyseSemantiqueException(noLigne, "Type de retour entier attendu, booleen trouvé");
+        }
     }
 
     @Override
     public String toMIPS() {
+
         StringBuilder sb = new StringBuilder();
         sb.append(expr.toMIPS());
+
         if (nom != null){
+
             sb.append("\tj finF"+nom.getNom()+"\n");
-        } else {
-            throw new AnalyseSemantiqueException(noLigne, "Something went wrong");
         }
         return sb.toString();
     }
 
     @Override
     public Type getType() {
+
         return Type.entier;
     }
 
     public void setName(EntreeFonction e){
+
         nom = e;
     }
 }
