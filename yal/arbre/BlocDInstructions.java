@@ -24,6 +24,17 @@ public class BlocDInstructions extends ArbreAbstrait {
     }
 
 
+    public int getVariables(){
+        int res =0;
+        if(expr.size() > 1){
+            for(int p  =0; p < expr.size();p++)
+                res = res + expr.get(p).getVariables();
+            return res;
+        }
+        else
+            return 1;
+    }
+
     public void ajouter(ArbreAbstrait a) {
 
         expr.add(a) ;

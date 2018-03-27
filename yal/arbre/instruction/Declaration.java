@@ -1,10 +1,9 @@
 package yal.arbre.instruction;
 
 import yal.exceptions.AnalyseSemantiqueException;
-import yal.tds.Entree;
-import yal.tds.SymboleVariable;
-import yal.tds.TableDesSymboles;
-import yal.tds.TypeTDS;
+import yal.tds.*;
+
+import java.util.ArrayList;
 
 public class Declaration extends Instruction{
 
@@ -20,16 +19,27 @@ public class Declaration extends Instruction{
 
     public void verifier() {
 
+        Entree ev;
+        if(bloc != 0)
+            ev = new EntreeVariable(nom.getNom(),bloc);
+        else ev = nom;
+
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
-        if(tds.existe(nom)){
+        if(tds.existe(ev)){
 
             throw new AnalyseSemantiqueException(noLigne,"Erreur: double " +
                     "déclaration");
         } else {
-
-            tds.ajouter(nom,new SymboleVariable(
+            if(bloc == 0)
+                tds.ajouter(ev,new SymboleVariable(
                     tds.getTailleZoneVariable()+1), noLigne);
+            else{
+
+                tds.ajouter(ev,new SymboleVariable(tds.getTailleBloc(bloc)
+                        ), noLigne);
+            }
+
         }
     }
 
