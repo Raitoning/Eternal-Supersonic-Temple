@@ -50,7 +50,6 @@ public class Fonction extends Expression{
         for(int k = 0;k < p.size();k++){
             sb.append("#stockage parametre\n");
             sb.append(p.get(k).toMIPS());
-            //TODO: verifier bon decalage pile
         }
         //sb.append("\taddi $sp, $sp -4\n");
         sb.append("\tjal "+ nom.getNom() +"\n");

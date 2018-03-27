@@ -16,7 +16,9 @@ public class Retourne extends Expression{
 
     @Override
     public void verifier() {
-        //TODO: this
+        expr.verifier();
+        if(expr.getType() == Type.booleen)
+            throw new AnalyseSemantiqueException(noLigne, "Type de retour entier attendu, booleen trouvé");
     }
 
     @Override

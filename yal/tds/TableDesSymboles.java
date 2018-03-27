@@ -29,6 +29,19 @@ public class TableDesSymboles {
         }
     }
 
+    public boolean testParam(Entree e, int num){
+        EntreeVariable ev = new EntreeVariable(e.getNom(),num);
+        SymboleVariable s;
+        if(num != 0){
+            if(tds.containsKey(ev)) {
+                s = (SymboleVariable) tds.get(ev);
+                return s.getParam();
+            }
+            else return false;
+        }
+        else return false;
+    }
+
     public Symbole identifier(Entree e, int noLigne) {
         if(!tds.containsKey(e)) {
 
