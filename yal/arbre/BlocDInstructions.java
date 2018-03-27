@@ -23,6 +23,7 @@ public class BlocDInstructions extends ArbreAbstrait {
         expr = new ArrayList<ArbreAbstrait>();
     }
 
+
     public void ajouter(ArbreAbstrait a) {
 
         expr.add(a) ;
@@ -166,6 +167,11 @@ public class BlocDInstructions extends ArbreAbstrait {
         for (int i=0; i<lc.size() ; i++){
             sb.append("\tmsgString"+i+":\t.asciiz "+lc.at(i)+"\n");
         }
+    }
+
+    public void setBloc(int numbloc){
+        for(int i =0;i < expr.size();i++)
+            expr.get(i).setBloc(numbloc);
     }
 
 }

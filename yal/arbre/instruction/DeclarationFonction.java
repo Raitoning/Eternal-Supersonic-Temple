@@ -70,7 +70,7 @@ public class DeclarationFonction extends Instruction{
         }
 
         if(instructions != null) {
-
+            instructions.setBloc(numBloc);
             instructionsFonctions.add(instructions);
         }
     }
@@ -80,7 +80,7 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append(nom.getNom() + ":\n\n");
         for(int h = 0;h < parametres.size();h++){
 
-            ArbreAbstrait.functionBuilder.append("\tlw $v0, "+4*(parametres.size()-h+1)+"($sp)\n");
+            ArbreAbstrait.functionBuilder.append("\tlw $v0, "+4*(parametres.size()-h)+"($sp)\n");
             ArbreAbstrait.functionBuilder.append("\tsw $v0, "+ (-4*(h+3))+"($sp)\n");
         }
 

@@ -37,4 +37,5 @@ public class Lire extends Instruction{
 
         return sb.toString();
     }
+    //TODO lire dans fonction
 }

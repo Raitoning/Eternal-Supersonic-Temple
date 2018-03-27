@@ -68,4 +68,6 @@ public class Ecrire extends Instruction {
         return stringBuilder.toString();
     }
 
+    public void setBloc(int numbloc){bloc = numbloc; expression.setBloc(numbloc);}
+//TODO ecrire dans fonction
 }

@@ -16,6 +16,8 @@ public class Declaration extends Instruction{
         this.nom = nom;
     }
 
+    public void setBloc(int numbloc){bloc = numbloc;}
+
     public void verifier() {
 
         TableDesSymboles tds = TableDesSymboles.getInstance();

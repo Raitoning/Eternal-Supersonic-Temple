@@ -30,13 +30,23 @@ public class TableDesSymboles {
     }
 
     public Symbole identifier(Entree e, int noLigne) {
-
         if(!tds.containsKey(e)) {
 
             throw new VariableNonDefinieException(noLigne, e.getNom());
         }
 
         return tds.get(e);
+    }
+
+    public void testVariable(Entree e, int num, int noLigne){
+        EntreeVariable ev = new EntreeVariable(e.getNom(),num);
+
+
+        if(!tds.containsKey(e)) {
+            if(!tds.containsKey(ev))
+                throw new VariableNonDefinieException(noLigne, e.getNom());
+        }
+
     }
 
     public boolean existe(Entree e){

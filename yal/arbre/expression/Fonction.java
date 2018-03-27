@@ -27,11 +27,17 @@ public class Fonction extends Expression{
         p = param;
     }
 
-
+    public void setBloc(int numbloc){bloc = numbloc; for(int i = 0;i<p.size();i++)p.get(i).setBloc(numbloc);}
     @Override
     public void verifier() {
 
         SymboleFonction s = (SymboleFonction) TableDesSymboles.getInstance().identifier(nom, noLigne);
+        for(int i =0;i < p.size();i++){
+            p.get(i).verifier();
+            //TODO exception semantique : mauvais type de parametre : entier attendu
+            /*if(p.get(i).getType() == Type.booleen)
+                throw new */
+        }
 
     }
 
@@ -46,7 +52,7 @@ public class Fonction extends Expression{
             sb.append(p.get(k).toMIPS());
             //TODO: verifier bon decalage pile
         }
-        sb.append("\taddi $sp, $sp -4\n");
+        //sb.append("\taddi $sp, $sp -4\n");
         sb.append("\tjal "+ nom.getNom() +"\n");
         sb.append("\n");
 

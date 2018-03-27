@@ -12,6 +12,8 @@ public class Retourne extends Expression{
         expr = e ;
     }
 
+    public void setBloc(int num){bloc = num; expr.setBloc(num);}
+
     @Override
     public void verifier() {
         //TODO: this
