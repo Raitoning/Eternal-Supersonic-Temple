@@ -22,7 +22,7 @@ public class Superieur extends Comparaison {
     @Override
     public String toMIPS() {
 
-        nbComp++;
+        int comp = nbComp++;
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -37,12 +37,12 @@ public class Superieur extends Comparaison {
 
         stringBuilder.append("\tsub $v0, $v0, $t8\n");
 
-        stringBuilder.append("\tbgtz $v0," + "comp" + nbComp + "\n");
+        stringBuilder.append("\tbgtz $v0," + "comp" + comp + "\n");
         stringBuilder.append("\tli $v0, 0\n");
-        stringBuilder.append("\tj finComp" + nbComp + "\n");
-        stringBuilder.append("\tcomp" + nbComp + ":\n");
+        stringBuilder.append("\tj finComp" + comp + "\n");
+        stringBuilder.append("\tcomp" + comp + ":\n");
         stringBuilder.append("\tli $v0, -1\n");
-        stringBuilder.append("\tfinComp" + nbComp +":\n");
+        stringBuilder.append("\tfinComp" + comp +":\n");
         stringBuilder.append("\tsw $v0, ($sp)\n");
         stringBuilder.append("\taddi $sp, $sp, -4\n");
 

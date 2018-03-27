@@ -67,6 +67,7 @@ espace = {finDeLigne}  | [ \t\f]
 ")"                         { return symbol(CodesLexicaux.PARFER); }
 
 ";"                         { return symbol(CodesLexicaux.POINTVIRGULE); }
+","                         { return symbol(CodesLexicaux.VIRGULE); }
 
 {csteE}                     { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
 {csteB}                     { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }

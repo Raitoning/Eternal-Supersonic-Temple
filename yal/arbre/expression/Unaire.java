@@ -7,6 +7,7 @@ package yal.arbre.expression;
  */
 
 public abstract class Unaire extends Expression {
+    public void setBloc(int num){bloc = num; expression.setBloc(num);}
 
     protected Expression expression ;
 

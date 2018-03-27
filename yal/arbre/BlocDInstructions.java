@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public class BlocDInstructions extends ArbreAbstrait {
-  
+
     protected ArrayList<ArbreAbstrait> expr ;
     private boolean first = false;
     public BlocDInstructions(int n) {
@@ -22,6 +22,7 @@ public class BlocDInstructions extends ArbreAbstrait {
         first = b;
         expr = new ArrayList<ArbreAbstrait>();
     }
+
 
     public void ajouter(ArbreAbstrait a) {
 
@@ -37,8 +38,10 @@ public class BlocDInstructions extends ArbreAbstrait {
         if(first) {
 
             stringBuilder.append(".data\n");
-            stringBuilder.append("\tmsgDivZero:\t.asciiz \"Erreur division " +
+            stringBuilder.append("\tmsgDivZero:\t.asciiz \"ERREUR EXECUTION : division " +
                     "par zero\"\n\n");
+            stringBuilder.append("\tmsgNoReturn:\t.asciiz \"ERREUR EXECUTION : Aucune " +
+                    "valeur de retour\"\n\n");
             stringBuilder.append("\tmsgTrue:\t.asciiz \"vrai\"\n\n");
             stringBuilder.append("\tmsgFalse:\t.asciiz \"faux\"\n\n");
             addStringData(stringBuilder);
@@ -47,7 +50,9 @@ public class BlocDInstructions extends ArbreAbstrait {
             stringBuilder.append("\tmove $s7, $sp\n");
             stringBuilder.append("\taddi $sp, $sp, -" + (4 * tds
                     .getTailleZoneVariable()) + "\n");
-
+            stringBuilder.append("\t#numero bloc 0\n");
+            stringBuilder.append("\tsw $zero, ($sp)\n");
+            stringBuilder.append("\taddi $sp, $sp, -4\n");
             stringBuilder.append("\n");
         }
       
@@ -68,11 +73,20 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\tsyscall\n");
         stringBuilder.append("\n");
         stringBuilder.append("\n");
+
         stringBuilder.append("divZero:\n");
         stringBuilder.append("\n");
-
         stringBuilder.append("\tli $v0, 4\n");
         stringBuilder.append("\tla $a0, msgDivZero\n");
+        stringBuilder.append("\tsyscall\n");
+        stringBuilder.append("\tj end\n");
+        stringBuilder.append("\n");
+        stringBuilder.append("\n");
+
+        stringBuilder.append("noReturn:\n");
+        stringBuilder.append("\n");
+        stringBuilder.append("\tli $v0, 4\n");
+        stringBuilder.append("\tla $a0, msgNoReturn\n");
         stringBuilder.append("\tsyscall\n");
         stringBuilder.append("\tj end\n");
         stringBuilder.append("\n");
@@ -110,10 +124,11 @@ public class BlocDInstructions extends ArbreAbstrait {
         stringBuilder.append("\tjr $ra\n");
         stringBuilder.append("\n");
         stringBuilder.append("\n");
+        stringBuilder.append(ArbreAbstrait.functionBuilder.toString());
         }
 
-        stringBuilder.append(ArbreAbstrait.functionBuilder.toString());
-      
+
+
         return stringBuilder.toString();
     }
 
@@ -136,6 +151,14 @@ public class BlocDInstructions extends ArbreAbstrait {
 
                 abstrait.verifier();
             }
+
+            for(ArbreAbstrait arbreAbstrait: instructionsFonctions) {
+
+                if(first) {
+
+                    arbreAbstrait.verifier();
+                }
+            }
         }
     }
 
@@ -144,6 +167,11 @@ public class BlocDInstructions extends ArbreAbstrait {
         for (int i=0; i<lc.size() ; i++){
             sb.append("\tmsgString"+i+":\t.asciiz "+lc.at(i)+"\n");
         }
+    }
+
+    public void setBloc(int numbloc){
+        for(int i =0;i < expr.size();i++)
+            expr.get(i).setBloc(numbloc);
     }
 
 }

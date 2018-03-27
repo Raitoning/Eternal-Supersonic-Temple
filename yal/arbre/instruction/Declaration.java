@@ -1,9 +1,8 @@
 package yal.arbre.instruction;
 
-import yal.arbre.ArbreAbstrait;
 import yal.exceptions.AnalyseSemantiqueException;
 import yal.tds.Entree;
-import yal.tds.Symbole;
+import yal.tds.SymboleVariable;
 import yal.tds.TableDesSymboles;
 import yal.tds.TypeTDS;
 
@@ -17,17 +16,21 @@ public class Declaration extends Instruction{
         this.nom = nom;
     }
 
+    public void setBloc(int numbloc){bloc = numbloc;}
+
     public void verifier() {
 
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
-        if(tds.existe(nom) != null){
+        if(tds.existe(nom)){
+
             throw new AnalyseSemantiqueException(noLigne,"Erreur: double " +
                     "déclaration");
+        } else {
+
+            tds.ajouter(nom,new SymboleVariable(
+                    tds.getTailleZoneVariable()+1), noLigne);
         }
-
-        tds.ajouter(nom,new Symbole(TypeTDS.Variable,tds.getTailleZoneVariable()+1));
-
     }
 
     @Override

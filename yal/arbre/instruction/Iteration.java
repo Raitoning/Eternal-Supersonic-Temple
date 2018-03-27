@@ -18,6 +18,8 @@ public class Iteration extends Instruction {
         instructions = arbreAbstrait;
     }
 
+    public void setBloc(int numbloc){bloc = numbloc; condition.setBloc(numbloc); instructions.setBloc(numbloc);}
+
     @Override
     public void verifier() {
 
@@ -48,5 +50,9 @@ public class Iteration extends Instruction {
         stringBuilder.append("finBoucle" + boucle + ":\n");
 
         return stringBuilder.toString();
+    }
+
+    public ArbreAbstrait getInstructions() {
+        return instructions;
     }
 }

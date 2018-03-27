@@ -16,43 +16,47 @@ public class TableDesSymboles {
         tds = new HashMap<>();
     }
 
-    public void ajouter(Entree e, Symbole s) {
+    // TODO: Fixer les exceptions
+
+    public void ajouter(Entree e, Symbole s, int noLigne) {
 
         if(tds.containsKey(e)) {
 
-            throw new DoubleDeclarationException("ERREUR SEMANTIQUE:\n" +
-                    "\tDouble déclaration de " + e);
+            throw new DoubleDeclarationException(noLigne, e.getNom());
         } else {
 
             tds.put(e, s);
         }
     }
 
-    public Symbole identifier(Entree e) {
-
+    public Symbole identifier(Entree e, int noLigne) {
         if(!tds.containsKey(e)) {
 
-            throw new VariableNonDefinieException("ERREUR SEMANTIQUE:\n" +
-                    "\tVariable non déclarée: " +
-                    e.getNom());
-        } else {
-
-            return tds.get(e);
+            throw new VariableNonDefinieException(noLigne, e.getNom());
         }
+
+        return tds.get(e);
     }
 
-    public Symbole existe(Entree e){
+    public void testVariable(Entree e, int num, int noLigne){
+        EntreeVariable ev = new EntreeVariable(e.getNom(),num);
+
 
         if(!tds.containsKey(e)) {
-
-            return null;
+            if(!tds.containsKey(ev))
+                throw new VariableNonDefinieException(noLigne, e.getNom());
         }
-        else return tds.get(e);
+
+    }
+
+    public boolean existe(Entree e){
+
+        return tds.containsKey(e);
     }
 
     public int getTailleZoneVariable() {
 
-        int res = 0;
+        int res = 1;
 
         for(Entree e: tds.keySet()) {
 
@@ -63,6 +67,11 @@ public class TableDesSymboles {
         }
 
         return res;
+    }
+
+    public int getNumBloc(EntreeFonction e){
+
+        return ((SymboleFonction)tds.get(e)).getNumBloc();
     }
 
     public static TableDesSymboles getInstance() {
