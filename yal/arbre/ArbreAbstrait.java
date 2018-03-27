@@ -36,4 +36,8 @@ public abstract class ArbreAbstrait {
 
     public void setBloc(int numbloc){bloc = numbloc;}
 
+    public int getVariables(){
+        return 0;
+    }
+
 }

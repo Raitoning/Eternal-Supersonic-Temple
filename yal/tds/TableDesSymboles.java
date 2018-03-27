@@ -21,7 +21,6 @@ public class TableDesSymboles {
     public void ajouter(Entree e, Symbole s, int noLigne) {
 
         if(tds.containsKey(e)) {
-
             throw new DoubleDeclarationException(noLigne, e.getNom());
         } else {
 
@@ -88,6 +87,25 @@ public class TableDesSymboles {
         }
 
         return res;
+    }
+
+    public int getTailleBloc(int n){
+
+        int res =1;
+        EntreeVariable ev;
+        for(Entree e: tds.keySet()) {
+
+            if(tds.get(e).getTypeTDS() == TypeTDS.Variable) {
+                ev = (EntreeVariable)e;
+                if(ev.getBloc() == n && !tds.get(e).estParametre)
+                    res++;
+                if(tds.get(e).estParametre)
+                    res--;
+            }
+        }
+
+        return res;
+
     }
 
     public int getNumBloc(EntreeFonction e){

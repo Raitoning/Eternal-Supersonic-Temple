@@ -88,7 +88,7 @@ public class Ecrire extends Instruction {
         }
         return stringBuilder.toString();
     }
-
+  
     public void setBloc(int numbloc) {
 
         bloc = numbloc;
