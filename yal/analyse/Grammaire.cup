@@ -240,7 +240,7 @@ DECL_FONCTION   ::= FONCTION IDF:i PAROUV PARFER DEBUT LINSTRF:l FIN
                      BlocDInstructions b = new BlocDInstructions(ileft + 1);
                      b.ajouter(ld); b.ajouter(l);
                      DeclarationFonction dec = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), b,p);
-                     dec.setVariables(ld.setVariables());
+                     dec.setVariables(ld.getVariables());
                      RESULT = dec;
                       :}
         |        FONCTION IDF:i PAROUV PARFER DEBUT LISDECL:ld LINSTRF:l FIN
@@ -249,8 +249,8 @@ DECL_FONCTION   ::= FONCTION IDF:i PAROUV PARFER DEBUT LINSTRF:l FIN
                      }
                      BlocDInstructions b = new BlocDInstructions(ileft + 1);
                      b.ajouter(ld); b.ajouter(l);
-                     DeclarationFonction dec = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), b,p);
-                     dec.setVariables(ld.setVariables());
+                     DeclarationFonction dec = new DeclarationFonction(ileft + 1, new EntreeFonction(i,0), b);
+                     dec.setVariables(ld.getVariables());
                      RESULT = dec; :}
                      ;
 

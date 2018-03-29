@@ -33,6 +33,7 @@ public class Retourne extends Expression{
 
         StringBuilder sb = new StringBuilder();
         sb.append(expr.toMIPS());
+        sb.append("\taddi $sp, $sp, 4\n");
 
         if (nom != null){
 
