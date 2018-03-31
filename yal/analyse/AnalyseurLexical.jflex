@@ -65,6 +65,8 @@ espace = {finDeLigne}  | [ \t\f]
 
 "("                         { return symbol(CodesLexicaux.PAROUV); }
 ")"                         { return symbol(CodesLexicaux.PARFER); }
+"["                         { return symbol(CodesLexicaux.CROOUV); }
+"]"                         { return symbol(CodesLexicaux.CROFER); }
 
 ";"                         { return symbol(CodesLexicaux.POINTVIRGULE); }
 ","                         { return symbol(CodesLexicaux.VIRGULE); }

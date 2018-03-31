@@ -26,6 +26,8 @@ parser code {:
         lesTerminaux.put(new Integer(CodesLexicaux.DIV), "/") ;
         lesTerminaux.put(new Integer(CodesLexicaux.PAROUV), "(") ;
         lesTerminaux.put(new Integer(CodesLexicaux.PARFER), ")") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.CROOUV), "[") ;
+        lesTerminaux.put(new Integer(CodesLexicaux.CROFER), "]") ;
         lesTerminaux.put(new Integer(CodesLexicaux.SUP), ">") ;
         lesTerminaux.put(new Integer(CodesLexicaux.INF), "<") ;
         lesTerminaux.put(new Integer(CodesLexicaux.EGALEGAL), "==") ;
@@ -73,7 +75,7 @@ parser code {:
 
 /* Terminals (tokens returned by the scanner).  */
 
-terminal Symbol     LIRE, ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER ;
+terminal Symbol     LIRE, ECRIRE, PLUS, MOINS, MULT, DIV, PAROUV, PARFER, CROOUV, CROFER ;
 terminal Symbol     SI, FSI, ALORS, SINON, SUP, INF, EGALEGAL, DIFF, ET, OU, NON ;
 terminal Symbol     VIRGULE, POINTVIRGULE, PROGRAMME, DEBUT, FIN, ENTIER, EGAL;
 terminal Symbol     TANTQUE, REPETER, FINTANTQUE, FONCTION, RETOURNE;
@@ -180,6 +182,10 @@ CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
 
 DECL            ::=     ENTIER IDF:i POINTVIRGULE
                 {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1); :}
+        |
+                ENTIER IDF:i CROOUV EXPR:e CROFER POINTVIRGULE
+                {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1, e); :}
+                //TODO:Complete, if necessary
                 ;
 
 
@@ -377,6 +383,9 @@ EXPR            ::=     EXPR:g  PLUS  EXPR:d
         |
                 IDF:e PAROUV PARAMETRES:p PARFER
                 {: RESULT = new Fonction(new EntreeFonction(e,p.size()),eleft+1,p); :}
+        |
+                IDF:i CROOUV EXPR:e CROFER
+                //TODO:Complete
                 ;
 
 CSTE        ::=     CONSTANTEINT:e
