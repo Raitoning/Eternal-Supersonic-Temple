@@ -8,17 +8,25 @@ import yal.tds.TableDesSymboles;
 public class Variable extends Expression{
 
     protected Entree nom;
+    protected boolean isTableaux;
 
     public Variable(Entree n, int no){
         super(no);
         nom = n;
+        isTableaux = false;
+    }
+
+    public Variable(Entree n, int no, boolean isTab) {
+
+        this(n, no);
+        isTableaux = isTab;
     }
 
 
     @Override
     public void verifier() {
-        TableDesSymboles tds = TableDesSymboles.getInstance();
-        Symbole s = tds.identifier(nom, noLigne);
+
+        Symbole s = TableDesSymboles.getInstance().identifier(nom, noLigne);
     }
 
     @Override
