@@ -6,15 +6,24 @@ import yal.tds.*;
 public class Variable extends Expression{
 
     protected Entree nom;
+    protected boolean isTableaux;
 
     public Variable(Entree n, int no){
         super(no);
         nom = n;
+        isTableaux = false;
+    }
+
+    public Variable(Entree n, int no, boolean isTab) {
+
+        this(n, no);
+        isTableaux = isTab;
     }
 
 
     @Override
     public void verifier() {
+      
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         tds.testVariable(nom,bloc,noLigne);

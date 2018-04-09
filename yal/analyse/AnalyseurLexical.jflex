@@ -99,4 +99,4 @@ espace = {finDeLigne}  | [ \t\f]
 
 {commentaireSlashSlash}     {}
 
-.                           { throw new AnalyseLexicaleException(yyline, yycolumn, yytext()) ; }
+. { throw new AnalyseLexicaleException(yyline, yycolumn, yytext()) ; }

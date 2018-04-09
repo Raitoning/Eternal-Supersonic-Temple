@@ -13,6 +13,7 @@ public class Affectation extends Instruction {
 
     private Entree nom;
     private Expression valeur;
+    private Expression element;
 
     public Affectation(Entree nom, Expression valeur, int no) {
 
@@ -21,7 +22,17 @@ public class Affectation extends Instruction {
         this.valeur = valeur;
     }
 
+
+    public Affectation(Entree nom, Expression el, Expression valeur, int no) {
+
+        super(no);
+        this.nom = nom;
+        this.valeur = valeur;
+        element = el;
+    }
+
     public void setBloc(int numbloc){bloc = numbloc; valeur.setBloc(numbloc);}
+
 
     @Override
     public void verifier() {
@@ -29,6 +40,16 @@ public class Affectation extends Instruction {
         if(valeur.getType() == Type.booleen){
             throw new AnalyseSemantiqueException(noLigne,
                     "Affectation impossible, mauvais type d'expression.");
+        }
+
+        if(element != null) {
+
+            if(element.getType() != Type.entier) {
+
+                throw new AnalyseSemantiqueException(noLigne, "Affectation de tableau impossible: entier attendu");
+            }
+
+            element.verifier();
         }
 
         TableDesSymboles tds = TableDesSymboles.getInstance();
@@ -47,14 +68,12 @@ public class Affectation extends Instruction {
     @Override
     public String toMIPS() {
 
+        // TODO: Modifier toMIPS classe Affectation pour tableaux
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         StringBuilder sb = new StringBuilder();
 
         sb.append(valeur.toMIPS());
-
-
-
 
         sb.append("\n");
         sb.append("#Affectation\n");

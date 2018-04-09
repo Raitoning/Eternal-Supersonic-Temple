@@ -98,18 +98,19 @@ precedence left PLUS, MOINS;
 precedence left MULT, DIV;
 precedence left NON;
 precedence left EGAL;
+precedence left CONSTANTEINT;
 
 /* ----------------------------Grammar Section-------------------- */
 
 start with PROG;
 
-PROG            ::=     PROGRAMME IDF DEBUT LISDECLF:d LINSTR:e FIN
+PROG            ::=     PROGRAMME IDF DEBUT LISDECL:d LINSTR:e FIN
                 {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
                     arbre.ajouter(d);
                     arbre.ajouter(e);
                     RESULT = arbre; :}
         |
-                PROGRAMME IDF DEBUT LISDECLF:d FIN
+                PROGRAMME IDF DEBUT LISDECL:d FIN
                 {: BlocDInstructions arbre = new BlocDInstructions(dleft, true);
                     arbre.ajouter(d);
                     RESULT = arbre; :}
@@ -168,6 +169,9 @@ BOUCLE          ::=     TANTQUE EXPR:e REPETER LINSTR:li FINTANTQUE
 
 AFF             ::=     IDF:i EGAL EXPR:e POINTVIRGULE
                 {: RESULT = new Affectation(new EntreeVariable(i), e, ileft + 1); :}
+       |
+                IDF:i CROOUV EXPR:f CROFER EGAL EXPR:e POINTVIRGULE
+                {: RESULT = new Affectation(new EntreeVariable(i),f, e, ileft + 1); :}
                 ;
 
 CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
@@ -201,15 +205,15 @@ LISDECLF        ::= LISDECLF:l DECL:d
                     b.ajouter(d);
                     RESULT =  b;
                 :}
-        |       DECL:d
-                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
-                   b.ajouter(d);
-                   RESULT = b;
+        |
+                ENTIER IDF:i CROOUV CONSTANTEINT:c CROFER POINTVIRGULE
+                {:
+                RESULT = new DeclarationTableau(new EntreeVariable(i), ileft + 1, new ConstanteEntiere(c, ileft + 1), true);
                 :}
-        |       DECL_FONCTION:d
-                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
-                   b.ajouter(d);
-                   RESULT = b;
+        |
+                ENTIER IDF:i CROOUV EXPR:e CROFER POINTVIRGULE
+                {:
+                RESULT = new DeclarationTableau(new EntreeVariable(i), ileft + 1, e, true);
                 :}
                 ;
 
@@ -272,34 +276,22 @@ LINSTRF         ::= LINSTRF:li INSTRF:i
                     RESULT = b ; :}
                 ;
 
-INSTRF          ::= RETOURNE EXPR:e POINTVIRGULE
-                {: RESULT = new Retourne(eleft+1, e); :}
-        |       SI EXPR:e ALORS LINSTRF:li SINON LINSTRF:le FSI
+PARAMETRESDECL ::= ENTIER IDF:i
                 {:
-                    RESULT = new Conditionnel(lileft + 1, e, li, le);
+                ArrayList<String> res = new ArrayList<String>();
+                res.add(i);
+                RESULT = res;
                 :}
-        |       SI EXPR:e ALORS LINSTRF:li FSI
+        |
+                PARAMETRESDECL:p VIRGULE ENTIER IDF:i
                 {:
-                    RESULT = new Conditionnel(lileft + 1, e, li, null);
+                ArrayList<String> res = new ArrayList<String>();
+                for(int j = 0; j < p.size();j++)
+                    res.add(p.get(j));
+                res.add(i);
+                RESULT = res;
                 :}
-        |       TANTQUE EXPR:e REPETER LINSTRF:li FINTANTQUE
-                {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(lileft + 1);
-                    b.ajouter(li);
-                    Iteration ite = new Iteration(eleft + 1, e, b);
-                    RESULT = ite;
-                :}
-        |        AFF:a
-                 {: RESULT = a; :}
-        |
-                ECRIRE EXPR:e POINTVIRGULE
-                {: RESULT = new Ecrire(eleft + 1, e); :}
-        |
-                ECRIRE TCHAINE:e POINTVIRGULE
-                {: RESULT = new Ecrire(eleft + 1, e); :}
-        |
-                LIRE IDF:i POINTVIRGULE
-                {: RESULT = new Lire(new EntreeVariable(i), ileft+1); :}
-                ;
+        ;
 
 PARAMETRESDECL ::= ENTIER IDF:i
                 {:
@@ -378,14 +370,15 @@ EXPR            ::=     EXPR:g  PLUS  EXPR:d
         |
                 IDF:e
                 {: RESULT = new Variable(new EntreeVariable(e), eleft+1); :}
+        |
+                IDF:i CROOUV EXPR:e CROFER
+                {: RESULT = new Tableau(new EntreeVariable(i),e,ileft+1); :}
+                
         |       IDF:e PAROUV PARFER
                 {: RESULT = new Fonction(new EntreeFonction(e,0),eleft+1); :}
         |
                 IDF:e PAROUV PARAMETRES:p PARFER
                 {: RESULT = new Fonction(new EntreeFonction(e,p.size()),eleft+1,p); :}
-        |
-                IDF:i CROOUV EXPR:e CROFER
-                //TODO:Complete
                 ;
 
 CSTE        ::=     CONSTANTEINT:e
@@ -397,4 +390,4 @@ CSTE        ::=     CONSTANTEINT:e
 TCHAINE     ::=   CHAINE:e
                 {: ListeChaines.getInstance().add(e);
                 RESULT = e ; :}
-                ;
+;

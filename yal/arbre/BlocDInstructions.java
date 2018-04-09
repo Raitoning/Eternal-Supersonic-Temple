@@ -41,11 +41,11 @@ public class BlocDInstructions extends ArbreAbstrait {
     }
 
     public String toMIPS() {
-      
+
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         StringBuilder stringBuilder = new StringBuilder();
-      
+
         if(first) {
 
             stringBuilder.append(".data\n");
@@ -53,6 +53,8 @@ public class BlocDInstructions extends ArbreAbstrait {
                     "par zero\"\n\n");
             stringBuilder.append("\tmsgNoReturn:\t.asciiz \"ERREUR EXECUTION : Aucune " +
                     "valeur de retour\"\n\n");
+            stringBuilder.append("\tmsgOutOfBounds:\t.asciiz \"ERREUR EXECUTION : Index Array " +
+                    "Out of Bounds : Acces a une case en dehors du tableau\n\n");
             stringBuilder.append("\tmsgTrue:\t.asciiz \"vrai\"\n\n");
             stringBuilder.append("\tmsgFalse:\t.asciiz \"faux\"\n\n");
             addStringData(stringBuilder);
@@ -66,7 +68,7 @@ public class BlocDInstructions extends ArbreAbstrait {
             stringBuilder.append("\taddi $sp, $sp, -4\n");
             stringBuilder.append("\n");
         }
-      
+
         if(!expr.isEmpty()) {
 
             for (ArbreAbstrait abstrait: expr) {
@@ -77,65 +79,74 @@ public class BlocDInstructions extends ArbreAbstrait {
 
 
         if(first) {
-        stringBuilder.append("\nend:\n\n");
-        stringBuilder.append("\tmove $v1, $v0\t# copie de v0 dans v1 pour " +
-                "permettre les tests\n");
-        stringBuilder.append("\tli $v0, 10\t# retour au système\n");
-        stringBuilder.append("\tsyscall\n");
-        stringBuilder.append("\n");
-        stringBuilder.append("\n");
+            stringBuilder.append("\nend:\n\n");
+            stringBuilder.append("\tmove $v1, $v0\t# copie de v0 dans v1 pour " +
+                    "permettre les tests\n");
+            stringBuilder.append("\tli $v0, 10\t# retour au système\n");
+            stringBuilder.append("\tsyscall\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\n");
 
-        stringBuilder.append("divZero:\n");
-        stringBuilder.append("\n");
-        stringBuilder.append("\tli $v0, 4\n");
-        stringBuilder.append("\tla $a0, msgDivZero\n");
-        stringBuilder.append("\tsyscall\n");
-        stringBuilder.append("\tj end\n");
-        stringBuilder.append("\n");
-        stringBuilder.append("\n");
+            stringBuilder.append("divZero:\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\tli $v0, 4\n");
+            stringBuilder.append("\tla $a0, msgDivZero\n");
+            stringBuilder.append("\tsyscall\n");
+            stringBuilder.append("\tj end\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\n");
 
-        stringBuilder.append("noReturn:\n");
-        stringBuilder.append("\n");
-        stringBuilder.append("\tli $v0, 4\n");
-        stringBuilder.append("\tla $a0, msgNoReturn\n");
-        stringBuilder.append("\tsyscall\n");
-        stringBuilder.append("\tj end\n");
-        stringBuilder.append("\n");
-        stringBuilder.append("\n");
+            stringBuilder.append("noReturn:\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\tli $v0, 4\n");
+            stringBuilder.append("\tla $a0, msgNoReturn\n");
+            stringBuilder.append("\tsyscall\n");
+            stringBuilder.append("\tj end\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\n");
 
-        stringBuilder.append("printEntier:\n");
-        stringBuilder.append("\tmove $a0, $v0\t# copie de v0 dans a1 pour " +
-                "permettre l'affichage\n");
-        stringBuilder.append("\tmove $t8, $v0\n");
-        stringBuilder.append("\tli $v0, 1\n");
-        stringBuilder.append("\tsyscall\n");
-        stringBuilder.append("\tmove $v0, $t8\n");
-        stringBuilder.append("\tjr $ra\n");
-        stringBuilder.append("\n");
-        stringBuilder.append("\n");
+            stringBuilder.append("outOfBounds:\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\tli $v0, 4\n");
+            stringBuilder.append("\tla $a0, msgOutOfBounds\n");
+            stringBuilder.append("\tsyscall\n");
+            stringBuilder.append("\tj end\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\n");
 
-        stringBuilder.append("printBool:\n");
-        stringBuilder.append("\t beq $v0, $0, printFalse\n");
-        stringBuilder.append("\tla $a0, msgTrue\t#Ici on affiche vrai\n");
-        stringBuilder.append("\tj printBool2\n");
-        stringBuilder.append("printFalse:\n");
-        stringBuilder.append("\tla $a0, msgFalse\t#Ici on affiche faux\n");
-        stringBuilder.append("printBool2:\n");
-        stringBuilder.append("\tli $v0, 4\n");
-        stringBuilder.append("\tsyscall\n");
-        stringBuilder.append("\tjr $ra\n");
-        stringBuilder.append("\n");
+            stringBuilder.append("printEntier:\n");
+            stringBuilder.append("\tmove $a0, $v0\t# copie de v0 dans a1 pour " +
+                    "permettre l'affichage\n");
+            stringBuilder.append("\tmove $t8, $v0\n");
+            stringBuilder.append("\tli $v0, 1\n");
+            stringBuilder.append("\tsyscall\n");
+            stringBuilder.append("\tmove $v0, $t8\n");
+            stringBuilder.append("\tjr $ra\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\n");
 
-        stringBuilder.append("printString:\t#Assumant qu'on ait défini la string a afficher avant ce jump\n");
-        stringBuilder.append("\n");
-        stringBuilder.append("\tmove $t8, $v0\n");
-        stringBuilder.append("\tli $v0, 4\n");
-        stringBuilder.append("\tsyscall\n");
-        stringBuilder.append("\tmove $v0, $t8\n");
-        stringBuilder.append("\tjr $ra\n");
-        stringBuilder.append("\n");
-        stringBuilder.append("\n");
-        stringBuilder.append(ArbreAbstrait.functionBuilder.toString());
+            stringBuilder.append("printBool:\n");
+            stringBuilder.append("\t beq $v0, $0, printFalse\n");
+            stringBuilder.append("\tla $a0, msgTrue\t#Ici on affiche vrai\n");
+            stringBuilder.append("\tj printBool2\n");
+            stringBuilder.append("printFalse:\n");
+            stringBuilder.append("\tla $a0, msgFalse\t#Ici on affiche faux\n");
+            stringBuilder.append("printBool2:\n");
+            stringBuilder.append("\tli $v0, 4\n");
+            stringBuilder.append("\tsyscall\n");
+            stringBuilder.append("\tjr $ra\n");
+            stringBuilder.append("\n");
+
+            stringBuilder.append("printString:\t#Assumant qu'on ait défini la string a afficher avant ce jump\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\tmove $t8, $v0\n");
+            stringBuilder.append("\tli $v0, 4\n");
+            stringBuilder.append("\tsyscall\n");
+            stringBuilder.append("\tmove $v0, $t8\n");
+            stringBuilder.append("\tjr $ra\n");
+            stringBuilder.append("\n");
+            stringBuilder.append("\n");
+            stringBuilder.append(ArbreAbstrait.functionBuilder.toString());
         }
 
 
