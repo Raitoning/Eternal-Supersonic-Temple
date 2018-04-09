@@ -65,8 +65,11 @@ espace = {finDeLigne}  | [ \t\f]
 
 "("                         { return symbol(CodesLexicaux.PAROUV); }
 ")"                         { return symbol(CodesLexicaux.PARFER); }
+"["                         { return symbol(CodesLexicaux.CROOUV); }
+"]"                         { return symbol(CodesLexicaux.CROFER); }
 
 ";"                         { return symbol(CodesLexicaux.POINTVIRGULE); }
+","                         { return symbol(CodesLexicaux.VIRGULE); }
 
 {csteE}                     { return symbol(CodesLexicaux.CONSTANTEINT, yytext()); }
 {csteB}                     { return symbol(CodesLexicaux.CONSTANTEBOOL, yytext()); }
@@ -96,4 +99,4 @@ espace = {finDeLigne}  | [ \t\f]
 
 {commentaireSlashSlash}     {}
 
-.                           { throw new AnalyseLexicaleException(yyline, yycolumn, yytext()) ; }
+. { throw new AnalyseLexicaleException(yyline, yycolumn, yytext()) ; }
