@@ -1,6 +1,7 @@
 package yal.arbre.instruction;
 
 import yal.arbre.Type;
+import yal.arbre.expression.ConstanteEntiere;
 import yal.arbre.expression.Expression;
 import yal.exceptions.AnalyseSemantiqueException;
 import yal.tds.*;
@@ -9,12 +10,14 @@ public class DeclarationTableau extends Instruction {
 
     private Expression tailleTableau;
     private Entree nom;
+    private boolean dynamique;
 
-    protected DeclarationTableau(Entree n, int no, Expression taille) {
+    public DeclarationTableau(Entree n, int no, Expression taille, boolean dyn) {
 
         super(no);
         nom = n;
         tailleTableau = taille;
+        dynamique = dyn;
     }
 
     @Override
@@ -30,7 +33,18 @@ public class DeclarationTableau extends Instruction {
 
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
-        tds.ajouter(nom,new Symbole(TypeTDS.Variable, tds.getTailleZoneVariable() + 1), noLigne);
+        // HACK: Pour récupérer la taille du tableau à partir de la String cste
+        ConstanteEntiere tmp = (ConstanteEntiere)tailleTableau;
+
+        if(dynamique) {
+
+            tds.ajouter(nom,new Symbole(TypeTDS.TableauDynamique, tds.getTailleZoneVariable() + 1), tmp.toInt());
+        } else {
+
+            tds.ajouter(nom,new Symbole(TypeTDS.Tableau, tds.getTailleZoneVariable() + 1), tmp.toInt());
+
+        }
+
     }
 
     @Override

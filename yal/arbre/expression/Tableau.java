@@ -11,7 +11,7 @@ public class Tableau extends Expression {
     protected EntreeVariable nom;
     protected Expression element;
 
-    protected Tableau(EntreeVariable e, Expression el, int n) {
+    public Tableau(EntreeVariable e, Expression el, int n) {
 
         super(n);
         nom = e;

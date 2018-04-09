@@ -3,5 +3,7 @@ package yal.tds;
 public enum TypeTDS {
 
     Variable,
-    Fonction
+    Fonction,
+    Tableau,
+    TableauDynamique
 }
