@@ -23,4 +23,9 @@ public abstract class Expression extends ArbreAbstrait {
     public abstract String toMIPS();
 
     public abstract Type getType();
+
+    // HACK: Pour récupérer la taille d'un tableau dans la TDS
+    public boolean isConstanteEntiere(){
+        return false;
+    }
 }

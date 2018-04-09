@@ -32,4 +32,16 @@ public class ConstanteEntiere extends Constante {
 
         return stringBuilder.toString();
     }
+
+    // HACK: Pour récupérer la taille d'un tableau pour la TDS
+    @Override
+    public boolean isConstanteEntiere() {
+        return true;
+    }
+
+    // HACK: Pour convertir la constante String en Integer
+    public int toInt() {
+
+        return Integer.parseInt(cste);
+    }
 }
