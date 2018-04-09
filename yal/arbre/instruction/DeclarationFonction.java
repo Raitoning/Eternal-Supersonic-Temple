@@ -99,7 +99,8 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\tsw $v0, ($sp)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
         ArbreAbstrait.functionBuilder.append("\tmove $s7,$sp\n");
-        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, "+(-4*(parametres.size()+numVar))+"\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, "+(-4*(1+TableDesSymboles.getInstance().getTailleBloc(bloc)))+"\n");
+        //System.out.println(TableDesSymboles.getInstance().getTailleBloc(bloc));
 
 
 

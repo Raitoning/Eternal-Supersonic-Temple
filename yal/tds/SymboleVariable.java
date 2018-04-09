@@ -17,7 +17,7 @@ public class SymboleVariable extends Symbole{
     }
 
     public int getAdr() {
-        return adr;
+        if(estParametre)return adr; else return adr+1;
     }
 
     public boolean getParam(){return estParametre;}

@@ -78,12 +78,11 @@ public class Affectation extends Instruction {
             sb.append("\trecupVar"+nom.getNom()+ numRecup +":\n");
         }
 
-
         sb.append("\tlw $v0, ($sp)\n");
         if(!exi)
-            sb.append("\tsw $v0, " + (((SymboleVariable)tds.identifier(nom, noLigne)).getAdr()) * 4 + "" +
-                "($s7)\n");
-        else sb.append("\tsw $v0, " + (((SymboleVariable)tds.identifier(sv, noLigne)).getAdr()) * 4 + "" +
+            sb.append("\tsw $v0, " + (((SymboleVariable)tds.identifier(nom, noLigne)).getAdr()-1) * -4 + "" +
+                "($s7)#tttt\n");
+        else sb.append("\tsw $v0, " + (((SymboleVariable)tds.identifier(sv, noLigne)).getAdr()-1) * -4 + "" +
                 "($s7)\n");
         sb.append("\taddi $sp, $sp, -4\n");
 

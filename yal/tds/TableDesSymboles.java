@@ -91,7 +91,8 @@ public class TableDesSymboles {
 
     public int getTailleBloc(int n){
 
-        int res =1;
+        int res =0;
+        int tmp = 0;
         EntreeVariable ev;
         for(Entree e: tds.keySet()) {
 
@@ -100,11 +101,11 @@ public class TableDesSymboles {
                 if(ev.getBloc() == n && !tds.get(e).estParametre)
                     res++;
                 if(tds.get(e).estParametre)
-                    res--;
+                    tmp++;
             }
         }
 
-        return res;
+        return res+tmp;
 
     }
 

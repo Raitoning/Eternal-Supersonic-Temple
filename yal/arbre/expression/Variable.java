@@ -46,15 +46,13 @@ public class Variable extends Expression{
         }
 
 
-
-
         sb.append("\t#stockage\n");
         sb.append("\t\n");
         if(!exi) {
 
-            sb.append("\tlw $v0, " + (((SymboleVariable) tds.identifier(nom, noLigne)).getAdr()) * 4 + "($s7)\n");
+            sb.append("\tlw $v0, " + (((SymboleVariable) tds.identifier(nom, noLigne)).getAdr()-1) * -4 + "($s7)\n");
         }else {
-            sb.append("\tlw $v0, " + (((SymboleVariable) tds.identifier(sv, noLigne)).getAdr()-1) * 4 + "($s7)\n");
+            sb.append("\tlw $v0, " + (((SymboleVariable) tds.identifier(sv, noLigne)).getAdr()-1) * -4 + "($s7)\n");
         }
         sb.append("\tsw $v0, ($sp)\n");
         sb.append("\taddi $sp, $sp, -4\n");

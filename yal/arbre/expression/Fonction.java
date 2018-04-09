@@ -56,8 +56,10 @@ public class Fonction extends Expression{
             sb.append("#stockage parametre\n");
             sb.append(p.get(k).toMIPS());
         }
-        sb.append("\taddi $sp, $sp -4\n");
+        //if(bloc != 0)
+            sb.append("\taddi $sp, $sp -4\n");
         sb.append("\tjal "+ nom.getNom() +"\n");
+
         sb.append("\n");
 
         return sb.toString();
