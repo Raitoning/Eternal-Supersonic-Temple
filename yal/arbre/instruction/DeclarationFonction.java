@@ -13,7 +13,6 @@ public class DeclarationFonction extends Instruction{
     private ArbreAbstrait instructions;
     private int numBloc;
     private ArrayList<String> parametres;
-    private int numVar;
 
     public DeclarationFonction(int ligne, EntreeFonction n, ArbreAbstrait instr)
                                 {
@@ -25,7 +24,6 @@ public class DeclarationFonction extends Instruction{
         compteurBloc++;
         numBloc = compteurBloc;
         parametres = new ArrayList<String>();
-        numVar =0;
     }
 
     public DeclarationFonction(int ligne, EntreeFonction n, ArbreAbstrait instr, ArrayList<String> p)
@@ -39,17 +37,13 @@ public class DeclarationFonction extends Instruction{
         numBloc = compteurBloc;
 
         parametres = p;
-        numVar = 0;
-    }
-
-    public void setVariables(int n){
-        numVar = n;
     }
 
     @Override
     public void verifier() {
 
         if(TableDesSymboles.getInstance().existe(nom)) {
+
             throw new DoubleDeclarationException(noLigne, nom.getNom() + "()");
         } else {
 
@@ -99,7 +93,7 @@ public class DeclarationFonction extends Instruction{
         ArbreAbstrait.functionBuilder.append("\tsw $v0, ($sp)\n");
         ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, -4\n");
         ArbreAbstrait.functionBuilder.append("\tmove $s7,$sp\n");
-        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, "+(-4*(parametres.size()+numVar))+"\n");
+        ArbreAbstrait.functionBuilder.append("\taddi $sp, $sp, "+(-4*parametres.size())+"\n");
 
 
 

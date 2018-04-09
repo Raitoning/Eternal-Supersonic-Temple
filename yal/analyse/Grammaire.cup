@@ -232,27 +232,7 @@ DECL_FONCTION   ::= FONCTION IDF:i PAROUV PARFER DEBUT LINSTRF:l FIN
                                 ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
                             }
                             RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), l,p); :}
-
-        |        FONCTION IDF:i PAROUV PARAMETRESDECL:p PARFER DEBUT LISDECL:ld LINSTRF:l FIN
-                 {:  if (l instanceof BlocDInstructionsFonction){
-                         ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
-                     }
-                     BlocDInstructions b = new BlocDInstructions(ileft + 1);
-                     b.ajouter(ld); b.ajouter(l);
-                     DeclarationFonction dec = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), b,p);
-                     dec.setVariables(ld.setVariables());
-                     RESULT = dec;
-                      :}
-        |        FONCTION IDF:i PAROUV PARFER DEBUT LISDECL:ld LINSTRF:l FIN
-                 {:  if (l instanceof BlocDInstructionsFonction){
-                         ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,0));
-                     }
-                     BlocDInstructions b = new BlocDInstructions(ileft + 1);
-                     b.ajouter(ld); b.ajouter(l);
-                     DeclarationFonction dec = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), b,p);
-                     dec.setVariables(ld.setVariables());
-                     RESULT = dec; :}
-                     ;
+                ;
 
 LINSTRF         ::= LINSTRF:li INSTRF:i
                 {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);

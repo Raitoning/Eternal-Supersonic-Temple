@@ -83,7 +83,7 @@ public class Affectation extends Instruction {
         if(!exi)
             sb.append("\tsw $v0, " + ((SymboleVariable)tds.identifier(nom, noLigne)).getAdr() * 4 + "" +
                 "($s7)\n");
-        else sb.append("\tsw $v0, " + (((SymboleVariable)tds.identifier(sv, noLigne)).getAdr()-1) * 4 + "" +
+        else sb.append("\tsw $v0, " + ((SymboleVariable)tds.identifier(sv, noLigne)).getAdr() * 4 + "" +
                 "($s7)\n");
         sb.append("\taddi $sp, $sp, -4\n");
 
