@@ -8,6 +8,8 @@ package yal.arbre.expression;
 
 public abstract class Binaire extends Expression {
 
+    public void setBloc(int num){bloc = num; gauche.setBloc(num); droite.setBloc(num);}
+
     protected Expression gauche ;
     protected Expression droite ;
 

@@ -2,9 +2,11 @@ package yal.arbre.instruction;
 
 import yal.arbre.Type;
 import yal.arbre.expression.Expression;
+import yal.arbre.expression.Variable;
 import yal.exceptions.AnalyseSemantiqueException;
 import yal.tds.Entree;
-import yal.tds.Symbole;
+import yal.tds.EntreeVariable;
+import yal.tds.SymboleVariable;
 import yal.tds.TableDesSymboles;
 
 public class Affectation extends Instruction {
@@ -20,6 +22,7 @@ public class Affectation extends Instruction {
         this.valeur = valeur;
     }
 
+
     public Affectation(Entree nom, Expression el, Expression valeur, int no) {
 
         super(no);
@@ -27,6 +30,9 @@ public class Affectation extends Instruction {
         this.valeur = valeur;
         element = el;
     }
+
+    public void setBloc(int numbloc){bloc = numbloc; valeur.setBloc(numbloc);}
+
 
     @Override
     public void verifier() {
@@ -47,8 +53,15 @@ public class Affectation extends Instruction {
         }
 
         TableDesSymboles tds = TableDesSymboles.getInstance();
-        Symbole s = tds.identifier(nom, noLigne);
+
+        tds.testVariable(nom,bloc,noLigne);
+
+
         valeur.verifier();
+
+        if (tds.testParam(nom,bloc))
+            throw new AnalyseSemantiqueException(noLigne,
+                    "Affectation impossible, impossible d'affecter une valeur à un parametre.");
 
     }
 
@@ -68,21 +81,32 @@ public class Affectation extends Instruction {
 
         rec++;
         int numRecup = rec;
+
         sb.append("\t#recuperation variable\n");
-        sb.append("\tmove $t8, $s7\n");
-        sb.append("\tloop"+nom.getNom()+ numRecup +":\n");
-        sb.append("\tlw $v0, 4($s7)\n");
-        sb.append("\tbeq $v0, $zero, recupVar"+nom.getNom()+ numRecup+"\n");
-        sb.append("\tlw $s7, 8($s7)\n");
-        sb.append("\tj loop"+nom.getNom()+ numRecup +"\n");
-        sb.append("\trecupVar"+nom.getNom()+ numRecup +":\n");
+
+        EntreeVariable sv = new EntreeVariable(nom.getNom(),bloc);
+        boolean exi = tds.existe(sv);
+
+        if(!exi){
+            sb.append("\tmove $t8, $s7\n");
+            sb.append("\tloop"+nom.getNom()+ numRecup +":\n");
+            sb.append("\tlw $v0, ($s7)\n");
+            sb.append("\tbeq $v0, $zero, recupVar"+nom.getNom()+ numRecup+"\n");
+            sb.append("\tlw $s7, 8($s7)\n");
+            sb.append("\tj loop"+nom.getNom()+ numRecup +"\n");
+            sb.append("\trecupVar"+nom.getNom()+ numRecup +":\n");
+        }
 
         sb.append("\tlw $v0, ($sp)\n");
-        sb.append("\tsw $v0, " + tds.identifier(nom, noLigne).getAdr() * 4 + "" +
+        if(!exi)
+            sb.append("\tsw $v0, " + (((SymboleVariable)tds.identifier(nom, noLigne)).getAdr()-1) * -4 + "" +
+                "($s7)#tttt\n");
+        else sb.append("\tsw $v0, " + (((SymboleVariable)tds.identifier(sv, noLigne)).getAdr()-1) * -4 + "" +
                 "($s7)\n");
         sb.append("\taddi $sp, $sp, -4\n");
 
-        sb.append("\tmove $s7, $t8\n");
+        if(!exi)
+            sb.append("\tmove $s7, $t8\n");
 
         return sb.toString();
     }

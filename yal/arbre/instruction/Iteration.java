@@ -18,6 +18,8 @@ public class Iteration extends Instruction {
         instructions = arbreAbstrait;
     }
 
+    public void setBloc(int numbloc){bloc = numbloc; condition.setBloc(numbloc); instructions.setBloc(numbloc);}
+
     @Override
     public void verifier() {
 

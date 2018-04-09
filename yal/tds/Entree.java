@@ -4,6 +4,8 @@ public abstract class Entree {
 
     protected String nom;
 
+    protected int bloc = -1;
+
     public Entree (String nom) {
 
         this.nom = nom;
@@ -22,4 +24,9 @@ public abstract class Entree {
 
         return nom.hashCode();
     }
+
+    public int getBloc(){
+        return bloc;
+    }
+
 }

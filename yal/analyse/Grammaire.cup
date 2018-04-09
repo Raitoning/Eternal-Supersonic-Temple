@@ -185,8 +185,25 @@ CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
                 ;
 
 DECL            ::=     ENTIER IDF:i POINTVIRGULE
-                {:
-                RESULT = new Declaration(new EntreeVariable(i), ileft + 1);
+                {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1); :}
+        |
+                ENTIER IDF:i CROOUV EXPR:e CROFER POINTVIRGULE
+                {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1, e); :}
+                //TODO:Complete, if necessary
+                ;
+
+
+LISDECLF        ::= LISDECLF:l DECL:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(l);
+                    b.ajouter(d);
+                    RESULT =  b;
+                :}
+        |       LISDECLF:l DECL_FONCTION:d
+                {: BlocDInstructions b = new BlocDInstructions(dleft + 1);
+                    b.ajouter(l);
+                    b.ajouter(d);
+                    RESULT =  b;
                 :}
         |
                 ENTIER IDF:i CROOUV CONSTANTEINT:c CROFER POINTVIRGULE
@@ -214,7 +231,38 @@ LISDECL         ::=     LISDECL:l DECL:d
                 :}
                 ;
 
+DECL_FONCTION   ::= FONCTION IDF:i PAROUV PARFER DEBUT LINSTRF:l FIN
+                {:  if (l instanceof BlocDInstructionsFonction){
+                        ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,0));
+                    }
+                    RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,0), l); :}
+        |
+                    FONCTION IDF:i PAROUV PARAMETRESDECL:p PARFER DEBUT LINSTRF:l FIN
+                        {:  if (l instanceof BlocDInstructionsFonction){
+                                ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
+                            }
+                            RESULT = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), l,p); :}
 
+        |        FONCTION IDF:i PAROUV PARAMETRESDECL:p PARFER DEBUT LISDECL:ld LINSTRF:l FIN
+                 {:  if (l instanceof BlocDInstructionsFonction){
+                         ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,p.size()));
+                     }
+                     BlocDInstructions b = new BlocDInstructions(ileft + 1);
+                     b.ajouter(ld); b.ajouter(l);
+                     DeclarationFonction dec = new DeclarationFonction(ileft + 1, new EntreeFonction(i,p.size()), b,p);
+                     dec.setVariables(ld.getVariables());
+                     RESULT = dec;
+                      :}
+        |        FONCTION IDF:i PAROUV PARFER DEBUT LISDECL:ld LINSTRF:l FIN
+                 {:  if (l instanceof BlocDInstructionsFonction){
+                         ((BlocDInstructionsFonction) l).setName(new EntreeFonction(i,0));
+                     }
+                     BlocDInstructions b = new BlocDInstructions(ileft + 1);
+                     b.ajouter(ld); b.ajouter(l);
+                     DeclarationFonction dec = new DeclarationFonction(ileft + 1, new EntreeFonction(i,0), b);
+                     dec.setVariables(ld.getVariables());
+                     RESULT = dec; :}
+                     ;
 
 LINSTRF         ::= LINSTRF:li INSTRF:i
                 {: BlocDInstructionsFonction b = new BlocDInstructionsFonction(ileft + 1);
@@ -228,6 +276,22 @@ LINSTRF         ::= LINSTRF:li INSTRF:i
                     RESULT = b ; :}
                 ;
 
+PARAMETRESDECL ::= ENTIER IDF:i
+                {:
+                ArrayList<String> res = new ArrayList<String>();
+                res.add(i);
+                RESULT = res;
+                :}
+        |
+                PARAMETRESDECL:p VIRGULE ENTIER IDF:i
+                {:
+                ArrayList<String> res = new ArrayList<String>();
+                for(int j = 0; j < p.size();j++)
+                    res.add(p.get(j));
+                res.add(i);
+                RESULT = res;
+                :}
+        ;
 
 PARAMETRESDECL ::= ENTIER IDF:i
                 {:
@@ -309,6 +373,12 @@ EXPR            ::=     EXPR:g  PLUS  EXPR:d
         |
                 IDF:i CROOUV EXPR:e CROFER
                 {: RESULT = new Tableau(new EntreeVariable(i),e,ileft+1); :}
+                
+        |       IDF:e PAROUV PARFER
+                {: RESULT = new Fonction(new EntreeFonction(e,0),eleft+1); :}
+        |
+                IDF:e PAROUV PARAMETRES:p PARFER
+                {: RESULT = new Fonction(new EntreeFonction(e,p.size()),eleft+1,p); :}
                 ;
 
 CSTE        ::=     CONSTANTEINT:e

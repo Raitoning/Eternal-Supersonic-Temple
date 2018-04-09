@@ -3,8 +3,11 @@ package yal.tds;
 public class EntreeFonction extends Entree {
 
     public EntreeFonction(String nom) {
-
         super(nom);
+    }
+
+    public EntreeFonction(String nom, int arg){
+        super(nom+arg+"arg");
     }
 
     @Override

@@ -2,7 +2,7 @@ package yal.arbre.instruction.fonction;
 
 import yal.arbre.instruction.Instruction;
 import yal.tds.Entree;
-import yal.tds.Symbole;
+import yal.tds.SymboleVariable;
 import yal.tds.TableDesSymboles;
 
 public class Lire extends Instruction{
@@ -17,7 +17,7 @@ public class Lire extends Instruction{
     @Override
     public void verifier() {
         TableDesSymboles tds = TableDesSymboles.getInstance();
-        Symbole s = tds.identifier(nom, noLigne);
+        SymboleVariable s = ((SymboleVariable)tds.identifier(nom, noLigne));
     }
 
     @Override
@@ -31,10 +31,11 @@ public class Lire extends Instruction{
         sb.append("\tsyscall\n");
         sb.append("\n");
         sb.append("#Affectation qui suit la lecture\n");
-        sb.append("\tsw $v0, " + tds.identifier(nom, noLigne).getAdr() * 4 + "" +
+        sb.append("\tsw $v0, " + ((SymboleVariable)tds.identifier(nom, noLigne)).getAdr() * 4 + "" +
                 "($s7)\n");
         sb.append("\taddi $sp, $sp, -4\n");
 
         return sb.toString();
     }
+    //TODO lire dans fonction
 }

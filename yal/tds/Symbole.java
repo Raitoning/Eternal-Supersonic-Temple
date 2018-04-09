@@ -1,15 +1,16 @@
 package yal.tds;
 
-public class Symbole {
+public abstract class Symbole {
 
     private TypeTDS typeTDS;
     private int adr;
     private int tailleTableau;
+  
+    protected boolean estParametre;
 
-    public Symbole(TypeTDS typeTDS, int padr) {
-
-        this.typeTDS = typeTDS;
-        adr = padr;
+    public Symbole(TypeTDS t) {
+        this.typeTDS = t;
+        estParametre=false;
     }
 
     public Symbole(TypeTDS typeTDS, int padr, int taille) {
@@ -19,10 +20,9 @@ public class Symbole {
     }
 
     public TypeTDS getTypeTDS() {
-
         return typeTDS;
     }
-
+  
     public int getAdr() {
         return adr;
     }

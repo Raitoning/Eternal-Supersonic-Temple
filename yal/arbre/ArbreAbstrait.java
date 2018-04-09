@@ -18,6 +18,8 @@ public abstract class ArbreAbstrait {
     static protected ArrayList<ArbreAbstrait> instructionsFonctions = new
             ArrayList<ArbreAbstrait>();
 
+    protected int bloc = 0;
+
     protected ArbreAbstrait(int no) {
 
         noLigne = no ;
@@ -31,5 +33,11 @@ public abstract class ArbreAbstrait {
     public abstract void verifier();
 
     public abstract String toMIPS();
+
+    public void setBloc(int numbloc){bloc = numbloc;}
+
+    public int getVariables(){
+        return 0;
+    }
 
 }

@@ -19,6 +19,9 @@ public class Conditionnel extends Instruction{
         cond = pcondition;
     }
 
+    public void setBloc(int numbloc){bloc = numbloc; si.setBloc(numbloc); non.setBloc(numbloc);cond.setBloc(numbloc);}
+
+
     @Override
     public void verifier() {
 

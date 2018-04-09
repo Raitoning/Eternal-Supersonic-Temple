@@ -13,4 +13,6 @@ public abstract class Instruction extends ArbreAbstrait{
 
     @Override
     public abstract String toMIPS();
+
+    public void setBloc(int numbloc){bloc = numbloc; }
 }

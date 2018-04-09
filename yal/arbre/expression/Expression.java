@@ -28,4 +28,6 @@ public abstract class Expression extends ArbreAbstrait {
     public boolean isConstanteEntiere(){
         return false;
     }
+
+    public void setBloc(int num){bloc = num;}
 }

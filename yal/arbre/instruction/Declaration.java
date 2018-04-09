@@ -1,34 +1,73 @@
 package yal.arbre.instruction;
 
-import yal.arbre.ArbreAbstrait;
+import yal.arbre.Type;
+import yal.arbre.expression.Expression;
 import yal.exceptions.AnalyseSemantiqueException;
-import yal.tds.Entree;
-import yal.tds.Symbole;
-import yal.tds.TableDesSymboles;
-import yal.tds.TypeTDS;
+import yal.tds.*;
+
+import java.util.ArrayList;
 
 public class Declaration extends Instruction{
 
     private Entree nom;
+    private boolean tableau;
+    private Expression expr;
 
     public Declaration(Entree nom, int no) {
-
         super(no);
+        this.tableau = false;
         this.nom = nom;
     }
 
+    public Declaration(Entree nom, int no, Expression exp){
+        super(no);
+        this. nom = nom;
+        this.tableau = true;
+        expr = exp;
+    }
+
+    public boolean estTableau(){
+        return tableau;
+    }
+
+    public void setBloc(int numbloc){bloc = numbloc;}
+
     public void verifier() {
 
-        TableDesSymboles tds = TableDesSymboles.getInstance();
+        if (!tableau) {
+            Entree ev;
+            if (bloc != 0)
+                ev = new EntreeVariable(nom.getNom(), bloc);
+            else ev = nom;
 
-        if(tds.existe(nom)){
+            TableDesSymboles tds = TableDesSymboles.getInstance();
 
-            throw new AnalyseSemantiqueException(noLigne,"Erreur: double " +
-                    "déclaration");
+            if (tds.existe(ev)) {
+
+                throw new AnalyseSemantiqueException(noLigne, "Erreur: double " +
+                        "déclaration");
+            } else {
+                if (bloc == 0)
+                    tds.ajouter(ev, new SymboleVariable(
+                            tds.getTailleZoneVariable() + 1), noLigne);
+                else {
+
+                    tds.ajouter(ev, new SymboleVariable(tds.getTailleBloc(bloc)
+                    ), noLigne);
+                }
+
+            }
         } else {
+            //FIXME:Determiner si on est dans une variable locale ou globale
+            //TODO:Verifier tableau
 
-            tds.ajouter(nom,new Symbole(TypeTDS.Variable,
-                    tds.getTailleZoneVariable()+1), noLigne);
+            expr.verifier();
+            if (expr.getType() != Type.entier) {
+
+                throw new AnalyseSemantiqueException(noLigne, "L'expression " +
+                        "doit être arithmetique.");
+            }
+
         }
     }
 
