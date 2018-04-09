@@ -10,6 +10,7 @@ public class Tableau extends Expression {
 
     protected EntreeVariable nom;
     protected Expression element;
+    protected Symbole s;
 
     public Tableau(EntreeVariable e, Expression el, int n) {
 
@@ -28,14 +29,26 @@ public class Tableau extends Expression {
 
         element.verifier();
 
-        Symbole s = TableDesSymboles.getInstance().identifier(nom, noLigne);
+        s = TableDesSymboles.getInstance().identifier(nom, noLigne);
     }
 
     @Override
     public String toMIPS() {
-        // TODO: fonction toMIPS de la classe Tableau
 
-        return null;
+        // TODO: fonction toMIPS de la classe Tableau
+        StringBuilder stringBuilder = new StringBuilder();
+
+        element.toMIPS();
+
+        stringBuilder.append("\taddi $sp, $sp, 4\n");
+        stringBuilder.append("\tlw $v0 $sp\n");
+
+        stringBuilder.append("\t#Lecture tableau\n");
+        stringBuilder.append("\t#Vérification bornes tableau\n");
+        stringBuilder.append("\tbltz $v0, msgOutOfBounds\n");
+        stringBuilder.append("\tbltz $v0, msgOutOfBounds\n");
+
+        return stringBuilder.toString();
     }
 
     @Override
