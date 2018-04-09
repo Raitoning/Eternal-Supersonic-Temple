@@ -39,10 +39,10 @@ public class DeclarationTableau extends Instruction {
 
             ConstanteEntiere tmp = (ConstanteEntiere)tailleTableau;
 
-            tds.ajouter(nom,new Symbole(TypeTDS.Tableau, tds.getTailleZoneVariable()), tmp.toInt());
+            tds.ajouter(nom,new SymboleVariable(TypeTDS.Tableau, tds.getTailleZoneVariable()), tmp.toInt());
         } else {
 
-            tds.ajouter(nom,new Symbole(TypeTDS.TableauDynamique, tds.getTailleZoneVariable()), 0);
+            tds.ajouter(nom,new SymboleVariable(TypeTDS.TableauDynamique, tds.getTailleZoneVariable()), 0);
         }
     }
 

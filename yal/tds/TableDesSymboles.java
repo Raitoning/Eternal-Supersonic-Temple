@@ -85,7 +85,9 @@ public class TableDesSymboles {
                 res++;
             } else if (tds.get(e).getTypeTDS() == TypeTDS.Tableau) {
 
-                res += tds.get(e).getTailleTableau() + 1;
+                 SymboleVariable tmp = (SymboleVariable)tds.get(e);
+
+                res += tmp.getTailleTableau() + 1;
             }
         }
 
