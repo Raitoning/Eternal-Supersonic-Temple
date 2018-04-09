@@ -169,9 +169,8 @@ BOUCLE          ::=     TANTQUE EXPR:e REPETER LINSTR:li FINTANTQUE
 AFF             ::=     IDF:i EGAL EXPR:e POINTVIRGULE
                 {: RESULT = new Affectation(new EntreeVariable(i), e, ileft + 1); :}
        |
-                IDF CROOUV EXPR CROFER EGAL EXPR POINTVIRGULE
-                //TODO: Complete accordingly
-
+                IDF:i CROOUV EXPR:f CROFER EGAL EXPR:e POINTVIRGULE
+                {: RESULT = new Affectation(new EntreeVariable(i),f, e, ileft + 1); :}
                 ;
 
 CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
@@ -188,7 +187,7 @@ DECL            ::=     ENTIER IDF:i POINTVIRGULE
                 {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1); :}
         |
                 ENTIER IDF:i CROOUV EXPR:e CROFER POINTVIRGULE
-                //TODO:Complete, if necessary
+                {: RESULT = new DeclarationTableau(new EntreeVariable(i),ileft+1,e); :}
                 ;
 
 
@@ -299,7 +298,7 @@ EXPR            ::=     EXPR:g  PLUS  EXPR:d
                 {: RESULT = new Variable(new EntreeVariable(e), eleft+1); :}
         |
                 IDF:i CROOUV EXPR:e CROFER
-                //TODO:Complete
+                {: RESULT = new Tableau(new EntreeVariable(i),e,ileft+1); :}
                 ;
 
 CSTE        ::=     CONSTANTEINT:e
