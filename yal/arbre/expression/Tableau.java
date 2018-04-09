@@ -10,26 +10,23 @@ public class Tableau extends Expression {
 
     protected EntreeVariable nom;
     protected Expression element;
-    protected Expression valeur;
 
-    protected Tableau(EntreeVariable e, Expression el, Expression val, int n) {
+    protected Tableau(EntreeVariable e, Expression el, int n) {
 
         super(n);
         nom = e;
         element = el;
-        valeur = val;
     }
 
     @Override
     public void verifier() {
 
-        if(element.getType() != Type.entier || valeur.getType() != Type.entier) {
+        if(element.getType() != Type.entier) {
 
             throw new AnalyseSemantiqueException(noLigne, "Appel de tableau: entier attendu");
         }
 
         element.verifier();
-        valeur.verifier();
 
         Symbole s = TableDesSymboles.getInstance().identifier(nom, noLigne);
     }
