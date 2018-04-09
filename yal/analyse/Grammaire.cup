@@ -98,6 +98,7 @@ precedence left PLUS, MOINS;
 precedence left MULT, DIV;
 precedence left NON;
 precedence left EGAL;
+precedence left CONSTANTEINT;
 
 /* ----------------------------Grammar Section-------------------- */
 
@@ -184,10 +185,19 @@ CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
                 ;
 
 DECL            ::=     ENTIER IDF:i POINTVIRGULE
-                {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1); :}
+                {:
+                RESULT = new Declaration(new EntreeVariable(i), ileft + 1);
+                :}
+        |
+                ENTIER IDF:i CROOUV CONSTANTEINT:c CROFER POINTVIRGULE
+                {:
+                RESULT = new DeclarationTableau(new EntreeVariable(i), ileft + 1, new ConstanteEntiere(c, ileft + 1), true);
+                :}
         |
                 ENTIER IDF:i CROOUV EXPR:e CROFER POINTVIRGULE
-                {: RESULT = new DeclarationTableau(new EntreeVariable(i),ileft+1,e); :}
+                {:
+                RESULT = new DeclarationTableau(new EntreeVariable(i), ileft + 1, e, true);
+                :}
                 ;
 
 

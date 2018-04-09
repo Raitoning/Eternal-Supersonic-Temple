@@ -1,5 +1,6 @@
 package yal.arbre.instruction;
 
+import javafx.scene.control.Tab;
 import yal.arbre.Type;
 import yal.arbre.expression.ConstanteEntiere;
 import yal.arbre.expression.Expression;
@@ -9,10 +10,10 @@ import yal.tds.*;
 public class DeclarationTableau extends Instruction {
 
     private Expression tailleTableau;
-    private Entree nom;
+    private EntreeVariable nom;
     private boolean dynamique;
 
-    public DeclarationTableau(Entree n, int no, Expression taille, boolean dyn) {
+    public DeclarationTableau(EntreeVariable n, int no, Expression taille, boolean dyn) {
 
         super(no);
         nom = n;
@@ -34,23 +35,35 @@ public class DeclarationTableau extends Instruction {
         TableDesSymboles tds = TableDesSymboles.getInstance();
 
         // HACK: Pour récupérer la taille du tableau à partir de la String cste
-        ConstanteEntiere tmp = (ConstanteEntiere)tailleTableau;
+        if(tailleTableau.isConstanteEntiere()) {
 
-        if(dynamique) {
+            ConstanteEntiere tmp = (ConstanteEntiere)tailleTableau;
 
-            tds.ajouter(nom,new Symbole(TypeTDS.TableauDynamique, tds.getTailleZoneVariable() + 1), tmp.toInt());
+            tds.ajouter(nom,new Symbole(TypeTDS.Tableau, tds.getTailleZoneVariable()), tmp.toInt());
         } else {
 
-            tds.ajouter(nom,new Symbole(TypeTDS.Tableau, tds.getTailleZoneVariable() + 1), tmp.toInt());
-
+            tds.ajouter(nom,new Symbole(TypeTDS.TableauDynamique, tds.getTailleZoneVariable()), 0);
         }
-
     }
 
     @Override
     public String toMIPS() {
 
-        //TODO: Fonction toMIPS de la classe DeclarationTableau
-        return null;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\t# Déclaration tableau\n");
+
+        if(dynamique) {
+
+            stringBuilder.append("\t# Tableau dynamique\n");
+
+        } else {
+
+            stringBuilder.append("\t# Tableau statique\n");
+
+            stringBuilder.append("\taddi $v0, $zero, "+ tailleTableau +"\n");
+            stringBuilder.append("\t sw $v0,"+ (-4 * TableDesSymboles.getInstance().identifier(nom, noLigne).getAdr() - 1) + "($s7)\n");
+        }
+
+        return stringBuilder.toString();
     }
 }
