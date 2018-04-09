@@ -187,9 +187,11 @@ CONDITION       ::=   SI EXPR:e ALORS LINSTR:li SINON LINSTR:le FSI
 DECL            ::=     ENTIER IDF:i POINTVIRGULE
                 {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1); :}
         |
-                ENTIER IDF:i CROOUV EXPR:e CROFER POINTVIRGULE
-                {: RESULT = new Declaration(new EntreeVariable(i), ileft + 1, e); :}
-                //TODO:Complete, if necessary
+                ENTIER IDF:i CROOUV CONSTANTEINT:c CROFER POINTVIRGULE
+                {:
+                    RESULT = new DeclarationTableau(new EntreeVariable(i), ileft + 1, new ConstanteEntiere(c, ileft + 1), false);
+                :}
+
                 ;
 
 
@@ -204,11 +206,6 @@ LISDECLF        ::= LISDECLF:l DECL:d
                     b.ajouter(l);
                     b.ajouter(d);
                     RESULT =  b;
-                :}
-        |
-                ENTIER IDF:i CROOUV CONSTANTEINT:c CROFER POINTVIRGULE
-                {:
-                RESULT = new DeclarationTableau(new EntreeVariable(i), ileft + 1, new ConstanteEntiere(c, ileft + 1), true);
                 :}
         |
                 ENTIER IDF:i CROOUV EXPR:e CROFER POINTVIRGULE

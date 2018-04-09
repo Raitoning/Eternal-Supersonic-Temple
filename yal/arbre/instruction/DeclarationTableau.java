@@ -41,6 +41,9 @@ public class DeclarationTableau extends Instruction {
 
             tds.ajouter(nom,new SymboleVariable(TypeTDS.Tableau, tds.getTailleZoneVariable()), tmp.toInt());
         } else {
+            if (dynamique){
+                throw new AnalyseSemantiqueException(noLigne, "Déclaration de tableau: constante attendue");
+            }
 
             tds.ajouter(nom,new SymboleVariable(TypeTDS.TableauDynamique, tds.getTailleZoneVariable()), 0);
         }
